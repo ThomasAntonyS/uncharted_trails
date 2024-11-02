@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Hero_video from '../assets/Hero_video.mp4';
+import { MdArrowRightAlt } from "react-icons/md";
 
 const Hero = () => {
   return (
@@ -12,35 +13,46 @@ const Hero = () => {
           <video src={Hero_video} autoPlay muted loop className="w-full h-full object-cover"></video>
         </div>
 
-        <div className="Hero_content absolute top-[20%] left-0 text-white w-full">
-          <p className="text-3xl ">Start your unforgettable <br /> journey with us.</p>
-          <p className="text-xl mt-2">The best travel for your journey begins now</p>
+        <div className="Hero_content absolute top-[20%] left-[10%] text-white w-full font-libreCaslon ">
+          <p className="text-[4rem] leading-[70px]">Start your unforgettable <br /> journey with us.</p>
+          <p className="text-xl mt-3 font-poppins">The best travel for your journey begins now</p>
         </div>
 
-        <div className="Hero_input_section flex absolute bottom-[10%] left-0 h-[15vh] w-[70%] border-2 ">
+        <div className="Hero_input_section flex absolute bottom-[10%] left-0 h-[20vh] w-[70%] bg-white tracking-wider -z-[1]">
           <div className='Hero_Destination_Input flex flex-col w-[20%] my-auto mx-2'>
-            <p>DESTINATION</p>
-            <input type="text" placeholder='Hi'/>
+            <p className=' text-gray-500 font-poppins text-xs '>DESTINATION</p>
+            <input type="text" 
+            placeholder=''
+            className=' border-b-[1px] border-black outline-none placeholder-black font-libreCaslon text-xl'
+            />
           </div>
 
           <div className='Hero_Person_Input flex flex-col w-[20%] my-auto mx-2'>
-            <p>PERSON</p>
-            <input type="text" placeholder='Hi'/>
+            <p className=' text-gray-500 font-poppins text-xs'>PERSON</p>
+            <input type="text" 
+            placeholder=''
+            className=' border-b-[1px] border-black outline-none placeholder-black font-libreCaslon text-xl'
+            />
           </div>
 
           <div className='Hero_CheckIn_Input flex flex-col w-[20%] my-auto mx-2'>
-            <p>CHECK IN</p>
-            <input type="text" placeholder='Hi'/>
+            <p className=' text-gray-500 font-poppins text-xs'>CHECK IN</p>
+            <input type="text" 
+            placeholder=''
+            className=' border-b-[1px] border-black outline-none placeholder-black font-libreCaslon text-xl'
+            />
           </div>
 
           <div className='Hero_CheckOut_Input flex flex-col w-[20%] my-auto mx-2'>
-            <p>CHECK OUT</p>  
-            <input type="text" placeholder='Hi'/>
+            <p className=' text-gray-500 font-poppins text-xs'>CHECK OUT</p>  
+            <input type="text" 
+            placeholder=''
+            className=' border-b-[1px] border-black outline-none placeholder-black font-libreCaslon text-xl'
+            />
           </div>
 
-          <div className='Hero_Button w-[20%] my-auto mx-2'>
-            <button>Click here</button>
-            <p>abc</p>
+          <div className='Hero_Button flex w-[20%] ml-2 font-libreCaslon h-full bg-black text-white text-[1.2rem] tracking-wider'>
+            <button className=' mx-auto'>Click here <span className='block w-max mx-auto'><MdArrowRightAlt size={30} /></span></button>
           </div>
         </div>
 

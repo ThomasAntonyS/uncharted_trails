@@ -77,15 +77,14 @@ const destinations = [
 const Slider = () => {
   const [current, setCurrent] = useState(0);
 
-  const visibleCards = 4; // Number of cards to show at once
-  const totalSlides = Math.ceil(destinations.length / visibleCards);
+  const cards = destinations.length ;
 
   const handlePrev = () => {
-    setCurrent((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+    setCurrent((prev) => (prev === 0 ? cards - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setCurrent((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
+    setCurrent((prev) => (prev === cards - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -108,7 +107,7 @@ const Slider = () => {
       {/* Slider Container */}
       <div
         className="h-full flex transition-transform duration-500 ease-in-out"
-        style={{ transform: `translateX(-${current * 100}%)` }}
+        style={{ transform: `translateX(-${current * 20}%)` }}
       >
         {destinations.map((destination) => (
           <div
