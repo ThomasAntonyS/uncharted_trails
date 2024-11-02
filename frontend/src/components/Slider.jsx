@@ -88,7 +88,7 @@ const Slider = () => {
   };
 
   return (
-    <div className="relative flex h-[70%] w-[90%] mx-auto overflow-hidden">
+    <div className="relative flex h-[80%] w-[90%] mx-auto overflow-hidden">
       {/* Navigation Buttons */}
       <button
         onClick={handlePrev}
@@ -116,7 +116,7 @@ const Slider = () => {
           >
             <Card {...destination} />
           </div>
-        ))}
+        ))} 
       </div>
     </div>
   );
