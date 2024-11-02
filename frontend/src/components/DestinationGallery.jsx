@@ -21,13 +21,13 @@ const DestinationGallery = () => {
   ];
 
   return (
-    <div className="flex flex-col justify-center max-w-7xl h-[90vh] mx-auto p-4">
-      <div className="mb-8">
+    <div className="flex flex-col justify-center h-[90vh] w-[100vw] mx-auto p-4">
+      <div className="mb-8 ml-[3%]">
         <h1 className="text-4xl text-gray-800 font-libreCaslon font-semibold tracking-wide">Destination Gallery</h1>
         <div className="w-[30vh] border-2 border-gray-700 mt-1 mb-1"></div>
         <p className="text-gray-600 font-poppins">Our photo gallery on trip.</p>
       </div>
-      <div className="flex flex-wrap w-[80vw] h-[70%] justify-center">
+      <div className="flex flex-wrap mx-auto w-[80vw] h-[70%] justify-center">
         {destinations.map((destination, index) => (
           <div
             key={destination.id}

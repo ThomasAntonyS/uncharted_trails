@@ -32,7 +32,7 @@ const SpecialOffer = () => {
   return (
     <section className="w-[100vw] h-[85vh] flex flex-col justify-center bg-white">
       {/* Header */}
-      <div className=" mb-6 mr-20">
+      <div className=" mb-6 mr-[6%]">
         <h2 className="text-2xl text-right font-libreCaslon tracking-wider md:text-3xl font-semibold text-gray-800 mb-2">Special Offer</h2>
         <div className=' flex justify-end'><p className='w-[8vw] border-2 border-gray-700 text-right'></p></div>
         <p className="text-gray-600 mb-8 mt-3 font-poppins text-right">Check out our special offer and discount</p>
@@ -42,7 +42,7 @@ const SpecialOffer = () => {
       <div className="relative w-[80%] mx-auto">
 
         {/* Cards */}
-        <div className="flex overflow-x-auto space-x-4 px-6">
+        <div className="flex overflow-x-auto space-x-4 mx-auto">
           {cardData.map((card, index) => (
             <div key={index} className="w-72 bg-white rounded-lg overflow-hidden">
               <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url(${card.imageUrl})` }}></div>
