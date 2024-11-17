@@ -52,7 +52,7 @@ const Hero = () => {
           </div>
 
           <div className='Hero_Button flex w-[20%] ml-2 font-libreCaslon h-full bg-black text-white text-[1.2rem] tracking-wider'>
-            <button className=' mx-auto'>Click here <span className='block w-max mx-auto'><MdArrowRightAlt size={30} /></span></button>
+            <button className=' mx-auto w-full'>Click here <span className='block w-max mx-auto'><MdArrowRightAlt size={30} /></span></button>
           </div>
         </div>
 

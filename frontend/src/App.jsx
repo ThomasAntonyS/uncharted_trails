@@ -1,6 +1,8 @@
 import './App.css'
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import Home from './components/Pages/Home'
+import Explore from './components/Pages/Explore'
+import Blog from './components/Pages/Blog'
 
 function App() {
 
@@ -13,6 +15,16 @@ function App() {
           <Route 
           element={<Home/>}
           path='/'
+          />
+
+          <Route
+          element={<Explore/>}
+          path='/explore'
+          />
+
+          <Route
+          element={<Blog/>}
+          path='/blog'
           />
 
         </Routes>
