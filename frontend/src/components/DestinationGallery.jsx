@@ -21,22 +21,29 @@ const DestinationGallery = () => {
   ];
 
   return (
-    <div className="flex flex-col justify-center h-[90vh] w-[100vw] mx-auto p-4">
-      <div className="mb-8 ml-[3%]">
+    <div className="flex flex-col justify-center h-auto w-full mx-auto p-4">
+      {/* Header Section */}
+      <div className="mb-8 text-center">
         <h1 className="text-4xl text-gray-800 font-libreCaslon font-semibold tracking-wide">Destination Gallery</h1>
-        <div className="w-[30vh] border-2 border-gray-700 mt-1 mb-1"></div>
-        <p className="text-gray-600 font-poppins">Our photo gallery on trip.</p>
+        <div className="w-20 mx-auto border-2 border-gray-700 mt-1 mb-1"></div>
+        <p className="text-gray-600 font-poppins">Our photo gallery of trips around the globe.</p>
       </div>
-      <div className="flex flex-wrap mx-auto w-[80vw] h-[70%] justify-center">
+
+      {/* Gallery Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto w-[90%]">
         {destinations.map((destination, index) => (
           <div
             key={destination.id}
-            className={`h-full sm:w-1/2 lg:w-1/4 ${
-              index % 2 === 1 ? '-mt-4' : ''
+            className={`h-auto w-full transform transition duration-300 hover:scale-105 ${
+              index % 2 === 1 ? 'sm:mt-4 lg:mt-0' : ''
             }`}
           >
-            <div className="bg-white w-[90%] h-full rounded-lg overflow-hidden">
-              <img src={destination.image} alt={`Destination ${destination.id}`} className="w-full h-full object-cover" />
+            <div className="bg-white rounded-lg overflow-hidden shadow-lg">
+              <img
+                src={destination.image}
+                alt={`Destination ${destination.id}`}
+                className="w-full h-[40vh] sm:h-[50vh] lg:h-[60vh] object-cover"
+              />
             </div>
           </div>
         ))}

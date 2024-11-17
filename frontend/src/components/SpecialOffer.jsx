@@ -22,29 +22,30 @@ const SpecialOffer = () => {
       imageUrl: 'https://images.pexels.com/photos/2928058/pexels-photo-2928058.jpeg?auto=compress&cs=tinysrgb&w=600',
     },
     {
-        title: 'Rome, Italy',
-        price: '€750',
-        description: '5 nights and 6 days in a 5-star hotel, breakfast and lunch included. Explore ancient ruins and authentic cuisine.',
-        imageUrl: 'https://images.pexels.com/photos/2928058/pexels-photo-2928058.jpeg?auto=compress&cs=tinysrgb&w=600',
+      title: 'Rome, Italy',
+      price: '€750',
+      description: '5 nights and 6 days in a 5-star hotel, breakfast and lunch included. Explore ancient ruins and authentic cuisine.',
+      imageUrl: 'https://images.pexels.com/photos/2928058/pexels-photo-2928058.jpeg?auto=compress&cs=tinysrgb&w=600',
     },
   ];
 
   return (
-    <section className="w-[100vw] h-[85vh] flex flex-col justify-center bg-white">
+    <section className="w-full h-[85vh] flex flex-col justify-center bg-white px-4 md:px-0">
       {/* Header */}
-      <div className=" mb-6 mr-[6%]">
-        <h2 className="text-2xl text-right font-libreCaslon tracking-wider md:text-3xl font-semibold text-gray-800 mb-2">Special Offer</h2>
-        <div className=' flex justify-end'><p className='w-[8vw] border-2 border-gray-700 text-right'></p></div>
-        <p className="text-gray-600 mb-8 mt-3 font-poppins text-right">Check out our special offer and discount</p>
+      <div className="mb-6 text-center md:text-right">
+        <h2 className="text-2xl font-libreCaslon tracking-wider md:text-3xl font-semibold text-gray-800 mb-2">Special Offer</h2>
+        <div className="flex justify-center md:justify-end">
+          <p className="w-[30%] md:w-[8vw] border-2 border-gray-700 text-center"></p>
+        </div>
+        <p className="text-gray-600 mb-8 mt-3 font-poppins text-center md:text-right">Check out our special offer and discount</p>
       </div>
 
       {/* Carousel */}
-      <div className="relative w-[80%] mx-auto">
-
+      <div className="relative w-full md:w-[80%] mx-auto">
         {/* Cards */}
-        <div className="flex overflow-x-auto space-x-4 mx-auto">
+        <div className="flex overflow-x-auto space-x-4 md:space-x-6 mx-auto md:overflow-visible">
           {cardData.map((card, index) => (
-            <div key={index} className="w-72 bg-white rounded-lg overflow-hidden">
+            <div key={index} className="w-full sm:w-72 md:w-80 lg:w-[25%] bg-white rounded-lg overflow-hidden">
               <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url(${card.imageUrl})` }}></div>
               <div className="p-4">
                 <h3 className="font-bold text-lg mb-2">{card.title}</h3>
