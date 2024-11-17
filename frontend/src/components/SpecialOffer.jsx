@@ -35,9 +35,9 @@ const SpecialOffer = () => {
       </div>
 
       {/* Carousel */}
-      <div className="relative w-full md:w-[80%] mx-auto">
+      <div className="relative w-full md:w-[90%] mx-auto ">
         {/* Cards */}
-        <div className="flex justify-around overflow-x-auto space-x-2 md:space-x-6 mx-auto md:overflow-visible">
+        <div className="flex justify-around overflow-x-auto space-x-2 md:space-x-6 mx-auto">
           {cardData.map((card, index) => (
             <div key={index} className="flex-shrink-0 w-full sm:w-72 md:w-80 bg-white rounded-lg overflow-hidden">
               <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url(${card.imageUrl})` }}></div>
