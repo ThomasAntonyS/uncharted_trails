@@ -9,7 +9,7 @@ const Hero = () => {
       <Navbar />
       <div className="Hero_Container_ h-[90vh] relative">
 
-        <div className="Hero_video absolute h-full w-full z-[-5] object-cover border-2 overflow-hidden">
+        <div className="Hero_video absolute h-full w-full z-[-5] object-cover overflow-hidden">
           <video src={Hero_video} autoPlay muted loop className="w-full h-full object-cover"></video>
         </div>
 

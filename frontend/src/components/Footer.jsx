@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa6";
 
 const Footer = () => {
@@ -37,11 +38,11 @@ const Footer = () => {
               <div className="flex flex-col items-center lg:items-start">
                 <h4 className="text-lg font-libreCaslon">Menu</h4>
                 <ul className="mt-2 space-y-1 text-gray-400 font-poppins text-center lg:text-left">
-                  <li>Home</li>
-                  <li>Explore</li>
-                  <li>Travel</li>
-                  <li>Blog</li>
-                  <li>Pricing</li>
+                  <li><Link to={'/'} onClick={() => screenTop(0, 0)}>Home</Link></li>
+                  <li><Link to={'/explore'} onClick={() => screenTop(0, 0)}>Explore</Link></li>
+                  <li><Link to={'/'} onClick={() => screenTop(0, 0)}>Travel</Link></li>
+                  <li><Link to={'/blog'} onClick={() => screenTop(0, 0)}>Blog</Link></li>
+                  <li><Link to={'/'} onClick={() => screenTop(0, 0)}>Pricing</Link></li>
                 </ul>
               </div>
     
@@ -61,8 +62,8 @@ const Footer = () => {
                 <h4 className="text-lg font-libreCaslon">Contact Info</h4>
                 <ul className="mt-2 space-y-1 text-gray-400 font-poppins text-center lg:text-left">
                   <li>+123 456 789</li>
-                  <li>info@travellian.com</li>
-                  <li>1234, New York, USA</li>
+                  <li>info@unchartedtrails.com</li>
+                  <li>935, Bengaluru, India</li>
                 </ul>
               </div>
     
