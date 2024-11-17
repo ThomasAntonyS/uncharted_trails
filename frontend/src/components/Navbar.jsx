@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   return (
-    <div className='flex fixed top-0 justify-between h-[8vh] w-[100vw] bg-black bg-opacity-25 z-[2]'>
+    <div className='flex fixed top-0 justify-between h-[8vh] w-[100vw] bg-black bg-opacity-25 z-[20]'>
         <div className="Logo_ my-auto">
           <img src={Logo} alt="Logo" height={200} width={200} className='ml-[75%]' />
         </div>
@@ -12,9 +12,8 @@ const Navbar = () => {
         <div className="Nav_Links_ my-auto font-poppins text-[1.1rem] text-white">
             <Link to={"/"} className=' mx-6'>Home</Link>
             <Link to={"/explore"} className=' mx-6'>Explore</Link>
-            <Link to={"/"} className=' mx-6'>Travel</Link> 
             <Link to={"/blog"} className=' mx-6'>Blog</Link>
-            <Link to={"/"} className=' mx-6'>Pricing</Link>
+            <Link to={"/pricing"} className=' mx-6'>Pricing</Link>
         </div>
 
         <div className="Profile_SignIn my-auto font-poppins text-[1.1rem] text-white mr-[20px]">
