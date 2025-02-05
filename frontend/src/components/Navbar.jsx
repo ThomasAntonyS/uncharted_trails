@@ -23,7 +23,7 @@ const Navbar = () => {
       </Link>
 
       {/* Navigation Links for Desktop */}
-      <div className="Nav_Links_ hidden md:flex items-center space-x-6 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
+      <div className="Nav_Links_ hidden md:flex items-center space-x-16 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
         <Link to={"/"}>Home</Link>
         <Link to={"/explore"}>Explore</Link>
         <Link to={"/blog"}>Blog</Link>
