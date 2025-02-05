@@ -4,6 +4,8 @@ import Home from './components/Pages/Home'
 import Explore from './components/Pages/Explore'
 import Blog from './components/Pages/Blog'
 import Pricing from './components/Pages/Pricing'
+import Signin from './components/Pages/Signin'
+import Login from './components/Pages/Login'
 
 function App() {
 
@@ -31,6 +33,16 @@ function App() {
           <Route
           element={<Blog/>}
           path='/blog'
+          />
+
+          <Route
+          element={<Login/>}
+          path='/log-in'
+          />
+
+          <Route
+          element={<Signin/>}
+          path='/sign-up'
           />
 
         </Routes>

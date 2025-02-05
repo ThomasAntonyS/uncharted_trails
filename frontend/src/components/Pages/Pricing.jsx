@@ -114,12 +114,10 @@ const Pricing = () => {
   const [bookingLocation, setBookingLocation] = useState(null);
 
   const toggleAccordion = (id) => {
-    console.log("Toggling accordion for ID:", id);
     setOpenAccordion(openAccordion === id ? null : id);
   };
 
   const handleBookNow = (location) => {
-    console.log("Booking location:", location);
     setBookingLocation(location);
   };
 
@@ -207,7 +205,7 @@ const Pricing = () => {
         {/* Booking Form */}
         {bookingLocation && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-[90%] sm:w-[500px] shadow-lg">
+            <div className="bg-white rounded-lg p-6 w-[90%] sm:w-[30%] shadow-lg max-h-[95%] overflow-y-auto">
               <h2 className="text-2xl font-bold text-gray-800 mb-4 font-agdasima">
                 Book Your Trip to {bookingLocation}
               </h2>
@@ -241,7 +239,14 @@ const Pricing = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700">Preferred Travel Dates</label>
+                  <label className="block text-gray-700">Preferred Travel Start Dates</label>
+                  <input
+                    type="date"
+                    className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700">Preferred Travel End Dates</label>
                   <input
                     type="date"
                     className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"

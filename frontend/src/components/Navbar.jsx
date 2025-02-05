@@ -24,16 +24,16 @@ const Navbar = () => {
 
       {/* Navigation Links for Desktop */}
       <div className="Nav_Links_ hidden md:flex items-center space-x-16 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
-        <Link to={"/"}>Home</Link>
-        <Link to={"/explore"}>Explore</Link>
-        <Link to={"/blog"}>Blog</Link>
-        <Link to={"/pricing"}>Pricing</Link>
+        <Link to="/">Home</Link>
+        <Link to="/explore">Explore</Link>
+        <Link to="/blog">Blog</Link>
+        <Link to="/pricing">Pricing</Link>
       </div>
 
       {/* Profile and Sign-In Links for Desktop */}
       <div className="Profile_SignIn hidden md:flex items-center space-x-4 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
-        <Link to={"/"}>Login</Link>
-        <Link to={"/"} className="bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition">
+        <Link to="/log-in">Login</Link>
+        <Link to="/sign-up" className="bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition">
           Sign Up
         </Link>
       </div>
@@ -113,14 +113,14 @@ const Navbar = () => {
             </Link>
             <div className="flex flex-col items-center space-y-2 mt-4">
               <Link
-                to={"/"}
+                to={"/log-in"}
                 className="text-[1.1rem] font-poppins"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Login
               </Link>
               <Link
-                to={"/"}
+                to={"/sign-up"}
                 className="bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition"
                 onClick={() => setIsMenuOpen(false)}
               >
