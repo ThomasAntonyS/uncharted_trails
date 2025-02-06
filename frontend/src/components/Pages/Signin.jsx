@@ -8,7 +8,7 @@ const Signin = () => {
     <div className="flex h-screen">
 
       <div className="flex fixed top-0 justify-between items-center h-[8vh] w-[100vw] bg-black bg-opacity-50 z-[20] px-4 sm:px-8">
-         {/* Logo Section */}
+
          <Link to={"/"} className="Logo_">
            <img
              src={Logo}

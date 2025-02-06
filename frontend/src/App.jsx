@@ -6,6 +6,7 @@ import Blog from './components/Pages/Blog'
 import Pricing from './components/Pages/Pricing'
 import Signin from './components/Pages/Signin'
 import Login from './components/Pages/Login'
+import Confirmation from './components/Pages/Confirmation'
 
 function App() {
 
@@ -43,6 +44,11 @@ function App() {
           <Route
           element={<Signin/>}
           path='/sign-up'
+          />
+
+          <Route
+          element={<Confirmation/>}
+          path='/sign-up-confirmation'
           />
 
         </Routes>
