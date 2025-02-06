@@ -1,9 +1,17 @@
 import React from "react";
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import Logo from '../../assets/Logo.png'
 import { FaHome } from "react-icons/fa";
 
 const Signin = () => {
+
+  const navigate = useNavigate()
+
+  const handleSignup = (e) =>{
+    e.preventDefault();
+    navigate('/sign-up-confirmation')
+  }
+
   return (
     <div className="flex h-screen">
 
@@ -55,7 +63,9 @@ const Signin = () => {
             />
           </div>
 
-          <button className="w-full font-agdasima bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
+          <button className="w-full font-agdasima bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
+          onClick={e=>handleSignup(e)}
+          >
             Sign up
           </button>
         </form>
