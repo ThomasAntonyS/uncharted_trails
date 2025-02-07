@@ -206,54 +206,54 @@ const Pricing = () => {
         {bookingLocation && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-[90%] sm:w-[30%] shadow-lg max-h-[95%] overflow-y-auto">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 font-agdasima">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 font-libreCaslon">
                 Book Your Trip to {bookingLocation}
               </h2>
               <form className="space-y-4">
                 <div>
-                  <label className="block text-gray-700">Name</label>
+                  <label className="block text-gray-700 font-poppins">Full Name</label>
                   <input
                     type="text"
                     className="w-full font-agdasima tracking-wider px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700">Email</label>
+                  <label className="block text-gray-700 font-poppins">Email</label>
                   <input
                     type="email"
                     className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700">Phone Number</label>
+                  <label className="block text-gray-700 font-poppins">Phone Number</label>
                   <input
                     type="tel"
                     className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700">No. of Travelers</label>
+                  <label className="block text-gray-700 font-poppins">No. of Travelers</label>
                   <input
                     type="number"
                     className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700">Preferred Travel Start Dates</label>
+                  <label className="block text-gray-700 font-poppins">Preferred Travel Start Dates</label>
                   <input
                     type="date"
                     className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700">Preferred Travel End Dates</label>
+                  <label className="block text-gray-700 font-poppins">Preferred Travel End Dates</label>
                   <input
                     type="date"
                     className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700">Special Requests</label>
+                  <label className="block text-gray-700 font-poppins">Special Requests</label>
                   <textarea
                     className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
                   />

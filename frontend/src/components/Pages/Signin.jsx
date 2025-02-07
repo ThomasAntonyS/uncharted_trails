@@ -9,7 +9,7 @@ const Signin = () => {
 
   const handleSignup = (e) =>{
     e.preventDefault();
-    navigate('/sign-up-confirmation')
+    navigate('/sign-up-confirmation') 
   }
 
   return (
@@ -41,7 +41,7 @@ const Signin = () => {
             <input
               type="email"
               placeholder="Email address"
-              className=" font-agdasima w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className=" font-agdasima tracking-wider w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
@@ -50,7 +50,7 @@ const Signin = () => {
             <input
               type="password"
               placeholder="Password"
-              className="w-full font-agdasima p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full font-agdasima tracking-wider p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
@@ -59,11 +59,11 @@ const Signin = () => {
             <input
               type="password"
               placeholder="Repeat password"
-              className="w-full font-agdasima p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full font-agdasima tracking-wider p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
-          <button className="w-full font-agdasima bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
+          <button className="w-full font-agdasima tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
           onClick={e=>handleSignup(e)}
           >
             Sign up

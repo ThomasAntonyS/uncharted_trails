@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Logo from '../../assets/Logo.png'
+import { useNavigate } from "react-router-dom";
 
 const Confirmation = () => {
   const [verificationCode, setVerificationCode] = useState("");
   const [message, setMessage] = useState("");
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (timer > 0) {
@@ -18,7 +20,7 @@ const Confirmation = () => {
 
   const handleVerify = () => {
     if (verificationCode === "123456") {
-      setMessage("Verification successful!");
+      navigate('/')
     } else {
       setMessage("Invalid verification code. Please try again.");
     }
@@ -62,7 +64,7 @@ const Confirmation = () => {
           >
             Verify
           </button>
-          {message && <p className="mt-3 text-gray-800 font-semibold">{message}</p>}
+          {message && <p className="mt-3 text-gray-800 font-semibold font-agdasima">{message}</p>}
           <p className="mt-3 text-gray-600 tracking-wide font-agdasima">Resend code in <span className=" text-blue-700">{timer} seconds</span></p>
           <button
             onClick={handleResend}
@@ -73,6 +75,7 @@ const Confirmation = () => {
           </button>
         </div>
       </div>
+
       {/* Right Section - Hidden on Small Screens */}
       <div className="hidden md:flex w-1/2 justify-center items-center p-10 bg-blue-500">
         <img

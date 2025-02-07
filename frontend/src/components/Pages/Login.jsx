@@ -34,7 +34,7 @@ const Login = () => {
             <input
               type="email"
               placeholder="Email address"
-              className="w-full font-agdasima p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full font-agdasima tracking-wider p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
@@ -43,17 +43,17 @@ const Login = () => {
             <input
               type="password"
               placeholder="Password"
-              className="w-full p-3 font-agdasima border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-3 font-agdasima tracking-wider border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
-          <button className="w-full font-agdasima bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
+          <button className="w-full font-agdasima tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
             Log in
           </button>
         </form>
 
         <p className="mt-4 text-gray-600 font-poppins">
-          Already have an account? <Link to='/sign-up' className="text-purple-600 font-agdasima">Sign in</Link>
+          Already have an account? <Link to='/sign-up' className="text-purple-600 font-agdasima tracking-wider">Sign in</Link>
         </p>
       </div>
 
