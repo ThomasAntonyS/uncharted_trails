@@ -13,7 +13,7 @@ const Navbar = () => {
   return (
     <div className="flex fixed top-0 justify-between items-center h-[8vh] w-[100vw] bg-black bg-opacity-25 z-[20] px-4 sm:px-8">
       {/* Logo Section */}
-      <Link to={"/"} className="Logo_">
+      <Link to="/" className="Logo_">
         <img
           src={Logo}
           alt="Logo"
@@ -84,28 +84,28 @@ const Navbar = () => {
         <div className="fixed top-[8vh] left-0 w-full bg-black bg-opacity-90 text-white z-40 md:hidden">
           <div className="flex flex-col items-center space-y-4 py-4">
             <Link
-              to={"/"}
+              to="/"
               className="text-[1.1rem] font-poppins"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link
-              to={"/explore"}
+              to="/explore"
               className="text-[1.1rem] font-poppins"
               onClick={() => setIsMenuOpen(false)}
             >
               Explore
             </Link>
             <Link
-              to={"/blog"}
+              to="/blog"
               className="text-[1.1rem] font-poppins"
               onClick={() => setIsMenuOpen(false)}
             >
               Blog
             </Link>
             <Link
-              to={"/pricing"}
+              to="/pricing"
               className="text-[1.1rem] font-poppins"
               onClick={() => setIsMenuOpen(false)}
             >
@@ -113,14 +113,14 @@ const Navbar = () => {
             </Link>
             <div className="flex flex-col items-center space-y-2 mt-4">
               <Link
-                to={"/log-in"}
+                to="/log-in"
                 className="text-[1.1rem] font-poppins"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Login
               </Link>
               <Link
-                to={"/sign-up"}
+                to="/sign-up"
                 className="bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition"
                 onClick={() => setIsMenuOpen(false)}
               >
