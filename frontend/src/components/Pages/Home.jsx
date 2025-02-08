@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from '../Navbar'
 import Hero from '../Hero'
 import Popular_Dest from '../Popular_Dest'
 import SpecialOffer from '../SpecialOffer'
@@ -12,7 +11,6 @@ const Home = () => {
   return (
 
     <>
-        <Navbar/>
         <Hero/>
         <Popular_Dest/>
         <SpecialOffer/>

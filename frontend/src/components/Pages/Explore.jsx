@@ -1,6 +1,5 @@
 import React from "react";
 import Footer from "../Footer";
-import Navbar from "../Navbar";
 import { IoBookmark } from "react-icons/io5";
 import { MdArrowRightAlt } from "react-icons/md";
 
@@ -46,8 +45,6 @@ const destinations = [
 const Explore = () => {
   return (
     <>
-
-      <Navbar/>
 
        <div
         className="relative bg-cover bg-center h-[80vh] flex items-center justify-center tracking-wide"

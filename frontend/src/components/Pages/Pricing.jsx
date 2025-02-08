@@ -1,6 +1,4 @@
-// PricingPage.jsx
 import React, { useState } from "react";
-import Navbar from '../Navbar'
 import Footer from '../Footer'
 
 const Pricing = () => {
@@ -127,7 +125,6 @@ const Pricing = () => {
 
   return (
     <>
-      <Navbar />
       <section>
         {/* Banner Section */}
         <div
