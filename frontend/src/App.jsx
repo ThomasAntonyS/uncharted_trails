@@ -1,5 +1,5 @@
 import './App.css'
-import {BrowserRouter,Routes,Route} from 'react-router-dom'
+import {Routes,Route} from 'react-router-dom'
 import Home from './components/Pages/Home'
 import Explore from './components/Pages/Explore'
 import Blog from './components/Pages/Blog'
@@ -11,10 +11,8 @@ import Confirmation from './components/Pages/Confirmation'
 function App() {
 
   return (
-    <>
-      <BrowserRouter>
-
-        <Routes>
+    <> 
+       <Routes>
 
           <Route 
           element={<Home/>}
@@ -52,8 +50,6 @@ function App() {
           />
 
         </Routes>
-
-      </BrowserRouter>
     </>
   )
 }
