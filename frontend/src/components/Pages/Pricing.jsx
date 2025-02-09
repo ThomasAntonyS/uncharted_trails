@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Footer from '../Footer'
+import Navbar from "../Navbar";
 
 const Pricing = () => {
   // Destination data
@@ -125,6 +126,7 @@ const Pricing = () => {
 
   return (
     <>
+    <Navbar/>
       <section>
         {/* Banner Section */}
         <div

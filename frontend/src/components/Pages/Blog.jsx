@@ -1,6 +1,7 @@
 import React from "react";
 import Footer from "../Footer";
 import { Link } from "react-router-dom";
+import Navbar from "../Navbar";
 
 const Blog = () => {
   const blogs = [
@@ -65,6 +66,7 @@ const Blog = () => {
   return (
     <>
 
+      <Navbar/>
         <section className="mb-10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
               {/* Heading */}

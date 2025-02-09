@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "../Footer";
 import { IoBookmark } from "react-icons/io5";
 import { MdArrowRightAlt } from "react-icons/md";
+import Navbar from "../Navbar";
 
 const destinations = [
   {
@@ -45,7 +46,7 @@ const destinations = [
 const Explore = () => {
   return (
     <>
-
+    <Navbar/>
        <div
         className="relative bg-cover bg-center h-[80vh] flex items-center justify-center tracking-wide"
         style={{

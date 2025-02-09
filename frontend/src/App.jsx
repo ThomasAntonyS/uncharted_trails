@@ -7,13 +7,13 @@ import Pricing from './components/Pages/Pricing'
 import Signin from './components/Pages/Signin'
 import Login from './components/Pages/Login'
 import Confirmation from './components/Pages/Confirmation'
-import Navbar from './components/Navbar'
+import NotFound from './components/Pages/NotFound'
 
 function App() {
 
   return (
     <> 
-      <Navbar/>
+
        <Routes>
 
           <Route 
@@ -49,6 +49,10 @@ function App() {
           <Route
           element={<Confirmation/>}
           path='/sign-up-confirmation'
+          />
+
+          <Route path="*" 
+          element={<NotFound/>} 
           />
 
         </Routes>

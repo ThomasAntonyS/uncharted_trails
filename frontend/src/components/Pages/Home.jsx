@@ -5,18 +5,20 @@ import SpecialOffer from '../SpecialOffer'
 import BlogSection from '../BlogSection'
 import DestinationGallery from '../DestinationGallery'
 import Footer from '../Footer'
+import Navbar from '../Navbar'
 
 const Home = () => {
 
   return (
 
     <>
-        <Hero/>
-        <Popular_Dest/>
-        <SpecialOffer/>
-        <BlogSection/>
-        <DestinationGallery/>
-        <Footer/>
+      <Navbar/>
+      <Hero/>
+      <Popular_Dest/>
+      <SpecialOffer/>
+      <BlogSection/>
+      <DestinationGallery/>
+      <Footer/>
     </>
 
   )
