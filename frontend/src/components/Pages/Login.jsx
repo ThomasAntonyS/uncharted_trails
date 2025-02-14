@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import Logo from '../../assets/Logo.png';
 import { FaHome } from "react-icons/fa";
 import axios from 'axios';
@@ -9,6 +9,7 @@ const Login = () => {
         email: "",
         password: ""
     });
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -16,7 +17,7 @@ const Login = () => {
         axios.post("http://localhost:5000/log-in", loginData)
             .then((res) => {
                 if (res.data === "success") {
-                    alert('Login successful!');
+                    navigate('/')
                 } else {
                     alert('Login failed!');
                 }
@@ -61,7 +62,7 @@ const Login = () => {
                         />
                     </div>
 
-                    <button className="w-full font-agdasima tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
+                    <button className="w-full font-agdasima tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
                         Log in
                     </button>
                 </form>

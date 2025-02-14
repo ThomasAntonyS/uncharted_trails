@@ -1,15 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import Logo from '../../assets/Logo.png'
 import { FaHome } from "react-icons/fa";
+import axios from "axios";
 
 const Signin = () => {
 
+  const [registerData,setRegisterData] = useState({
+    username:"",
+    email:"",
+    password:"",
+    cnf_password:""
+  })
   const navigate = useNavigate()
 
   const handleSignup = (e) =>{
-    e.preventDefault();
-    navigate('/sign-up-confirmation') 
+    e.preventDefault(); 
+
+    if(registerData.password === registerData.cnf_password){
+      axios.post("http://localhost:5000/sign-up",registerData)
+      .then(async res=>{
+        if (res.data === "success") {
+          navigate('/log-in')
+        } else {
+      }
+      })
+      .catch(err=>alert(err))
+    }
+    else
+      alert("Password don't match")
   }
 
   return (
@@ -35,12 +54,23 @@ const Signin = () => {
         <h1 className="text-3xl font-bold mb-2 font-libreCaslon">Welcome, Voyager</h1>
         <p className="text-gray-500 mb-6 font-poppins">Create a free account</p>
 
-        <form className="w-full max-w-md">
+        <form className="w-full max-w-md" onSubmit={e=>handleSignup(e)}>
+        <div className="mb-4">
+            <label className="block text-gray-700 font-poppins">Username</label>
+            <input
+              type="text"
+              placeholder="Username"
+              onChange={e=>setRegisterData({...registerData,username:e.target.value})}
+              className=" font-agdasima tracking-wider w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          </div>
+
           <div className="mb-4">
             <label className="block text-gray-700 font-poppins">Email address</label>
             <input
               type="email"
               placeholder="Email address"
+              onChange={e=>setRegisterData({...registerData,email:e.target.value})}
               className=" font-agdasima tracking-wider w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
@@ -50,6 +80,7 @@ const Signin = () => {
             <input
               type="password"
               placeholder="Password"
+              onChange={e=>setRegisterData({...registerData,password:e.target.value})}
               className="w-full font-agdasima tracking-wider p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
@@ -59,12 +90,13 @@ const Signin = () => {
             <input
               type="password"
               placeholder="Repeat password"
+              onChange={e=>setRegisterData({...registerData,cnf_password:e.target.value})}
               className="w-full font-agdasima tracking-wider p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
           <button className="w-full font-agdasima tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
-          onClick={e=>handleSignup(e)}
+          type="submit"
           >
             Sign up
           </button>

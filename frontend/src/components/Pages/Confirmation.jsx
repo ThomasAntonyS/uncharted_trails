@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Logo from '../../assets/Logo.png'
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 const Confirmation = () => {
   const [verificationCode, setVerificationCode] = useState("");
@@ -19,14 +20,16 @@ const Confirmation = () => {
   }, [timer]);
 
   const handleVerify = () => {
-    if (verificationCode === "123456") {
-      navigate('/')
-    } else {
-      setMessage("Invalid verification code. Please try again.");
+    try{
+      var i=1
+    } 
+    catch(err){
+      setMessage(err);
     }
   };
 
   const handleResend = () => {
+    //code to update backend to resend
     setTimer(60);
     setCanResend(false);
   };
