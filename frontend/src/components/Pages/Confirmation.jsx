@@ -3,7 +3,7 @@ import Logo from '../../assets/Logo.png'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 
-const Confirmation = () => {
+const Confirmation = ({email}) => {
   const [verificationCode, setVerificationCode] = useState("");
   const [message, setMessage] = useState("");
   const [timer, setTimer] = useState(60);
@@ -19,9 +19,19 @@ const Confirmation = () => {
     }
   }, [timer]);
 
-  const handleVerify = () => {
+  const handleVerify = (e) => {
+    e.preventDefault()
     try{
-      var i=1
+      axios.post("http://localhost:5000/sign-up-confirmation",{verificationCode,email:"thomas.forwork03@gmail.com"})
+      .then(res=>{
+        if(res.data=="success"){
+          navigate('/')
+        }
+        else {
+          setMessage("Invalid / Incorrect Verification Code")
+        }
+      })
+      .catch(err=>alert(err))
     } 
     catch(err){
       setMessage(err);
@@ -53,7 +63,7 @@ const Confirmation = () => {
       <div className="w-full md:w-1/2 p-10 text-center md:text-left my-auto border sm:border-none">
         <h1 className="text-3xl md:text-4xl font-bold text-black font-libreCaslon">Verify Your Email</h1>
         <p className="text-gray-600 mt-4 font-poppins">We have sent a verification code to your email. Please enter it below to verify your identity.</p>
-        <div className="mt-6 flex flex-col items-center md:items-start">
+        <form className="mt-6 flex flex-col items-center md:items-start" onSubmit={e=>handleVerify(e)}>
           <input
             type="text"
             placeholder="Enter Verification Code"
@@ -62,7 +72,7 @@ const Confirmation = () => {
             className="w-full font-agdasima tracking-widest md:w-80 p-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
-            onClick={handleVerify}
+            type="submit"
             className="mt-3 px-6 py-3 tracking-wide bg-blue-600 font-agdasima text-white font-semibold rounded-md shadow-md hover:bg-blue-700"
           >
             Verify
@@ -76,7 +86,7 @@ const Confirmation = () => {
           >
             Resend Code
           </button>
-        </div>
+        </form>
       </div>
 
       {/* Right Section - Hidden on Small Screens */}

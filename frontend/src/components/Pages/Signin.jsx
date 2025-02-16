@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import Logo from '../../assets/Logo.png'
 import { FaHome } from "react-icons/fa";
 import axios from "axios";
+import Confirmation from "./Confirmation";
 
 const Signin = () => {
 
@@ -14,22 +15,24 @@ const Signin = () => {
   })
   const navigate = useNavigate()
 
-  const handleSignup = (e) =>{
-    e.preventDefault(); 
-
-    if(registerData.password === registerData.cnf_password){
-      axios.post("http://localhost:5000/sign-up",registerData)
-      .then(async res=>{
-        if (res.data === "success") {
-          navigate('/log-in')
-        } else {
-      }
-      })
-      .catch(err=>alert(err))
+  const handleSignup = (e) => {
+    e.preventDefault();
+  
+    if (registerData.password === registerData.cnf_password) {
+      axios.post("http://localhost:5000/sign-up", registerData)
+        .then(res => {
+          if (res.data === "success") {
+            navigate('/sign-up-confirmation');
+          } else {
+            alert("Signup failed");
+          }
+        })
+        .catch(err => alert(err));
+    } else {
+      alert("Passwords don't match");
     }
-    else
-      alert("Password don't match")
-  }
+  };
+  
 
   return (
     <div className="flex h-screen">
