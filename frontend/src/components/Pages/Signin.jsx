@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import Logo from '../../assets/Logo.png'
 import { FaHome } from "react-icons/fa";
 import axios from "axios";
-import Confirmation from "./Confirmation";
+import {UserContext} from '../../Context/UserContextProvider'
 
 const Signin = () => {
 
@@ -15,6 +15,8 @@ const Signin = () => {
   })
   const navigate = useNavigate()
 
+  const {setUserEmail} = useContext(UserContext)
+
   const handleSignup = (e) => {
     e.preventDefault();
   
@@ -22,6 +24,7 @@ const Signin = () => {
       axios.post("http://localhost:5000/sign-up", registerData)
         .then(res => {
           if (res.data === "success") {
+            setUserEmail(registerData.email)
             navigate('/sign-up-confirmation');
           } else {
             alert("Signup failed");
@@ -31,7 +34,7 @@ const Signin = () => {
     } else {
       alert("Passwords don't match");
     }
-  };
+  }; 
   
 
   return (

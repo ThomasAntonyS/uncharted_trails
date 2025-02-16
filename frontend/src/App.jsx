@@ -8,11 +8,14 @@ import Signin from './components/Pages/Signin'
 import Login from './components/Pages/Login'
 import Confirmation from './components/Pages/Confirmation'
 import NotFound from './components/Pages/NotFound'
+import UserContextProvider from './Context/UserContextProvider'
 
 function App() {
 
   return (
     <> 
+
+      <UserContextProvider>
 
        <Routes>
 
@@ -56,6 +59,7 @@ function App() {
           />
 
         </Routes>
+      </UserContextProvider>
     </>
   )
 }

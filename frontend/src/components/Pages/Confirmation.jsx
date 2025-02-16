@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import Logo from '../../assets/Logo.png'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
+import {UserContext} from '../../Context/UserContextProvider'
 
-const Confirmation = ({email}) => {
+const Confirmation = () => {
   const [verificationCode, setVerificationCode] = useState("");
   const [message, setMessage] = useState("");
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
+
+  const {setLoggedIn,userEmail} = useContext(UserContext)
 
   useEffect(() => {
     if (timer > 0) {
@@ -22,11 +25,12 @@ const Confirmation = ({email}) => {
   const handleVerify = (e) => {
     e.preventDefault()
     try{
-      axios.post("http://localhost:5000/sign-up-confirmation",{verificationCode,email:"thomas.forwork03@gmail.com"})
+      axios.post("http://localhost:5000/sign-up-confirmation",{verificationCode,email:userEmail})
       .then(res=>{
         if(res.data=="success"){
+          setLoggedIn(true)
           navigate('/')
-        }
+        } 
         else {
           setMessage("Invalid / Incorrect Verification Code")
         }

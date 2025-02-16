@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link,useNavigate } from 'react-router-dom';
 import Logo from '../../assets/Logo.png';
 import { FaHome } from "react-icons/fa";
 import axios from 'axios';
+import {UserContext} from '../../Context/UserContextProvider'
 
 const Login = () => {
     const [loginData, setLoginData] = useState({
-        email: "",
+        email: "", 
         password: ""
     });
     const navigate = useNavigate()
+
+    const {setLoggedIn,setUserEmail} = useContext(UserContext)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -17,6 +20,8 @@ const Login = () => {
         axios.post("http://localhost:5000/log-in", loginData)
             .then((res) => {
                 if (res.data === "success") {
+                    setLoggedIn(true)
+                    setUserEmail(loginData.email)
                     navigate('/')
                 } else {
                     alert('Login failed!');

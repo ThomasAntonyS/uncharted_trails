@@ -124,7 +124,7 @@ app.post('/sign-up-confirmation', async (req, res) => {
     try {
         const { verificationCode, email } = req.body;
         const values = [verificationCode, email];
-
+        
         const sql = "SELECT `verification_code`, `email_id` FROM verification_table WHERE `verification_code` = ? AND `email_id` = ?";
         
         db.query(sql, values, async (err, data) => {
