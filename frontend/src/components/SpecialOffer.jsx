@@ -24,9 +24,9 @@ const SpecialOffer = () => {
   ];
 
   return (
-    <section className="w-full min-h-[85vh] flex flex-col justify-center bg-white px-4 md:px-0">
+    <section className="w-full my-[60px] flex flex-col justify-center bg-white px-4 md:px-0">
       {/* Header */}
-      <div className="mb-6 mr-10 text-center md:text-right">
+      <div className="mb-6 w-max mr-10 text-center md:text-right mx-auto">
         <h2 className="text-2xl font-libreCaslon tracking-wider md:text-3xl font-semibold text-gray-800 mb-2">Special Offer</h2>
         <div className="flex justify-center md:justify-end">
           <p className="w-[30%] md:w-[8vw] border-2 border-gray-700 text-center"></p>
