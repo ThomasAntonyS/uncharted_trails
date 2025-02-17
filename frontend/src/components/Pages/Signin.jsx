@@ -30,7 +30,7 @@ const Signin = () => {
             alert("Signup failed");
           }
         })
-        .catch(err => alert(err));
+        .catch(err => alert(err.message));
     } else {
       alert("Passwords don't match");
     }

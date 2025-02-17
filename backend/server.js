@@ -90,7 +90,6 @@ app.post('/sign-up', async (req, res) => {
     const { username, email, password } = req.body;
     const checkData = "SELECT `email_id` FROM login_signup WHERE `email_id` = ?";
     const currentDate = new Date().toISOString().slice(0, 19).replace("T", " ");
-    const values = [username, email, password, currentDate];
 
     try {
         // Check if the email already exists
@@ -100,18 +99,23 @@ app.post('/sign-up', async (req, res) => {
             return res.json("Email Already Exists");
         }
 
-        // Insert into login_signup table
-        const sql = "INSERT INTO login_signup (`username`, `email_id`, `password`, `time_stamp`) VALUES (?, ?, ?, ?)";
-        await db.promise().query(sql, values);
-
         // Generate a unique verification code
         const verificationCode = await generateUniqueCode();
 
-        //Sending email
-        await sendEmail(email, "Your Verification Code", `Your verification code is: ${verificationCode}`);
+        // Send verification email
+        const emailSent = await sendEmail(email, "Your Verification Code", `Your verification code is: ${verificationCode}`);
 
-        const verifySql = "INSERT INTO verification_table (`email_id`,`verification_code`,`time_stamp`) VALUES (?,?,?)" 
-        await db.promise().query(verifySql,[email,verificationCode,currentDate])
+        if (!emailSent) {
+            return res.status(500).json("Failed to send verification email");
+        }
+
+        // Insert into login_signup table
+        const sql = "INSERT INTO login_signup (`username`, `email_id`, `password`, `time_stamp`) VALUES (?, ?, ?, ?)";
+        await db.promise().query(sql, [username, email, password, currentDate]);
+
+        // Insert into verification_table
+        const verifySql = "INSERT INTO verification_table (`email_id`, `verification_code`, `time_stamp`) VALUES (?, ?, ?)";
+        await db.promise().query(verifySql, [email, verificationCode, currentDate]);
 
         res.send("success");
     } catch (error) {
@@ -119,6 +123,7 @@ app.post('/sign-up', async (req, res) => {
         res.status(500).json("Server error");
     }
 });
+
 
 app.post('/sign-up-confirmation', async (req, res) => {
     try {
@@ -144,12 +149,45 @@ app.post('/sign-up-confirmation', async (req, res) => {
                     return res.status(500).json({ message: "Failed to delete verification code" });
                 }
             } else {
-                return res.status(400).json({ message: "No matching verification code found" });
+                return res.send("No matching verification code found");
             }
         });
     } catch (error) {
         console.error("Server error:", error);
         return res.status(500).json({ message: "Something went wrong" });
+    }
+});
+
+app.post('/sign-up-code-resend', async (req, res) => {
+    console.log("called");
+    
+    const { email } = req.body;
+
+    // Generate a new verification code
+    const newVerificationCode = await generateUniqueCode();
+    const currentDate = new Date().toISOString().slice(0, 19).replace("T", " ");
+
+    const sql = "UPDATE verification_table SET `verification_code` = ?, `time_stamp` = ? WHERE `email_id` = ?";
+
+    try {
+        // Update the verification code in the database
+        const [result] = await db.promise().query(sql, [newVerificationCode, currentDate, email]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json("Email not found");
+        }
+
+        // Send the new verification code via email
+        const emailSent = await sendEmail(email, "Your New Verification Code", `Your new verification code is: ${newVerificationCode}`);
+
+        if (!emailSent) {
+            return res.status(500).json("Failed to send verification email");
+        }
+
+        res.send("success");
+    } catch (error) {
+        console.error(error);
+        res.status(500).json("Server error");
     }
 });
 

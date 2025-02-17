@@ -42,8 +42,21 @@ const Confirmation = () => {
     }
   };
 
-  const handleResend = () => {
-    //code to update backend to resend
+  const handleResend = (e) => {
+    e.preventDefault()
+    try{
+      axios.post('http://localhost:5000/sign-up-code-resend',{email:userEmail})
+      .then(res=>{
+        if(res.data=="success"){
+          setMessage("")
+          alert("Verification code sent...")
+        }
+        else alert("An error occured. Try again")
+    })
+      .catch(err=>setMessage(err))
+    }
+    catch(err){setMessage(err)}
+
     setTimer(60);
     setCanResend(false);
   };
@@ -84,7 +97,7 @@ const Confirmation = () => {
           {message && <p className="mt-3 text-gray-800 font-semibold font-agdasima">{message}</p>}
           <p className="mt-3 text-gray-600 tracking-wide font-agdasima">Resend code in <span className=" text-blue-700">{timer} seconds</span></p>
           <button
-            onClick={handleResend}
+            onClick={e=>handleResend(e)}
             disabled={!canResend}
             className={`mt-2 px-6 py-2 font-agdasima tracking-wide font-semibold rounded-md shadow-md ${canResend ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}
           >
