@@ -159,7 +159,6 @@ app.post('/sign-up-confirmation', async (req, res) => {
 });
 
 app.post('/sign-up-code-resend', async (req, res) => {
-    console.log("called");
     
     const { email } = req.body;
 
