@@ -9,6 +9,7 @@ import Login from './components/Pages/Login'
 import Confirmation from './components/Pages/Confirmation'
 import NotFound from './components/Pages/NotFound'
 import UserContextProvider from './Context/UserContextProvider'
+import Profile from './components/Pages/Profile'
 
 function App() {
 
@@ -52,6 +53,11 @@ function App() {
           <Route
           element={<Confirmation/>}
           path='/sign-up-confirmation'
+          />
+
+          <Route
+          element={<Profile/>}
+          path='/profile'
           />
 
           <Route path="*" 

@@ -1,4 +1,3 @@
-import React from 'react';
 import Navbar from './Navbar';
 import Hero_video from '../assets/Hero_video.mp4';
 import { MdArrowRightAlt } from "react-icons/md";

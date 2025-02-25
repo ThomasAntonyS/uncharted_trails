@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Logo from "../assets/Logo.png";
 import { Link } from "react-router-dom";
+import { FaCaretRight } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
+import { UserContext } from "../Context/UserContextProvider";
 
 const Navbar = () => {
-  // State to manage mobile menu visibility
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {loggedIn,userName} = useContext(UserContext)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -31,12 +35,21 @@ const Navbar = () => {
       </div>
 
       {/* Profile and Sign-In Links for Desktop */}
-      <div className="Profile_SignIn hidden md:flex items-center space-x-4 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
-        <Link to="/log-in">Login</Link>
-        <Link to="/sign-up" className="bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition">
-          Sign Up
-        </Link>
-      </div>
+      {
+        (loggedIn)?
+        <div className="Profile_SignIn hidden sm:bg-black sm:bg-opacity-45 rounded-md md:flex sm:mx-4 items-center space-x-4 font-poppins text-[1rem] text-white">
+          <Link to="/profile" className="flex p-2 font-agdasima tracking-widest text-md">
+            <span className=" my-auto mr-2 mt-1"><FaUser /></span> {userName}
+          </Link>
+        </div>
+        :
+        <div className="Profile_SignIn hidden md:flex items-center space-x-4 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
+          <Link to="/log-in">Login</Link>
+          <Link to="/sign-up" className="bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition">
+            Sign Up
+          </Link>
+        </div>
+      }
 
       {/* Mobile Hamburger Menu */}
       <div className="flex md:hidden items-center">
@@ -111,7 +124,16 @@ const Navbar = () => {
             >
               Pricing
             </Link>
-            <div className="flex flex-col items-center space-y-2 mt-4">
+
+            {
+              (loggedIn) ?
+              <div className="flex flex-col items-center space-y-2 mt-4">
+                <Link to="/profile" className=" flex text-[1.1rem] font-poppins ml-4"
+                >Profile<span className=" my-auto"><FaCaretRight /></span>
+                </Link>
+              </div>
+              :
+              <div className="flex flex-col items-center space-y-2 mt-4">
               <Link
                 to="/log-in"
                 className="text-[1.1rem] font-poppins"
@@ -127,6 +149,8 @@ const Navbar = () => {
                 Sign Up
               </Link>
             </div>
+            }
+
           </div>
         </div>
       )}

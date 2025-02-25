@@ -14,12 +14,16 @@ const Confirmation = () => {
   const {setLoggedIn,userEmail} = useContext(UserContext)
 
   useEffect(() => {
-    if (timer > 0) {
-      const countdown = setTimeout(() => setTimer(timer - 1), 1000);
-      return () => clearTimeout(countdown);
-    } else {
+    if (timer === 0) {
       setCanResend(true);
+      return;
     }
+
+    const interval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, [timer]);
 
   const handleVerify = (e) => {

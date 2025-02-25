@@ -4,6 +4,7 @@ export const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
 
+    const [userName,setUserName] = useState(localStorage.getItem("userName") || "")
     const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail") || "");
     const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn") === "true");
 
@@ -15,8 +16,12 @@ const UserContextProvider = ({ children }) => {
         localStorage.setItem("loggedIn", loggedIn);
     }, [loggedIn]);
 
+    useEffect(()=>{
+        localStorage.setItem("userName",userName);
+    },[userName])
+
     return (
-        <UserContext.Provider value={{ userEmail, setUserEmail, loggedIn, setLoggedIn }}>
+        <UserContext.Provider value={{ userName, setUserName, userEmail, setUserEmail, loggedIn, setLoggedIn }}>
             {children}
         </UserContext.Provider>
     );

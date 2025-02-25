@@ -15,7 +15,7 @@ const Signin = () => {
   })
   const navigate = useNavigate()
 
-  const {setUserEmail} = useContext(UserContext)
+  const {setUserEmail,setUserName} = useContext(UserContext)
 
   const handleSignup = (e) => {
     e.preventDefault();
@@ -25,6 +25,7 @@ const Signin = () => {
         .then(res => {
           if (res.data === "success") {
             setUserEmail(registerData.email)
+            setUserName(registerData.username)
             navigate('/sign-up-confirmation');
           } else {
             alert("Signup failed");
