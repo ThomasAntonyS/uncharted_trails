@@ -15,7 +15,7 @@ const UserProfile = () => {
     <>
       <Navbar/>
 
-      <div className="flex flex-col p-5 mt-[10vh] md:flex-row sm:py-5 px-10 h-max">
+      <div className="flex flex-col p-5 mt-[10vh] md:flex-row sm:py-5 sm:px-10 h-max">
         {/* Sidebar */}
         <div className="w-full h-max md:w-1/4 bg-white shadow-md rounded-lg p-4 md:p-6">
           <div className="flex flex-col items-center">
