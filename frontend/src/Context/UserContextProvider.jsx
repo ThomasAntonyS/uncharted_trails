@@ -4,20 +4,20 @@ export const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
 
-    const [userName,setUserName] = useState(localStorage.getItem("userName") || "")
-    const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail") || "");
-    const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn") === "true");
+    const [userName,setUserName] = useState(sessionStorage.getItem("userName") || "")
+    const [userEmail, setUserEmail] = useState(sessionStorage.getItem("userEmail") || "");
+    const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem("loggedIn") === "true");
 
     useEffect(() => {
-        localStorage.setItem("userEmail", userEmail);
+        sessionStorage.setItem("userEmail", userEmail);
     }, [userEmail]);
 
     useEffect(() => {
-        localStorage.setItem("loggedIn", loggedIn);
+        sessionStorage.setItem("loggedIn", loggedIn);
     }, [loggedIn]);
 
     useEffect(()=>{
-        localStorage.setItem("userName",userName);
+        sessionStorage.setItem("userName",userName);
     },[userName])
 
     return (
