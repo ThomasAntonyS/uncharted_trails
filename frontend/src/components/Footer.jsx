@@ -12,11 +12,11 @@ const Footer = () => {
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="flex-grow font-agdasima tracking-wider py-2 px-4 rounded-md border border-gray-300 focus:outline-none"
+                    className="flex-grow font-agdasima tracking-wide py-2 px-4 rounded-md border border-gray-300 focus:outline-none"
                   />
                   <button
                     type="submit"
-                    className="bg-orange-500 text-white py-2 px-6 rounded-md hover:bg-orange-600 transition"
+                    className="bg-orange-500 text-white py-2 px-6 rounded-md hover:bg-orange-600 transition font-libreCaslon tracking-wide"
                   >
                     Subscribe
                   </button>
