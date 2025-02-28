@@ -35,18 +35,18 @@ const SpecialOffer = () => {
       </div>
 
       {/* Carousel */}
-      <div className="relative w-full md:w-[90%] mx-auto ">
+      <div className="relative w-full md:w-[90%] mx-auto">
         {/* Cards */}
         <div className="flex justify-around overflow-x-auto space-x-2 md:space-x-6 mx-auto">
           {cardData.map((card, index) => (
-            <div key={index} className="flex-shrink-0 w-full sm:w-72 md:w-80 bg-white rounded-lg overflow-hidden">
+            <div key={index} className="flex-shrink-0 border-2 w-full sm:w-72 md:w-80 bg-white rounded-lg overflow-hidden">
               <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url(${card.imageUrl})` }}></div>
               <div className="p-4">
                 <h3 className="font-bold text-lg mb-2">{card.title}</h3>
                 <p className="text-gray-500 text-sm">{card.description}</p>
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-orange-500 font-semibold text-lg">{card.price}</span>
-                  <button className="px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition duration-300">
+                  <button className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition duration-300">
                     DETAILS
                   </button>
                 </div>

@@ -70,10 +70,10 @@ const Footer = () => {
               <div className="flex flex-col items-center lg:items-start">
                 <h4 className="text-lg font-libreCaslon">Follow us on</h4>
                 <div className="flex gap-4 mt-2 text-gray-400">
-                  <i><FaFacebook/></i>
-                  <i><FaInstagram/></i>
-                  <i><FaTwitter/></i>
-                  <i><FaLinkedin/></i>
+                  <i className='cursor-pointer'><FaFacebook/></i>
+                  <i className='cursor-pointer'><FaInstagram/></i>
+                  <i className='cursor-pointer'><FaTwitter/></i>
+                  <i className='cursor-pointer'><FaLinkedin/></i>
                 </div>
               </div>
             </div>

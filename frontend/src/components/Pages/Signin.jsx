@@ -51,8 +51,8 @@ const Signin = () => {
              width={160}
            />
          </Link>
-        <div className="flex text-white align-middle sm:text-lg">
-          <Link to="/"className="flex">Home<FaHome className="mx-1 my-auto"/></Link>
+        <div className="flex text-white align-middle sm:text-lg font-libreCaslon font-bold bg-black px-2 py-1 rounded-sm bg-opacity-65">
+          <Link to="/"className="flex"><FaHome className="mx-1 my-auto"/>Home</Link>
         </div>
       </div>
 

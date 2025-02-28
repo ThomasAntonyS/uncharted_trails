@@ -20,9 +20,9 @@ const UserProfile = () => {
         <div className="w-full h-max md:w-1/4 bg-white shadow-md rounded-lg p-4 md:p-6">
           <div className="flex flex-col items-center">
             <img
-              src="https://via.placeholder.com/100"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s"
               alt="User"
-              className="w-24 h-24 rounded-full border-2 border-gray-300"
+              className="w-24 h-24 rounded-full"
             />
             <h2 className="text-lg font-semibold mt-2 font-libreCaslon">John Brown</h2>
             <p className="text-sm text-gray-500 font-poppins">MEMBER SINCE MAY 2012</p>
@@ -41,9 +41,9 @@ const UserProfile = () => {
         {/* Main Content */}
         <div className="flex-1 my-4 sm:px-4 sm:my-0 md:px-5">
           {activeTab=="Personal Info" ? <PersonalInfo/>:null}
-          {activeTab=="Booking" ? null:null}
+          {activeTab=="Booking" ? <UserBooking/>:null}
           {activeTab=="Booking History" ? <BookingHistory/>:null}
-          {activeTab=="Wishlist" ? null:null}
+          {activeTab=="Wishlist" ? <Wishlist/>:null}
           {activeTab=="Settings" ? <InformationUpdate/>:null}
         </div>
 
@@ -81,6 +81,52 @@ const PersonalInfo = () =>{
     </>
   )
 }
+
+const UserBooking = () => {
+  const bookingData = [
+    {
+      name: "Cape Town, South Africa",
+      description: "Witness breathtaking mountains and coastlines in Cape Town.",
+      price: "$1,300",
+      image: "https://images.pexels.com/photos/213940/pexels-photo-213940.jpeg",
+    },
+    {
+      name: "Cape Town, South Africa",
+      description: "Witness breathtaking mountains and coastlines in Cape Town.",
+      price: "$1,300",
+      image: "https://images.pexels.com/photos/213940/pexels-photo-213940.jpeg",
+    },
+    {
+      name: "Cape Town, South Africa",
+      description: "Witness breathtaking mountains and coastlines in Cape Town.",
+      price: "$1,300",
+      image: "https://images.pexels.com/photos/213940/pexels-photo-213940.jpeg",
+    }
+];
+
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-x-auto">
+      <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Bookings</h2>
+      <div className="w-auto mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+        {bookingData.map((destination, index) => (
+          <div key={index} className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300">
+            <img src={destination.image} alt={destination.name} className="w-full h-56 object-cover" />
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-800 font-agdasima">{destination.name}</h3>
+              <p className="text-sm text-gray-600 my-3 font-poppins">{destination.description}</p>
+              <div className="flex justify-between items-center mt-4 font-agdasima">
+                <span className="text-lg font-bold text-indigo-600">{destination.price}</span>
+                <button className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider">
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const BookingHistory = () => {
   const bookings = [
@@ -128,6 +174,52 @@ const BookingHistory = () => {
       <div className="flex justify-end mt-4 text-sm text-gray-600">
         <span className="cursor-pointer hover:text-blue-500 mr-4">&laquo; prev</span>
         <span className="cursor-pointer hover:text-blue-500">next &raquo;</span>
+      </div>
+    </div>
+  );
+};
+
+const Wishlist = () => {
+  const wishlistData = [
+    {
+      name: "Paris, France",
+      description: "Experience the City of Light with its iconic Eiffel Tower and romantic streets.",
+      price: "$1,200",
+      image: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
+    },
+    {
+      name: "Paris, France",
+      description: "Experience the City of Light with its iconic Eiffel Tower and romantic streets.",
+      price: "$1,200",
+      image: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
+    },
+    {
+      name: "Paris, France",
+      description: "Experience the City of Light with its iconic Eiffel Tower and romantic streets.",
+      price: "$1,200",
+      image: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
+    }
+];
+
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-x-auto">
+      <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Wishlist</h2>
+      <div className="w-auto mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+        {wishlistData.map((destination, index) => (
+          <div key={index} className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300">
+            <img src={destination.image} alt={destination.name} className="w-full h-56 object-cover" />
+            <div className="p-5">
+              <h3 className="text-lg font-semibold text-gray-800 font-agdasima">{destination.name}</h3>
+              <p className="text-sm text-gray-600 my-3 font-poppins">{destination.description}</p>
+              <div className="flex justify-between items-center mt-4 font-agdasima">
+                <span className="text-lg font-bold text-indigo-600">{destination.price}</span>
+                <button className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider">
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

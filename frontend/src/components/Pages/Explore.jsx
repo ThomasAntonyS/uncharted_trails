@@ -3,6 +3,7 @@ import Footer from "../Footer";
 import { IoBookmark } from "react-icons/io5";
 import { MdArrowRightAlt } from "react-icons/md";
 import Navbar from "../Navbar";
+import { useNavigate } from "react-router-dom";
 
 const destinations = [
   {
@@ -44,6 +45,9 @@ const destinations = [
 ];
 
 const Explore = () => {
+
+  const navigate = useNavigate()
+
   return (
     <>
     <Navbar/>
@@ -63,7 +67,8 @@ const Explore = () => {
             Discover stunning places around the world. Your adventure starts
             here.
           </p>
-          <button className="flex mx-auto px-3 py-3 bg-indigo-600 text-white text-lg font-semibold rounded hover:bg-indigo-700 font-agdasima tracking-wider">
+          <button className="flex mx-auto px-3 py-3 bg-indigo-600 text-white text-lg font-semibold rounded hover:bg-indigo-700 font-agdasima tracking-wider"
+          onClick={e=>navigate('/pricing')}>
             Get Started <MdArrowRightAlt className="my-auto mx-1" size={25} />
           </button>
         </div>
@@ -101,8 +106,8 @@ const Explore = () => {
                     <span className="text-lg font-bold text-indigo-600">
                       {destination.price}
                     </span>
-                    <button className=" flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider">
-                      Book Now <IoBookmark className="my-auto mx-1" size={15}/>
+                    <button className=" flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider font-agdasima">
+                      WishList Now<IoBookmark className="my-auto mx-1" size={15}/>
                     </button>
                   </div>
                 </div>
