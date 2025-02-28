@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import Logo from "../assets/Logo.png";
+import Logo from "../assets/Logo.webp";
 import { Link } from "react-router-dom";
 import { FaCaretRight } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
