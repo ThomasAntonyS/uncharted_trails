@@ -26,7 +26,7 @@ const SpecialOffer = () => {
   return (
     <section className="w-full my-[60px] flex flex-col justify-center bg-white px-4 md:px-0">
       {/* Header */}
-      <div className="mb-6 w-max mr-10 text-center md:text-right mx-auto">
+      <div className="mb-6 w-max mr-[5%] text-center md:text-right mx-auto">
         <h2 className="text-2xl font-libreCaslon tracking-wider md:text-3xl font-semibold text-gray-800 mb-2">Special Offer</h2>
         <div className="flex justify-center md:justify-end">
           <p className="w-[30%] md:w-[8vw] border-2 border-gray-700 text-center"></p>
@@ -35,15 +35,23 @@ const SpecialOffer = () => {
       </div>
 
       {/* Carousel */}
-      <div className="relative w-full md:w-[90%] mx-auto">
-        {/* Cards */}
-        <div className="flex justify-around overflow-x-auto space-x-2 md:space-x-6 mx-auto">
+      <div className="relative flex justify-evenly w-full md:w-[90%] mx-auto">
+        {/* Cards Wrapper */}
+        <div className="flex w-full md:grid md:grid-cols-3 gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory px-4 py-6">
           {cardData.map((card, index) => (
-            <div key={index} className="flex-shrink-0 border-2 w-full sm:w-72 md:w-80 bg-white rounded-lg overflow-hidden">
-              <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url(${card.imageUrl})` }}></div>
+            <div
+              key={index}
+              className="flex-shrink-0 md:flex-shrink w-72 sm:w-80 md:w-full border-2 bg-white rounded-lg overflow-hidden shadow-md snap-center"
+            >
+              {/* Image */}
+              <div className="h-60 bg-cover bg-center" style={{ backgroundImage: `url(${card.imageUrl})` }}></div>
+          
+              {/* Content */}
               <div className="p-4">
                 <h3 className="font-bold text-lg mb-2">{card.title}</h3>
                 <p className="text-gray-500 text-sm">{card.description}</p>
+          
+                {/* Price & Button */}
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-orange-500 font-semibold text-lg">{card.price}</span>
                   <button className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition duration-300">
@@ -55,6 +63,7 @@ const SpecialOffer = () => {
           ))}
         </div>
       </div>
+
     </section>
   );
 };

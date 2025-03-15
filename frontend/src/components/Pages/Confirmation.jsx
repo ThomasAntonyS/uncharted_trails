@@ -66,7 +66,7 @@ const Confirmation = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between min-h-screen bg-white">
+    <div className="flex flex-col md:flex-row items-center justify-between h-screen bg-white">
 
         <div className="flex fixed top-0 justify-between items-center h-[8vh] w-[100vw] bg-black bg-opacity-50 z-[20] px-4 sm:px-8">
 
@@ -81,7 +81,7 @@ const Confirmation = () => {
         </div>
 
       {/* Left Section - Email Verification */}
-      <div className="w-full md:w-1/2 p-10 text-center md:text-left my-auto border sm:border-none">
+      <div className="w-full md:w-1/2 p-10 text-center md:text-left my-auto sm:border-none">
         <h1 className="text-3xl md:text-4xl font-bold text-black font-libreCaslon">Verify Your Email</h1>
         <p className="text-gray-600 mt-4 font-poppins">We have sent a verification code to your email. Please enter it below to verify your identity.</p>
         <form className="mt-6 flex flex-col items-center md:items-start" onSubmit={e=>handleVerify(e)}>
@@ -111,11 +111,11 @@ const Confirmation = () => {
       </div>
 
       {/* Right Section - Hidden on Small Screens */}
-      <div className="hidden md:flex w-1/2 justify-center items-center p-10 bg-blue-500">
+      <div className="hidden md:flex h-screen w-1/2 justify-center items-center p-10 bg-blue-500 overflow-hidden">
         <img
           src="https://images.pexels.com/photos/240526/pexels-photo-240526.jpeg?auto=compress&cs=tinysrgb&w=600"
           alt="Newsletter preview"
-          className="max-w-xs md:max-w-md shadow-lg rounded-lg transform rotate-6"
+          className="max-w-xs md:max-w-xl shadow-lg rounded-lg transform rotate-6"
         />
       </div>
     </div>

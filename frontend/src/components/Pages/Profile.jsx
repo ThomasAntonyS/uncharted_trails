@@ -39,7 +39,7 @@ const UserProfile = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 my-4 sm:px-4 sm:my-0 md:px-5">
+        <div className="flex-1 my-4 sm:px-4 sm:my-4 md:px-5">
           {activeTab=="Personal Info" ? <PersonalInfo/>:null}
           {activeTab=="Booking" ? <UserBooking/>:null}
           {activeTab=="Booking History" ? <BookingHistory/>:null}
@@ -138,7 +138,6 @@ const BookingHistory = () => {
     { title: "Hilton Molino Stucky", location: "Copenhagen", orderDate: "02/09/2014", stayDates: "12/06/2014 - 16/06/2014", cost: "$1280", status: "Completed" },
     { title: "Hilton Hotel", location: "San Francisco", orderDate: "1/01/2014", stayDates: "18/09/2014 - 19/10/2014", cost: "$3615", status: "In Progress" },
     { title: "Wellington Hotel", location: "Stockholm", orderDate: "1/01/2014", stayDates: "8/08/2014 - 17/09/2014", cost: "$859", status: "Completed" },
-    { title: "Ruzzini Palace Hotel", location: "Kiev", orderDate: "23/06/2014", stayDates: "9/05/2014 - 15/05/2014", cost: "$347", status: "Cancelled" },
   ];
 
   return (

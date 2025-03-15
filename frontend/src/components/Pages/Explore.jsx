@@ -45,13 +45,13 @@ const destinations = [
 ];
 
 const Explore = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <>
-    <Navbar/>
-       <div
+      <Navbar />
+      {/* Hero Section */}
+      <div
         className="relative bg-cover bg-center h-[80vh] flex items-center justify-center tracking-wide"
         style={{
           backgroundImage:
@@ -64,50 +64,52 @@ const Explore = () => {
             Explore the World
           </h1>
           <p className="text-lg text-gray-200 mb-6 font-poppins">
-            Discover stunning places around the world. Your adventure starts
-            here.
+            Discover stunning places around the world. Your adventure starts here.
           </p>
-          <button className="flex mx-auto px-3 py-3 bg-indigo-600 text-white text-lg font-semibold rounded hover:bg-indigo-700 font-agdasima tracking-wider"
-          onClick={e=>navigate('/pricing')}>
-            Get Started <MdArrowRightAlt className="my-auto mx-1" size={25} />
+          <button
+            className="flex mx-auto px-4 py-3 bg-indigo-600 text-white text-lg font-semibold rounded hover:bg-indigo-700 font-agdasima tracking-wider"
+            onClick={() => navigate("/pricing")}
+          >
+            Get Started <MdArrowRightAlt className="my-auto ml-2" size={25} />
           </button>
         </div>
       </div>
 
       {/* Explore Cards Section */}
-      <section className="my-12 flex flex-col">
+      <section className="my-12 flex flex-col w-screen px-6">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl font-bold mb-6 text-gray-800 font-libreCaslon">
             Explore Destinations
           </h2>
           <p className="text-gray-600 mb-10 font-poppins">
-            Discover stunning places around the world. Find your next travel
-            adventure.
+            Discover stunning places around the world. Find your next travel adventure.
           </p>
-          <div className=" w-[85vw] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+
+          {/* Responsive Cards */}
+          <div className="w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {destinations.map((destination, index) => (
               <div
                 key={index}
-                className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300"
+                className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition duration-300"
               >
                 <img
                   src={destination.image}
                   alt={destination.name}
-                  className="w-full h-56 object-cover"
+                  className="w-full h-52 object-cover"
                 />
-                <div className="p-6">
+                <div className="p-4">
                   <h3 className="text-lg font-semibold text-gray-800 font-agdasima">
                     {destination.name}
                   </h3>
-                  <p className="text-sm text-gray-600 my-3 font-poppins">
+                  <p className="text-sm text-gray-600 my-2 font-poppins">
                     {destination.description}
                   </p>
-                  <div className="flex justify-between items-center mt-4 font-agdasima">
+                  <div className="flex justify-between items-center mt-4">
                     <span className="text-lg font-bold text-indigo-600">
                       {destination.price}
                     </span>
-                    <button className=" flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider font-agdasima">
-                      WishList Now<IoBookmark className="my-auto mx-1" size={15}/>
+                    <button className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 font-agdasima">
+                      WishList <IoBookmark className="ml-2" size={15} />
                     </button>
                   </div>
                 </div>
@@ -117,9 +119,8 @@ const Explore = () => {
         </div>
       </section>
 
-      <Footer/>
+      <Footer />
     </>
-    
   );
 };
 

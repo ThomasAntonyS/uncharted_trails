@@ -190,6 +190,18 @@ app.post('/sign-up-code-resend', async (req, res) => {
     }
 });
 
+app.post('/news-letter',async (req,res)=>{
+    const email_id = req.body.email_id
+    const sql = "INSERT INTO news_letter (email_id) VALUES (?)";
+
+    try {
+        await db.promise().query(sql,[email_id])
+        res.status(200).send("success")
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
+
 
 app.listen(5000, () => {
     console.log("Server running");
