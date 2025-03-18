@@ -39,7 +39,7 @@ const UserProfile = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 my-4 sm:px-4 sm:my-4 md:px-5">
+        <div className="flex-1 mt-6 sm:px-4 sm:my-4 md:px-5">
           {activeTab=="Personal Info" ? <PersonalInfo/>:null}
           {activeTab=="Booking" ? <UserBooking/>:null}
           {activeTab=="Booking History" ? <BookingHistory/>:null}
@@ -105,7 +105,7 @@ const UserBooking = () => {
 ];
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-x-auto">
+    <div className="bg-white rounded-lg sm:shadow-md sm:p-6 w-full overflow-x-auto">
       <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Bookings</h2>
       <div className="w-auto mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
         {bookingData.map((destination, index) => (

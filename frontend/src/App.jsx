@@ -10,6 +10,7 @@ import Confirmation from './components/Pages/Confirmation'
 import NotFound from './components/Pages/NotFound'
 import UserContextProvider from './Context/UserContextProvider'
 import Profile from './components/Pages/Profile'
+import SingleBlog from './components/SingleBlog'
 
 function App() {
 
@@ -59,6 +60,10 @@ function App() {
           element={<Profile/>}
           path='/profile'
           />
+
+          <Route
+          element={<SingleBlog/>}
+          path='/blog/:blog_id'/>
 
           <Route path="*" 
           element={<NotFound/>} 
