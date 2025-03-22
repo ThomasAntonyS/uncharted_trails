@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaUser, FaHistory, FaHeart, FaWrench,FaNewspaper } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import { MdFlight, MdLocationOn, MdPublic, MdApartment } from "react-icons/md";
+import PlusFade from '../../assets/icons'
 import Navbar from '../Navbar'
 import Footer from '../Footer'
+import { UserContext } from "../../Context/UserContextProvider";
+import { Link } from "react-router-dom";
 
 
 {/* Main Components */}
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("Personal Info");
+
+  const {wishList,setWishList} = useContext(UserContext)
 
   return (
     <>
@@ -43,7 +48,7 @@ const UserProfile = () => {
           {activeTab=="Personal Info" ? <PersonalInfo/>:null}
           {activeTab=="Booking" ? <UserBooking/>:null}
           {activeTab=="Booking History" ? <BookingHistory/>:null}
-          {activeTab=="Wishlist" ? <Wishlist/>:null}
+          {activeTab=="Wishlist" ? <Wishlist wishList={wishList} setWishList={setWishList} />:null}
           {activeTab=="Settings" ? <InformationUpdate/>:null}
         </div>
 
@@ -178,47 +183,50 @@ const BookingHistory = () => {
   );
 };
 
-const Wishlist = () => {
-  const wishlistData = [
-    {
-      name: "Paris, France",
-      description: "Experience the City of Light with its iconic Eiffel Tower and romantic streets.",
-      price: "$1,200",
-      image: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
-    },
-    {
-      name: "Paris, France",
-      description: "Experience the City of Light with its iconic Eiffel Tower and romantic streets.",
-      price: "$1,200",
-      image: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
-    },
-    {
-      name: "Paris, France",
-      description: "Experience the City of Light with its iconic Eiffel Tower and romantic streets.",
-      price: "$1,200",
-      image: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
-    }
-];
+const Wishlist = ({wishList,setWishList}) => {
+
+  const handleRemoveWishList = (e,index) =>{
+    e.preventDefault()
+    const data = wishList.filter((item,i)=> i!=index)
+    setWishList(data)
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-x-auto">
       <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Wishlist</h2>
       <div className="w-auto mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-        {wishlistData.map((destination, index) => (
-          <div key={index} className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300">
-            <img src={destination.image} alt={destination.name} className="w-full h-56 object-cover" />
-            <div className="p-5">
-              <h3 className="text-lg font-semibold text-gray-800 font-agdasima">{destination.name}</h3>
-              <p className="text-sm text-gray-600 my-3 font-poppins">{destination.description}</p>
-              <div className="flex justify-between items-center mt-4 font-agdasima">
-                <span className="text-lg font-bold text-indigo-600">{destination.price}</span>
-                <button className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider">
-                  Book Now
-                </button>
+        {(wishList.length>0)?
+          wishList.map((destination, index) => (
+            <div key={index} className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300">
+              <img src={destination.image} alt={destination.name} className="w-full h-56 object-cover" />
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-gray-800 font-agdasima">{destination.name}</h3>
+                <p className="text-sm text-gray-600 my-3 font-poppins">{destination.description}</p>
+                <div className="flex justify-between items-center mt-4 font-agdasima">
+                  <span className="text-lg font-bold text-indigo-600">{destination.price}</span>
+                  <div className=" flex w-max space-x-3">
+                    <button className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider">
+                      Book Now
+                    </button>
+                    <button className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider" onClick={e=>handleRemoveWishList(e,index)}>
+                      Remove 
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+          :
+          <Link to='/explore' className="bg-white border-2 border-dashed   transform transition duration-300 p-6 flex flex-col items-center justify-center">
+            <div className="w-fit mx-auto">
+              <PlusFade />
+            </div>
+
+            <p className="text-gray-600 text-center mt-4 font-poppins">
+              Add your want-to-go destination.
+            </p>
+          </Link>
+        }
       </div>
     </div>
   );

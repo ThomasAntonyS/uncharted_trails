@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import Footer from "../Footer";
 import { IoBookmark } from "react-icons/io5";
 import { MdArrowRightAlt } from "react-icons/md";
 import Navbar from "../Navbar";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../Context/UserContextProvider";
 
 const destinations = [
   {
@@ -46,6 +47,23 @@ const destinations = [
 
 const Explore = () => {
   const navigate = useNavigate();
+  const {wishList,setWishList} = useContext(UserContext)
+
+  const handleWishList = (e,index) =>{
+    e.preventDefault()
+    const wishListItem = destinations.find(item => item.name == destinations[index].name)
+
+
+    const isPresent = wishList.findIndex(item => item.name == wishListItem.name)
+
+    if(isPresent==-1){
+      const data = [...wishList,wishListItem]
+      setWishList(data)    
+      alert("Added to your wishlist")
+    }
+    else
+      alert("Item already exist on your wishlist...")
+  }
 
   return (
     <>
@@ -108,7 +126,8 @@ const Explore = () => {
                     <span className="text-lg font-bold text-indigo-600">
                       {destination.price}
                     </span>
-                    <button className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 font-agdasima">
+                    <button className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 font-agdasima"
+                    onClick={e=>handleWishList(e,index)}>
                       WishList <IoBookmark className="ml-2" size={15} />
                     </button>
                   </div>
