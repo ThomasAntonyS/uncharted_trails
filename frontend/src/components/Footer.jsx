@@ -38,7 +38,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="h-max mt-10 text-white pb-4 bg-[linear-gradient(180deg,_white_20%,_#1f2937_20%)]">
+    <div className="h-max mt-10 text-white pb-4 bg-[linear-gradient(180deg,_white_15%,_#1f2937_15%)]">
       {/* Newsletter Section */}
       <div className="relative flex flex-col sm:flex-row items-center border-2 bg-white rounded-md mx-auto mb-10 p-6 max-w-4xl text-gray-800 sm:border-n">
         <h2 className="text-2xl sm:text-3xl font-libreCaslon mb-4 sm:mb-0 sm:mr-20 text-gray-800">Our Newsletter</h2>
@@ -59,8 +59,8 @@ const Footer = () => {
         </form>
       </div>
       {/* Footer Section */}
-      <div className="container mx-auto px-4 w-full sm:w-[90%] lg:w-[85%]">
-        <div className="flex flex-col lg:flex-row justify-between gap-10">
+      <div className="container mx-auto lg:px-4 w-full sm:w-[90%] lg:w-[85%]">
+        <div className="flex flex-col w-full sm:flex-row justify-between gap-10 sm:gap-5 lg:gap-10">
           {/* Brand Section */}
           <div className="flex flex-col items-center lg:items-start mt-4">
             <h3 className="text-2xl font-libreCaslon">Uncharted Trails</h3>

@@ -10,10 +10,6 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {loggedIn,userName} = useContext(UserContext)
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <div className="flex fixed top-0 justify-between items-center h-[8vh] w-[100vw] bg-black bg-opacity-25 z-[20] px-4 sm:px-8">
       {/* Logo Section */}
@@ -27,7 +23,7 @@ const Navbar = () => {
       </Link>
 
       {/* Navigation Links for Desktop */}
-      <div className="Nav_Links_ hidden md:flex items-center space-x-16 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
+      <div className="Nav_Links_ hidden xl:flex items-center space-x-16 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
         <Link to="/">Home</Link>
         <Link to="/explore">Explore</Link>
         <Link to="/blog">Blog</Link>
@@ -37,13 +33,13 @@ const Navbar = () => {
       {/* Profile and Sign-In Links for Desktop */}
       {
         (loggedIn)?
-        <div className="Profile_SignIn hidden sm:bg-black sm:bg-opacity-45 rounded-md md:flex sm:mx-4 items-center space-x-4 font-poppins text-[1rem] text-white">
+        <div className="Profile_SignInhidden sm:bg-black sm:bg-opacity-45 rounded-md xl:flex sm:mx-4 items-center space-x-4 font-poppins text-[1rem] text-white">
           <Link to="/profile" className="flex p-2 font-agdasima tracking-widest text-md">
             <span className=" my-auto mr-2 mt-1"><FaUser /></span> {userName}
           </Link>
         </div>
         :
-        <div className="Profile_SignIn hidden md:flex items-center space-x-4 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
+        <div className="Profile_SignIn hidden xl:flex items-center space-x-4 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
           <Link to="/log-in">Login</Link>
           <Link to="/sign-up" className="bg-white text-black px-3 py-1 rounded hover:bg-gray-200 transition">
             Sign Up
@@ -52,14 +48,14 @@ const Navbar = () => {
       }
 
       {/* Mobile Hamburger Menu */}
-      <div className="flex md:hidden items-center">
+      <div className="flex xl:hidden items-center">
         <button
-          onClick={toggleMenu}
-          className="text-white focus:outline-none"
+          onClick={()=>setIsMenuOpen(!isMenuOpen)}
+          className="text-white focus:outline-none "
         >
           {/* Hamburger icon */}
-          {isMenuOpen ? (
-            <svg
+          {isMenuOpen ? 
+              <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
               fill="none"
@@ -73,7 +69,7 @@ const Navbar = () => {
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>
-          ) : (
+           :
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -88,13 +84,13 @@ const Navbar = () => {
                 d="M4 6h16M4 12h16m-7 6h7"
               />
             </svg>
-          )}
+          }
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed top-[8vh] left-0 w-full bg-black bg-opacity-90 text-white z-40 md:hidden">
+        <div className="fixed top-[8vh] left-0 w-full bg-black bg-opacity-90 text-white z-40 xl:hidden">
           <div className="flex flex-col items-center space-y-4 py-4">
             <Link
               to="/"
