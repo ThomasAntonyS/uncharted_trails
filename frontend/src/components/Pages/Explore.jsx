@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Footer from "../Footer";
 import { IoBookmark } from "react-icons/io5";
 import { MdArrowRightAlt } from "react-icons/md";
 import Navbar from "../Navbar";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContextProvider";
+import FloatingPopup from "../FloatingPopup";
 
 const destinations = [
   {
@@ -46,6 +47,11 @@ const destinations = [
 ];
 
 const Explore = () => {
+
+  const [popup,setPopup] = useState(false)
+  const [error,setError] = useState(false)
+  const [popupData,setPopupData] = useState("")
+
   const navigate = useNavigate();
   const {wishList,setWishList} = useContext(UserContext)
 
@@ -58,11 +64,16 @@ const Explore = () => {
 
     if(isPresent==-1){
       const data = [...wishList,wishListItem]
+      setError(false)
       setWishList(data)    
-      alert("Added to your wishlist")
+      setPopupData(`${wishListItem.name} added to wishlist`)
+      setPopup(true)
     }
-    else
-      alert("Item already exist on your wishlist...")
+    else{
+      setPopupData(`${wishListItem.name} already on your wishlist`)
+      setError(true)
+      setPopup(true)
+    }  
   }
 
   return (
@@ -139,6 +150,10 @@ const Explore = () => {
       </section>
 
       <Footer />
+
+        {popup?<FloatingPopup data={popupData} setPopup={setPopup} error={error} setError={setError}/>
+        :
+        null}
     </>
   );
 };
