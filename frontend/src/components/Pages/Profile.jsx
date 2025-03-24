@@ -194,7 +194,7 @@ const Wishlist = ({wishList,setWishList}) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-x-auto">
       <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Wishlist</h2>
-      <div className="w-auto mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+      <div className="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 mt-8">
         {(wishList.length>0)?
           wishList.map((destination, index) => (
             <div key={index} className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300">
@@ -202,9 +202,9 @@ const Wishlist = ({wishList,setWishList}) => {
               <div className="p-5">
                 <h3 className="text-lg font-semibold text-gray-800 font-agdasima">{destination.name}</h3>
                 <p className="text-sm text-gray-600 my-3 font-poppins">{destination.description}</p>
-                <div className="flex justify-between items-center mt-4 font-agdasima">
-                  <span className="text-lg font-bold text-indigo-600">{destination.price}</span>
-                  <div className=" flex w-max space-x-3">
+                <div className="flex justify-between align-middle mt-4 font-agdasima sm:flex-col xl:flex-row">
+                  <span className="text-lg font-bold text-indigo-600 h-max my-auto">{destination.price}</span>
+                  <div className=" flex w-max space-x-3 sm:mt-3 xl:mt-0">
                     <button className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider">
                       Book Now
                     </button>
