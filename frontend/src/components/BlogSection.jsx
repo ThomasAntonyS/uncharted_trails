@@ -29,7 +29,7 @@ const BlogSection = () => {
 
         {/* Text Section */}
         <div className="w-full md:w-1/2">
-          <h3 className="text-xl font-semibold mb-4 font-agdasima tracking-wider">
+          <h3 className="text-xl font-semibold mb-4 font-agdasima tracking-wide text-[1.5rem]">
             Beautiful Italy<br />Let's travel
           </h3>
           <p className="text-gray-600 mb-6 font-poppins tracking-wider">
@@ -42,7 +42,7 @@ const BlogSection = () => {
             encounter consequences that are extremely painful. Nor again is there
             anyone who loves or pursues.
           </p>
-          <a href="#" className="text-orange-500 font-semibold hover:underline">
+          <a href="#/blog/2" className="text-orange-500 font-semibold hover:underline">
             Read More &rarr;
           </a>
         </div>

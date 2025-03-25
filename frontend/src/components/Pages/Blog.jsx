@@ -70,7 +70,6 @@ const Blog = () => {
     },
   ];
   
-
   return (
     <>
 
@@ -91,7 +90,7 @@ const Blog = () => {
               {/* Blogs */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {blogs.map((blog, index) => (
-                  <Link to={"/"}
+                  <Link to={`/blog/${blog.id}`}
                     key={blog.id}
                     className={`rounded-lg overflow-hidden shadow-lg ${
                       index === 0 ? "md:col-span-2 lg:col-span-2 h-auto" : ""

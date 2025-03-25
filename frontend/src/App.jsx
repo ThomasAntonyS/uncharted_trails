@@ -63,7 +63,7 @@ function App() {
 
           <Route
           element={<SingleBlog/>}
-          path='/blog/:blog_id'/>
+          path='/blog/:id'/>
 
           <Route path="*" 
           element={<NotFound/>} 

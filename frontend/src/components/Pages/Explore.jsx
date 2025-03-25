@@ -125,6 +125,7 @@ const Explore = () => {
                   src={destination.image}
                   alt={destination.name}
                   className="w-full h-52 object-cover"
+                  loading="lazy"
                 />
                 <div className="p-4">
                   <h3 className="text-lg font-semibold text-gray-800 font-agdasima">

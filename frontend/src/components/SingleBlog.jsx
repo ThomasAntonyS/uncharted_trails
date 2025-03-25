@@ -1,66 +1,103 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
-import { Link } from "react-router-dom";
-
-const blogPost = {
-  title: "Exploring Kota Lama, Semarang",
-  author: "Aliko Sunuwang",
-  date: "August 25, 2025",
-  image: "https://source.unsplash.com/1000x500/?heritage",
-  content: `Jatuh cinta pada pandangan pertama mungkin adalah kata yang paling tepat untuk menggambarkan perasaan saya kepada Kota Lama di Semarang. Walau panasnya bukan main, kunjungan pertama saya ke Kota Lama mampu menimbulkan kesan yang tak terlupakan. 
-
-Kota Lama ini unik. Berkunjung ke sana, kita akan selalu dipaksa untuk hidup ke masa lalu melalui bangunan-bangunan tua peninggalan pemerintah Hindia Belanda yang masih indah berdiri dengan kokoh. Salah satunya adalah Gereja Blendug. Gereja ini sekaligus menjadi landmark utama di Kota Lama.
-
-Gereja Blendug dan sekitarnya merupakan kawasan paling ramai di Kota Lama. Sisi lain Kota Lama juga menawarkan banyak objek-objek menarik untuk wisatawan.`,
-  tags: ["demo", "travel", "heritage"],
-};
-
-const relatedPosts = [
-  { id: 1, title: "Discovering Old Town Jakarta", image: "https://images.pexels.com/photos/2587004/pexels-photo-2587004.jpeg?auto=compress&cs=tinysrgb&w=600",date:"November 10, 2024" },
-  { id: 2, title: "A Walk Through Yogyakarta's History", image: "https://images.pexels.com/photos/5101155/pexels-photo-5101155.jpeg?auto=compress&cs=tinysrgb&w=600",date:"March 13, 2023" },
-  { id: 3, title: "Surabaya's Hidden Gems", image: "https://images.pexels.com/photos/1109896/pexels-photo-1109896.jpeg?auto=compress&cs=tinysrgb&w=600",date:"June 20, 2003" },
-];
+import NotFound from './Pages/NotFound'
+import blogData from "../data/data";
 
 const SingleBlog = () => {
+  const { id } = useParams();
+  const [blog, setBlog] = useState(null);
+  const [relatedPosts, setRelatedPosts] = useState([]);
+
+  useEffect(() => {
+    const blogId = parseInt(id, 10);
+
+    if (!isNaN(blogId)) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      const foundBlog = blogData.find((b) => b.id === blogId);
+      setBlog(foundBlog || null);
+
+      const filteredBlogs = blogData.filter((b) => b.id !== blogId);
+
+      const shuffledBlogs = filteredBlogs.sort(() => 0.5 - Math.random());
+      setRelatedPosts(shuffledBlogs.slice(0, 3));
+    }
+  }, [id]);
+
+  if (!blog) {
+    return (
+      <NotFound/>
+    );
+  }
+
   return (
     <>
-        <Navbar/>
+      <Navbar />
+      <div className="w-full mx-auto bg-white">
+        <img 
+          src={blog.imageUrl} 
+          alt={blog.title} 
+          className="h-[50vh] sm:h-[70vh] w-full object-cover mx-auto"
+        />
 
-        <div className="w-screen mx-auto bg-white">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuub1qqprhrAi5nC5Yol6grcv1y4xblegZKA&s" alt={blogPost.title} className="w-full h-[60vh] object-cover" />
-          <div className="mt-16 w-[90vw] mx-auto sm:w-[70vw]">
-            <h1 className="text-4xl font-bold text-black font-libreCaslon">{blogPost.title}</h1>
-            <div className="flex items-center mt-4 text-black text-md">
-              <span className="font-semibold font-agdasima">{blogPost.author}</span>
-              <span className="mx-2">•</span>
-              <span className=" font-agdasima">{blogPost.date}</span>
-            </div>
-            <p className="mt-6 text-black whitespace-pre-line font-poppins text-justify">{blogPost.content}</p>
-            <div className="mt-4">
-              <strong className=" font-agdasima">Tags: </strong>
-              {blogPost.tags.map((tag, index) => (
-                <span key={index} className="bg-gray-200 font-poppins text-black px-2 py-1 text-sm rounded mr-2">
+        <div className="mt-10 w-[90vw] sm:w-[80vw] lg:w-[60vw] mx-auto">
+          <h1 className="text-3xl sm:text-4xl font-bold text-black font-libreCaslon">
+            {blog.title}
+          </h1>
+
+          <div className="flex flex-wrap items-center mt-4 text-black text-sm sm:text-md">
+            <span className="font-semibold font-agdasima">{blog.author}</span>
+            <span className="mx-2">•</span>
+            <span className="font-agdasima font-semibold">{blog.date}</span>
+          </div>
+
+          <div className="mt-6 text-black text-md sm:text-lg font-poppins text-justify leading-relaxed">
+  {blog.content.split("\n").map((paragraph, index) => (
+    <p key={index} className="mb-4">{paragraph}</p>
+  ))}
+</div>
+
+
+          {blog.tags && blog.tags.length > 0 && (
+            <div className="mt-6">
+              <strong className="font-agdasima">Tags: </strong>
+              {blog.tags.map((tag, index) => (
+                <span 
+                  key={index} 
+                  className="bg-gray-200 font-poppins text-black px-3 py-1 text-sm rounded mr-2 mt-2 inline-block"
+                >
                   {tag}
                 </span>
               ))}
             </div>
-          </div>
-          <div className="mt-10 w-[90vw] sm:w-[70vw] mx-auto">
-            <h2 className="text-2xl font-semibold font-libreCaslon">Related posts</h2>
-            <Link className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-              {relatedPosts.map((post) => (
-                <div key={post.id} className="bg-white shadow-md">
-                  <img src={post.image} alt={post.title} className="w-full h-52 object-cover" />
-                  <p className="my-2 font-semibold text-md text-black px-4 font-libreCaslon">{post.title}</p>
-                  <p className="my-2 font-semibold text-md text-gray-800 px-4 font-libreCaslon">{post.date}</p>
-                </div>
-              ))}
-            </Link>
-          </div>
+          )}
         </div>
 
-        <Footer/>
+        <div className="mt-12 w-[90vw] sm:w-[80vw] lg:w-[60vw] mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-semibold font-libreCaslon">
+            Related posts
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
+            {relatedPosts.map((post) => (
+              <Link to={`/blog/${post.id}`} key={post.id} className="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105">
+                <img 
+                  src={post.imageUrl} 
+                  alt={post.title} 
+                  className="w-full h-48 sm:h-52 object-cover"
+                />
+                <div className="p-4">
+                  <p className="font-semibold text-md sm:text-lg text-black font-libreCaslon">{post.title}</p>
+                  <p className="text-sm sm:text-md text-gray-700">{post.description}</p>
+                  <p className="text-sm sm:text-md font-semibold text-gray-800 mt-2 font-libreCaslon">{post.date}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+      <Footer />
     </>
   );
 };
