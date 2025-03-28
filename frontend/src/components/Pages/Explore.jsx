@@ -11,37 +11,37 @@ const destinations = [
   {
     name: "Paris, France",
     description: "Experience the City of Light with its iconic Eiffel Tower and romantic streets.",
-    price: "$1,200",
+    price: "₹1,20,000",
     image: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
   },
   {
     name: "Tokyo, Japan",
     description: "Explore the vibrant culture, amazing food, and bustling streets of Tokyo.",
-    price: "$1,500",
+    price: "₹1,50,000",
     image: "https://images.pexels.com/photos/161309/traditional-and-technology-zojoji-temple-tokyo-culture-161309.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "New York, USA",
     description: "Discover the Big Apple with its skyscrapers, Broadway shows, and famous landmarks.",
-    price: "$1,800",
+    price: "₹1,80,000",
     image: "https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg",
   },
   {
     name: "Sydney, Australia",
     description: "Enjoy Sydney's beaches, opera house, and sunny weather.",
-    price: "$1,400",
+    price: "₹1,40,000",
     image: "https://images.pexels.com/photos/2193300/pexels-photo-2193300.jpeg",
   },
   {
     name: "Cairo, Egypt",
     description: "Visit the pyramids of Giza and immerse yourself in ancient history.",
-    price: "$1,100",
+    price: "₹1,10,000",
     image: "https://images.pexels.com/photos/9865385/pexels-photo-9865385.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     name: "Cape Town, South Africa",
     description: "Witness breathtaking mountains and coastlines in Cape Town.",
-    price: "$1,300",
+    price: "₹1,30,000",
     image: "https://images.pexels.com/photos/213940/pexels-photo-213940.jpeg",
   },
 ];
@@ -135,7 +135,7 @@ const Explore = () => {
                     {destination.description}
                   </p>
                   <div className="flex justify-between items-center mt-4">
-                    <span className="text-lg font-bold text-indigo-600">
+                    <span className="text-lg font-bold font-agdasima text-indigo-600">
                       {destination.price}
                     </span>
                     <button className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 font-agdasima"
@@ -152,7 +152,7 @@ const Explore = () => {
 
       <Footer />
 
-        {popup?<FloatingPopup data={popupData} setPopup={setPopup} error={error} setError={setError}/>
+        {popup?<FloatingPopup data={popupData} setPopup={setPopup} error={error} setError={setError} navLink={'/profile'} navName={"Go to WishList"}/>
         :
         null}
     </>

@@ -3,12 +3,12 @@ import Footer from '../Footer'
 import Navbar from "../Navbar";
 
 const Pricing = () => {
-  // Destination data
+
   const destinations = [
     {
       id: 1,
       location: "Bali, Indonesia",
-      price: "$1,200",
+      price: "₹1,20,000",
       hotels: "5-star Resort",
       persons: "2 Adults",
       days: "7 Days, 6 Nights",
@@ -18,7 +18,7 @@ const Pricing = () => {
     {
       id: 2,
       location: "Paris, France",
-      price: "$1,800",
+      price: "₹1,80,000",
       hotels: "Luxury Hotel",
       persons: "2 Adults, 1 Child",
       days: "5 Days, 4 Nights",
@@ -28,7 +28,7 @@ const Pricing = () => {
     {
       id: 3,
       location: "Patagonia, Chile",
-      price: "$2,500",
+      price: "₹2,50,000",
       hotels: "Boutique Lodges",
       persons: "4 Persons",
       days: "10 Days, 9 Nights",
@@ -38,7 +38,7 @@ const Pricing = () => {
     {
       id: 4,
       location: "Kyoto, Japan",
-      price: "$1,500",
+      price: "₹1,50,000",
       hotels: "Traditional Ryokan",
       persons: "2 Persons",
       days: "6 Days, 5 Nights",
@@ -48,7 +48,7 @@ const Pricing = () => {
     {
       id: 5,
       location: "Santorini, Greece",
-      price: "$2,000",
+      price: "₹2,00,000",
       hotels: "Luxury Villa",
       persons: "2 Adults",
       days: "5 Days, 4 Nights",
@@ -58,7 +58,7 @@ const Pricing = () => {
     {
       id: 6,
       location: "Cappadocia, Turkey",
-      price: "$1,300",
+      price: "₹1,30,000",
       hotels: "Cave Hotel",
       persons: "2 Adults",
       days: "4 Days, 3 Nights",
@@ -68,7 +68,7 @@ const Pricing = () => {
     {
       id: 7,
       location: "Maui, Hawaii",
-      price: "$2,800",
+      price: "₹2,80,000",
       hotels: "Beachfront Resort",
       persons: "2 Adults, 2 Kids",
       days: "7 Days, 6 Nights",
@@ -78,7 +78,7 @@ const Pricing = () => {
     {
       id: 8,
       location: "Rome, Italy",
-      price: "$1,700",
+      price: "₹1,70,000",
       hotels: "Historic Hotel",
       persons: "2 Adults",
       days: "5 Days, 4 Nights",
@@ -88,7 +88,7 @@ const Pricing = () => {
     {
       id: 9,
       location: "Sydney, Australia",
-      price: "$2,100",
+      price: "₹1,40,000",
       hotels: "City Hotel",
       persons: "3 Persons",
       days: "6 Days, 5 Nights",
@@ -98,7 +98,7 @@ const Pricing = () => {
     {
       id: 10,
       location: "Reykjavik, Iceland",
-      price: "$3,000",
+      price: "$3,00,000",
       hotels: "Scenic Lodges",
       persons: "4 Persons",
       days: "8 Days, 7 Nights",
@@ -108,7 +108,6 @@ const Pricing = () => {
   ];
 
 
-  // State management
   const [openAccordion, setOpenAccordion] = useState(null);
   const [bookingLocation, setBookingLocation] = useState(null);
 

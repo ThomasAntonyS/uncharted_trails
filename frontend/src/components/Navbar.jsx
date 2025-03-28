@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import Logo from "../assets/Logo.webp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaCaretRight } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { UserContext } from "../Context/UserContextProvider";
@@ -10,10 +10,21 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {loggedIn,userName} = useContext(UserContext)
 
+  const navigate = useNavigate()
+
+  function handleNavigation(e,navLink){
+    e.preventDefault()
+    navigate(navLink)
+    window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    })
+  }
+
   return (
     <div className="flex fixed top-0 justify-between items-center h-[8vh] w-[100vw] bg-black bg-opacity-25 z-[20] px-4 sm:px-8">
       {/* Logo Section */}
-      <Link to="/" className="Logo_">
+      <Link onClick={e=>handleNavigation(e,"/")} className="Logo_">
         <img
           src={Logo}
           alt="Logo"
@@ -24,10 +35,10 @@ const Navbar = () => {
 
       {/* Navigation Links for Desktop */}
       <div className="Nav_Links_ hidden xl:flex items-center space-x-16 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
-        <Link to="/">Home</Link>
-        <Link to="/explore">Explore</Link>
-        <Link to="/blog">Blog</Link>
-        <Link to="/pricing">Pricing</Link>
+        <Link onClick={e=>handleNavigation(e,"/")}>Home</Link>
+        <Link onClick={e=>handleNavigation(e,"/explore")}>Explore</Link>
+        <Link onClick={e=>handleNavigation(e,"/blog")}>Blog</Link>
+        <Link onClick={e=>handleNavigation(e,"/pricing")}>Pricing</Link>
       </div>
 
       {/* Profile and Sign-In Links for Desktop */}
