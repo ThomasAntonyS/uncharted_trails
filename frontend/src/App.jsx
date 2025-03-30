@@ -27,7 +27,7 @@ function App() {
           />
 
           <Route
-          element={<Explore/>}
+          element={<Explore />}
           path='/explore'
           />
 

@@ -8,6 +8,8 @@ const UserContextProvider = ({ children }) => {
     const [userEmail, setUserEmail] = useState(sessionStorage.getItem("userEmail") || "");
     const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem("loggedIn") === "true");
     const [wishList, setWishList] = useState([])
+    const [booking, setBooking] = useState([])
+    const [formOpen, setFormOpen] = useState(false)
 
     useEffect(() => {
         sessionStorage.setItem("userEmail", userEmail);
@@ -22,7 +24,9 @@ const UserContextProvider = ({ children }) => {
     },[userName])
 
     return (
-        <UserContext.Provider value={{ userName, setUserName, userEmail, setUserEmail, loggedIn, setLoggedIn, wishList, setWishList }}>
+        <UserContext.Provider value={{ userName, setUserName, userEmail, setUserEmail, loggedIn, setLoggedIn, wishList, setWishList,
+            booking, setBooking, formOpen, setFormOpen
+         }}>
             {children}
         </UserContext.Provider>
     );

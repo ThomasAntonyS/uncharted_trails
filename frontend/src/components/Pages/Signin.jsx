@@ -13,6 +13,8 @@ const Signin = () => {
     password:"",
     cnf_password:""
   })
+  const [showPassword, setShowPassword] = useState('password')
+  const [showCnfPassword, setShowCnfPassword] = useState('password')
   const navigate = useNavigate()
 
   const {setUserEmail,setUserName} = useContext(UserContext)
@@ -36,6 +38,20 @@ const Signin = () => {
       alert("Passwords don't match");
     }
   }; 
+
+  const handleShowPassword = ()=>{
+    if(showCnfPassword=="text")
+      setShowPassword("password")
+    else 
+      setShowPassword("text")
+  }
+
+  const handleShowCnfPassword = ()=>{
+    if(showPassword=="text")
+      setShowCnfPassword('password')
+    else 
+      setShowCnfPassword("text")
+  }
   
 
   return (
@@ -85,21 +101,27 @@ const Signin = () => {
           <div className="mb-4">
             <label className="block text-gray-700 font-poppins">Password</label>
             <input
-              type="password"
+              type={showPassword}
               placeholder="Password"
               onChange={e=>setRegisterData({...registerData,password:e.target.value})}
               className="w-full font-agdasima tracking-wider p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
+            <div className=" flex align-middle w-full mt-2 gap-x-2 font-poppins">
+                <input type="checkbox" onChange={handleShowPassword}/> <p>Show password</p>
+            </div>
           </div>
 
           <div className="mb-6">
             <label className="block text-gray-700 font-poppins">Repeat password</label>
             <input
-              type="password"
+              type={showCnfPassword}
               placeholder="Repeat password"
               onChange={e=>setRegisterData({...registerData,cnf_password:e.target.value})}
               className="w-full font-agdasima tracking-wider p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
+            <div className=" flex align-middle w-full mt-2 gap-x-2 font-poppins">
+                <input type="checkbox" onChange={handleShowCnfPassword}/> <p>Show password</p>
+            </div>
           </div>
 
           <button className="w-full font-agdasima tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"

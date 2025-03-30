@@ -10,6 +10,8 @@ const Login = () => {
         email: "", 
         password: ""
     });
+    const [showPassword, setShowPassword] = useState('password')
+
     const navigate = useNavigate()
 
     const {setLoggedIn,setUserEmail} = useContext(UserContext)
@@ -29,6 +31,13 @@ const Login = () => {
             })
             .catch(err => alert(err));
     };
+
+    const handleShowPassword = ()=>{
+        if(showPassword=="text")
+            setShowPassword("password")
+        else 
+            setShowPassword("text")
+    }
 
     return (
         <div className="flex h-screen">
@@ -60,11 +69,14 @@ const Login = () => {
                     <div className="mb-4">
                         <label className="block text-gray-700 font-poppins">Password</label>
                         <input
-                            type="password"
+                            type={showPassword}
                             placeholder="Password"
                             onChange={e => setLoginData({ ...loginData, password: e.target.value })}
                             className="w-full p-3 font-agdasima tracking-wider border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                         />
+                        <div className=" flex align-middle w-full mt-2 gap-x-2 font-poppins">
+                            <input type="checkbox" onChange={handleShowPassword}/> <p>Show password</p>
+                        </div>
                     </div>
 
                     <button className="w-full font-agdasima tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
