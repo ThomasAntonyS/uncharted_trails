@@ -7,6 +7,7 @@ import Navbar from '../Navbar'
 import Footer from '../Footer'
 import { UserContext } from "../../Context/UserContextProvider";
 import { Link } from "react-router-dom";
+import BookingForm from "../BookingForm";
 
 
 {/* Main Components */}
@@ -183,19 +184,25 @@ const BookingHistory = () => {
   );
 };
 
-const Wishlist = ({wishList,setWishList}) => {
+const Wishlist = ({ wishList, setWishList }) => {
+  const { setFormOpen, setBooking } = useContext(UserContext);
 
-  const handleRemoveWishList = (e,index) =>{
-    e.preventDefault()
-    const data = wishList.filter((item,i)=> i!=index)
-    setWishList(data)
-  }
+  const handleBookNow = (destination) => {
+    setBooking(destination);
+    setFormOpen(true);
+  };
+
+  const handleRemoveWishList = (e, index) => {
+    e.preventDefault();
+    const data = wishList.filter((_, i) => i !== index);
+    setWishList(data);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-x-auto">
       <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Wishlist</h2>
       <div className="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 mt-8">
-        {(wishList.length>0)?
+        {wishList.length > 0 ? (
           wishList.map((destination, index) => (
             <div key={index} className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300">
               <img src={destination.image} alt={destination.name} className="w-full h-56 object-cover" />
@@ -204,33 +211,40 @@ const Wishlist = ({wishList,setWishList}) => {
                 <p className="text-sm text-gray-600 my-3 font-poppins">{destination.description}</p>
                 <div className="flex justify-between align-middle mt-4 font-agdasima sm:flex-col xl:flex-row">
                   <span className="text-lg font-bold text-indigo-600 h-max my-auto">{destination.price}</span>
-                  <div className=" flex w-max space-x-3 sm:mt-3 xl:mt-0">
-                    <button className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider">
+                  <div className="flex w-max space-x-3 sm:mt-3 xl:mt-0">
+                    <button 
+                      className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider"
+                      onClick={() => handleBookNow(destination)}
+                    >
                       Book Now
                     </button>
-                    <button className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider" onClick={e=>handleRemoveWishList(e,index)}>
-                      Remove 
+                    <button 
+                      className="flex px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 tracking-wider"
+                      onClick={(e) => handleRemoveWishList(e, index)}
+                    >
+                      Remove
                     </button>
                   </div>
                 </div>
               </div>
             </div>
           ))
-          :
-          <Link to='/explore' className="bg-white border-2 border-dashed   transform transition duration-300 p-6 flex flex-col items-center justify-center">
+        ) : (
+          <Link to="/explore" className="bg-white border-2 border-dashed transform transition duration-300 p-6 flex flex-col items-center justify-center">
             <div className="w-fit mx-auto">
               <PlusFade />
             </div>
-
             <p className="text-gray-600 text-center mt-4 font-poppins">
               Add your want-to-go destination.
             </p>
           </Link>
-        }
+        )}
       </div>
+      <BookingForm />
     </div>
   );
 };
+
 
 const InformationUpdate = () => {
   return (

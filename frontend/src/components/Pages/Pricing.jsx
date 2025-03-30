@@ -1,8 +1,13 @@
-import React, { useState } from "react";
-import Footer from '../Footer'
+import React, { useContext, useState } from "react";
+import Footer from "../Footer";
 import Navbar from "../Navbar";
+import { UserContext } from "../../Context/UserContextProvider";
+import BookingForm from "../BookingForm";
 
 const Pricing = () => {
+  const { setFormOpen } = useContext(UserContext);
+  const [openAccordion, setOpenAccordion] = useState(null);
+  const [bookingLocation, setBookingLocation] = useState(""); // Added state
 
   const destinations = [
     {
@@ -107,47 +112,19 @@ const Pricing = () => {
     },
   ];
 
-
-  const [openAccordion, setOpenAccordion] = useState(null);
-  const [bookingLocation, setBookingLocation] = useState(null);
-
   const toggleAccordion = (id) => {
     setOpenAccordion(openAccordion === id ? null : id);
   };
 
   const handleBookNow = (location) => {
-    setBookingLocation(location);
-  };
-
-  const closeBookingForm = () => {
-    setBookingLocation(null);
+    setBookingLocation(location); // Set the selected location
+    setFormOpen(true);
   };
 
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <section>
-        {/* Banner Section */}
-        <div
-          className="relative bg-cover bg-center h-[300px] sm:h-[500px]"
-          style={{ backgroundImage: 'url("https://images.pexels.com/photos/9589211/pexels-photo-9589211.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load")' }}
-        >
-          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-          <div className="relative flex items-center justify-center flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white h-full">
-            <h1 className="text-4xl sm:text-6xl font-libreCaslon font-semibold">Explore Our Exclusive Packages</h1>
-            <p className="text-lg sm:text-xl font-poppins">Plan your dream vacation with ease and comfort.</p>
-          </div>
-        </div>
-
-        {/* Introduction Section */}
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h2 className="text-3xl font-bold text-gray-800 text-center font-libreCaslon">Our Travel Packages</h2>
-          <p className="text-lg text-gray-600 text-center mt-4 font-poppins">
-            Choose from our curated selection of travel packages designed to offer the best experiences around the globe. Each package is crafted to provide comfort, excitement, and unforgettable memories.
-          </p>
-        </div>
-
-        {/* Accordion Section */}
         <div className="py-12">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="space-y-6">
@@ -199,79 +176,8 @@ const Pricing = () => {
             </div>
           </div>
         </div>
-
-        {/* Booking Form */}
-        {bookingLocation && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-[90%] sm:w-[30%] shadow-lg max-h-[95%] overflow-y-auto">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 font-libreCaslon">
-                Book Your Trip to {bookingLocation}
-              </h2>
-              <form className="space-y-4">
-                <div>
-                  <label className="block text-gray-700 font-poppins">Full Name</label>
-                  <input
-                    type="text"
-                    className="w-full font-agdasima tracking-wider px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-poppins">Email</label>
-                  <input
-                    type="email"
-                    className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-poppins">Phone Number</label>
-                  <input
-                    type="tel"
-                    className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-poppins">No. of Travelers</label>
-                  <input
-                    type="number"
-                    className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-poppins">Preferred Travel Start Dates</label>
-                  <input
-                    type="date"
-                    className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-poppins">Preferred Travel End Dates</label>
-                  <input
-                    type="date"
-                    className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-poppins">Special Requests</label>
-                  <textarea
-                    className="w-full px-3 font-agdasima tracking-wider py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="bg-blue-500 font-agdasima tracking-wider text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-                >
-                  Confirm Booking
-                </button>
-              </form>
-              <button
-                onClick={closeBookingForm}
-                className="mt-4 text-red-500 hover:underline font-agdasima tracking-wider"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Pass bookingLocation as a prop */}
+        <BookingForm bookingLocation={bookingLocation} />
       </section>
       <Footer />
     </>
