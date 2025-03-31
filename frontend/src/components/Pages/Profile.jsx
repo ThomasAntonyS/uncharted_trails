@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaUser, FaHistory, FaHeart, FaWrench,FaNewspaper } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import { MdFlight, MdLocationOn, MdPublic, MdApartment } from "react-icons/md";
@@ -8,14 +8,16 @@ import Footer from '../Footer'
 import { UserContext } from "../../Context/UserContextProvider";
 import { Link } from "react-router-dom";
 import BookingForm from "../BookingForm";
+import axios from "axios";
 
 
 {/* Main Components */}
 
 const UserProfile = () => {
+
   const [activeTab, setActiveTab] = useState("Personal Info");
 
-  const {wishList,setWishList} = useContext(UserContext)
+  const {wishList,setWishList, userData} = useContext(UserContext)
 
   return (
     <>
@@ -30,8 +32,8 @@ const UserProfile = () => {
               alt="User"
               className="w-24 h-24 rounded-full"
             />
-            <h2 className="text-lg font-semibold mt-2 font-libreCaslon">John Brown</h2>
-            <p className="text-sm text-gray-500 font-poppins">MEMBER SINCE MAY 2012</p>
+            <h2 className="text-lg font-semibold mt-2 font-libreCaslon">{userData.username}</h2>
+            <p className="text-sm text-gray-500 font-poppins">Exploring the World Since {userData.joined_at}</p>
           </div>
 
           <div className="mt-6" >
@@ -46,7 +48,7 @@ const UserProfile = () => {
 
         {/* Main Content */}
         <div className="flex-1 mt-6 sm:px-4 sm:my-4 md:px-5">
-          {activeTab=="Personal Info" ? <PersonalInfo/>:null}
+          {activeTab=="Personal Info" ? <PersonalInfo userData={userData}/>:null}
           {activeTab=="Booking" ? <UserBooking/>:null}
           {activeTab=="Booking History" ? <BookingHistory/>:null}
           {activeTab=="Wishlist" ? <Wishlist wishList={wishList} setWishList={setWishList} />:null}
@@ -63,26 +65,50 @@ const UserProfile = () => {
 
 
 {/* Sub/ Nester Components */}
-const PersonalInfo = () =>{
+const PersonalInfo = ({userData}) =>{
+  
+  const [travelData, setTravelData] = useState({
+    miles: 0,
+    cities: 0,
+    world: 0,
+    countries: 0,
+  });
+  
+  useEffect(() => {
+    fetchTravelData();
+  }, []);
+  
+  const fetchTravelData = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/travel-data");
+      if (res.data) {
+        setTravelData(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+
   return(
     <>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <InfoCard icon={<MdFlight size={32} className=" text-orange-500" />} value="12467" label="MILES" />
-        <InfoCard icon={<MdApartment size={32} className="text-orange-500" />} value="12" label="CITIES" />
-        <InfoCard icon={<MdPublic size={32} className="text-orange-500" />} value="4%" label="WORLD" />
-        <InfoCard icon={<MdLocationOn size={32} className="text-orange-500" />} value="6" label="COUNTRIES" />
+        <InfoCard icon={<MdFlight size={32} className=" text-orange-500" />} value={travelData.miles} label="MILES" />
+        <InfoCard icon={<MdApartment size={32} className="text-orange-500" />} value={travelData.cities} label="CITIES" />
+        <InfoCard icon={<MdPublic size={32} className="text-orange-500" />} value={travelData.world+"%"} label="WORLD" />
+        <InfoCard icon={<MdLocationOn size={32} className="text-orange-500" />} value={travelData.countries} label="COUNTRIES" />
       </div>
       <div className="bg-white shadow-md rounded-lg p-6 mt-6">
         <p className=" text-2xl font-bold font-libreCaslon">User Details</p>
-        <UserInfo label="NAME:" value="John Brown" />
-        <UserInfo label="E-MAIL:" value="johnbrown@test.mail.com" />
-        <UserInfo label="PHONE NUMBER:" value="+0 000-000-000" />
-        <UserInfo label="HOME AIRPORT:" value="London Heathrow Airport (LHR)" />
-        <UserInfo label="STREET ADDRESS:" value="46 Gray's Inn Rd, London, WC1X 8LP" />
-        <UserInfo label="CITY:" value="London" />
-        <UserInfo label="STATE/PROVINCE/REGION:" value="London" />
-        <UserInfo label="POSTAL CODE:" value="69106" />
-        <UserInfo label="COUNTRY:" value="United Kingdom" />
+        <UserInfo label="NAME:" value={userData.username} />
+        <UserInfo label="E-MAIL:" value={userData.email_id} />
+        <UserInfo label="PHONE NUMBER:" value={userData.phone_number} />
+        <UserInfo label="HOME AIRPORT:" value={userData.home_airport} />
+        <UserInfo label="STREET ADDRESS:" value={userData.street_address} />
+        <UserInfo label="CITY:" value={userData.city} />
+        <UserInfo label="STATE/PROVINCE/REGION:" value={userData.region} />
+        <UserInfo label="POSTAL CODE:" value={userData.postal_code} />
+        <UserInfo label="COUNTRY:" value={userData.country} />
       </div>
     </>
   )

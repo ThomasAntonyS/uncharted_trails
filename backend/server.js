@@ -202,6 +202,24 @@ app.post('/news-letter',async (req,res)=>{
     }
 })
 
+app.get("/travel-data", async (req, res) => {
+    try {
+        const sql = `SELECT miles, cities, world, countries FROM travel_data WHERE email="abc@gmail.com"`;
+        db.query(sql, (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: "Database error" });
+            }
+            if (result.length === 0) {
+                return res.status(404).json({ error: "No data found" });
+            }
+            res.json(result[0]);
+        });
+    } catch (error) {
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+
 
 app.listen(5000, () => {
     console.log("Server running");

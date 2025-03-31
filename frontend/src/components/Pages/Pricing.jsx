@@ -126,6 +126,24 @@ const Pricing = () => {
       <Navbar />
       <section>
         <div className="py-12">
+        <div
+           className="relative bg-cover bg-center h-[300px] sm:h-[500px]"
+           style={{ backgroundImage: 'url("https://images.pexels.com/photos/9589211/pexels-photo-9589211.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load")' }}
+         >
+           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+           <div className="relative flex items-center justify-center flex-col max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white h-full">
+             <h1 className="text-4xl sm:text-6xl font-libreCaslon font-semibold">Explore Our Exclusive Packages</h1>
+             <p className="text-lg sm:text-xl font-poppins">Plan your dream vacation with ease and comfort.</p>
+           </div>
+         </div>
+
+         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+           <h2 className="text-3xl font-bold text-gray-800 text-center font-libreCaslon">Our Travel Packages</h2>
+           <p className="text-lg text-gray-600 text-center mt-4 font-poppins">
+             Choose from our curated selection of travel packages designed to offer the best experiences around the globe. Each package is crafted to provide comfort, excitement, and unforgettable memories.
+           </p>
+         </div>
+         
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="space-y-6">
               {destinations.map((destination) => (

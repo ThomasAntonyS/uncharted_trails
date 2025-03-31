@@ -21,7 +21,6 @@ const BookingForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Booking Confirmed:", formData, "Destination:", booking);
     alert(`Booking confirmed for ${booking.name}!`);
     setFormOpen(false);
   };

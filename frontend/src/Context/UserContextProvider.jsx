@@ -4,27 +4,36 @@ export const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
 
-    const [userName,setUserName] = useState(sessionStorage.getItem("userName") || "")
-    const [userEmail, setUserEmail] = useState(sessionStorage.getItem("userEmail") || "");
+    const [userData, setUserData] = useState(() => {
+        const storedUser = sessionStorage.getItem("userName");
+        return storedUser ? JSON.parse(storedUser) : {
+            username: "N/A",
+            email_id: "N/A",
+            phone_number: "N/A",
+            home_airport: "N/A",
+            street_address: "N/A",
+            city: "N/A",
+            postal_code: "N/A",
+            region: "N/A",
+            country: "N/A",
+            joined_at: new Date().getFullYear() // Only store the year
+        };
+    });  
     const [loggedIn, setLoggedIn] = useState(sessionStorage.getItem("loggedIn") === "true");
     const [wishList, setWishList] = useState([])
     const [booking, setBooking] = useState([])
     const [formOpen, setFormOpen] = useState(false)
 
     useEffect(() => {
-        sessionStorage.setItem("userEmail", userEmail);
-    }, [userEmail]);
+        sessionStorage.setItem("userData", userData);
+    }, [userData]);
 
     useEffect(() => {
         sessionStorage.setItem("loggedIn", loggedIn);
     }, [loggedIn]);
 
-    useEffect(()=>{
-        sessionStorage.setItem("userName",userName);
-    },[userName])
-
     return (
-        <UserContext.Provider value={{ userName, setUserName, userEmail, setUserEmail, loggedIn, setLoggedIn, wishList, setWishList,
+        <UserContext.Provider value={{ userData, setUserData, loggedIn, setLoggedIn, wishList, setWishList,
             booking, setBooking, formOpen, setFormOpen
          }}>
             {children}
