@@ -4,6 +4,7 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser')
 const SibApiV3Sdk = require("sib-api-v3-sdk");
 require('dotenv').config()
+const bcrypt = require("bcrypt");
 
 const app = express();
 app.use(bodyParser.json());
@@ -27,23 +28,23 @@ db.connect(err => {
 });
 
 
-app.post('/log-in', (req, res) => {
+app.post('/log-in', async (req, res) => {
     const { email, password } = req.body;
-    const sql = "SELECT `email_id`, `password` FROM login_signup WHERE `email_id` = ? AND `password` = ?";
-    const values = [email, password];
-
-    db.query(sql, values, (err, data) => {
-        if (err) {
-            console.error("Database Error:", err);
-            return res.status(500).send("Database Error");
-        }
-        if (data.length > 0) {
-            return res.json("success");
-        } else {
-            return res.json("Fail");
-        }
-    });    
-});
+    const sql = "SELECT `email_id`, `password` FROM login_signup WHERE `email_id` = ?";
+    try {
+        const [data] = await db.promise().query(sql, [email]);
+  
+        if (data.length === 0) return res.json("Fail");
+  
+        const isMatch = await bcrypt.compare(password, data[0].password);
+        if (!isMatch) return res.json("Fail");
+  
+        res.json("success");
+    } catch (error) {
+        console.error("Database Error:", error);
+        res.status(500).send("Database Error");
+    }
+});  
 
 const generateUniqueCode = async () => {
     let isUnique = false;
@@ -87,43 +88,37 @@ const sendEmail = async (toEmail, subject, message) => {
 };
 
 app.post('/sign-up', async (req, res) => {
-    const { username, email, password } = req.body;
-    const checkData = "SELECT `email_id` FROM login_signup WHERE `email_id` = ?";
-    const currentDate = new Date().toISOString().slice(0, 19).replace("T", " ");
+  const { username, email, password } = req.body;
+  const checkData = "SELECT `email_id` FROM login_signup WHERE `email_id` = ?";
+  const currentDate = new Date().toISOString().slice(0, 19).replace("T", " ");
 
-    try {
-        // Check if the email already exists
-        const [data] = await db.promise().query(checkData, [email]);
+  try {
+      const [data] = await db.promise().query(checkData, [email]);
+      if (data.length === 1) return res.json("Email Already Exists");
 
-        if (data.length === 1) {
-            return res.json("Email Already Exists");
-        }
+      // Hash the password before storing it
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Generate a unique verification code
-        const verificationCode = await generateUniqueCode();
+      // Generate a unique verification code
+      const verificationCode = await generateUniqueCode();
+      const emailSent = await sendEmail(email, "Your Verification Code", `Your verification code is: ${verificationCode}`);
 
-        // Send verification email
-        const emailSent = await sendEmail(email, "Your Verification Code", `Your verification code is: ${verificationCode}`);
+      if (!emailSent) return res.status(500).json("Failed to send verification email");
 
-        if (!emailSent) {
-            return res.status(500).json("Failed to send verification email");
-        }
+      // Insert into login_signup table
+      const sql = "INSERT INTO login_signup (`username`, `email_id`, `password`, `time_stamp`) VALUES (?, ?, ?, ?)";
+      await db.promise().query(sql, [username, email, hashedPassword, currentDate]);
 
-        // Insert into login_signup table
-        const sql = "INSERT INTO login_signup (`username`, `email_id`, `password`, `time_stamp`) VALUES (?, ?, ?, ?)";
-        await db.promise().query(sql, [username, email, password, currentDate]);
+      // Insert into verification_table
+      const verifySql = "INSERT INTO verification_table (`email_id`, `verification_code`, `time_stamp`) VALUES (?, ?, ?)";
+      await db.promise().query(verifySql, [email, verificationCode, currentDate]);
 
-        // Insert into verification_table
-        const verifySql = "INSERT INTO verification_table (`email_id`, `verification_code`, `time_stamp`) VALUES (?, ?, ?)";
-        await db.promise().query(verifySql, [email, verificationCode, currentDate]);
-
-        res.send("success");
-    } catch (error) {
-        console.error(error);
-        res.status(500).json("Server error");
-    }
+      res.send("success");
+  } catch (error) {
+      console.error(error);
+      res.status(500).json("Server error");
+  }
 });
-
 
 app.post('/sign-up-confirmation', async (req, res) => {
     try {

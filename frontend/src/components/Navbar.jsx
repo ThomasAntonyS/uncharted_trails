@@ -8,7 +8,7 @@ import { UserContext } from "../Context/UserContextProvider";
 const Navbar = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const {loggedIn,userName} = useContext(UserContext)
+  const {loggedIn,userData} = useContext(UserContext)
 
   const navigate = useNavigate()
 
@@ -44,9 +44,9 @@ const Navbar = () => {
       {/* Profile and Sign-In Links for Desktop */}
       {
         (loggedIn)?
-        <div className="Profile_SignInhidden sm:bg-black sm:bg-opacity-45 rounded-md xl:flex sm:mx-4 items-center space-x-4 font-poppins text-[1rem] text-white">
+        <div className="Profile_SignInhidden hidden sm:bg-black sm:bg-opacity-45 rounded-md xl:flex sm:mx-4 items-center space-x-4 font-poppins text-[1rem] text-white">
           <Link to="/profile" className="flex p-2 font-agdasima tracking-widest text-md">
-            <span className=" my-auto mr-2 mt-1"><FaUser /></span> {userName}
+            <span className=" my-auto mr-2 mt-1"><FaUser /></span> {userData.username}
           </Link>
         </div>
         :

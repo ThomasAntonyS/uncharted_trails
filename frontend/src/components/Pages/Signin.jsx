@@ -17,41 +17,44 @@ const Signin = () => {
   const [showCnfPassword, setShowCnfPassword] = useState('password')
   const navigate = useNavigate()
 
-  const {setUserEmail,setUserName} = useContext(UserContext)
+  const {setUserData,userData} = useContext(UserContext)
 
   const handleSignup = (e) => {
     e.preventDefault();
   
-    if (registerData.password === registerData.cnf_password) {
-      axios.post("http://localhost:5000/sign-up", registerData)
-        .then(res => {
-          if (res.data === "success") {
-            setUserEmail(registerData.email)
-            setUserName(registerData.username)
-            navigate('/sign-up-confirmation');
-          } else {
-            alert("Signup failed");
-          }
-        })
-        .catch(err => alert(err.message));
-    } else {
-      alert("Passwords don't match");
+    if (!registerData.username || !registerData.email || !registerData.password || !registerData.cnf_password) {
+      return alert("Please fill in all fields.");
     }
-  }; 
+  
+    if (registerData.password !== registerData.cnf_password) {
+      return alert("Passwords don't match.");
+    }
+  
+    axios.post("http://localhost:5000/sign-up", registerData)
+      .then(res => {
+        if (res.data === "success") {
+          setUserData({
+            ...userData,
+            username: registerData.username,
+            email_id: registerData.email
+          });
+          navigate('/sign-up-confirmation');
+        } else {
+          alert("Signup failed: " + res.data);
+        }
+      })
+      .catch(err => alert(err.message));
+  };
+   
 
-  const handleShowPassword = ()=>{
-    if(showCnfPassword=="text")
-      setShowPassword("password")
-    else 
-      setShowPassword("text")
-  }
-
-  const handleShowCnfPassword = ()=>{
-    if(showPassword=="text")
-      setShowCnfPassword('password')
-    else 
-      setShowCnfPassword("text")
-  }
+  const handleShowPassword = () => {
+    setShowPassword((prev) => (prev === "password" ? "text" : "password"));
+  };
+  
+  const handleShowCnfPassword = () => {
+    setShowCnfPassword((prev) => (prev === "password" ? "text" : "password"));
+  };
+  
   
 
   return (

@@ -11,7 +11,7 @@ const Confirmation = () => {
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
 
-  const {setLoggedIn,userEmail} = useContext(UserContext)
+  const {setLoggedIn,userData} = useContext(UserContext)
 
   useEffect(() => {
     if (timer === 0) {
@@ -29,7 +29,7 @@ const Confirmation = () => {
   const handleVerify = (e) => {
     e.preventDefault()
     try{
-      axios.post("http://localhost:5000/sign-up-confirmation",{verificationCode,email:userEmail})
+      axios.post("http://localhost:5000/sign-up-confirmation",{verificationCode,email:userData.email_id})
       .then(res=>{
         if(res.data=="success"){
           setLoggedIn(true)
@@ -39,7 +39,11 @@ const Confirmation = () => {
           setMessage("Invalid / Incorrect Verification Code")
         }
       })
-      .catch(err=>alert(err))
+      .catch(err => {
+        console.error(err); 
+        setMessage(err.response?.data || err.message || "Something went wrong");
+      });
+      
     } 
     catch(err){
       setMessage(err);
@@ -57,7 +61,11 @@ const Confirmation = () => {
         }
         else alert("An error occured. Try again")
     })
-      .catch(err=>setMessage(err))
+    .catch(err => {
+      console.error(err); 
+      setMessage(err.response?.data || err.message || "Something went wrong");
+    });
+    
     }
     catch(err){setMessage(err)}
 

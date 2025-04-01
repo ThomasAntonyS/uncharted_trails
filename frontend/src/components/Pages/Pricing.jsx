@@ -125,7 +125,7 @@ const Pricing = () => {
     <>
       <Navbar />
       <section>
-        <div className="py-12">
+        <div className="">
         <div
            className="relative bg-cover bg-center h-[300px] sm:h-[500px]"
            style={{ backgroundImage: 'url("https://images.pexels.com/photos/9589211/pexels-photo-9589211.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load")' }}
