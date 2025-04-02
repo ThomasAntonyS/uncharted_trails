@@ -14,7 +14,7 @@ const Login = () => {
 
     const navigate = useNavigate()
 
-    const {setLoggedIn,setUserData,userData} = useContext(UserContext)
+    const {setLoggedIn,setUserEmail} = useContext(UserContext)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,7 +23,7 @@ const Login = () => {
             .then((res) => {
                 if (res.data === "success") {
                     setLoggedIn(true)
-                    setUserData({...userData,email_id:loginData.email})
+                    setUserEmail(loginData.email)
                     navigate('/')
                 } else {
                     alert('Login failed!');

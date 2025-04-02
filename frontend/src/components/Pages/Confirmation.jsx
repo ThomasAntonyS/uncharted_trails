@@ -11,7 +11,7 @@ const Confirmation = () => {
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
 
-  const {setLoggedIn,userData} = useContext(UserContext)
+  const {setLoggedIn,userEmail} = useContext(UserContext)
 
   useEffect(() => {
     if (timer === 0) {
@@ -29,7 +29,7 @@ const Confirmation = () => {
   const handleVerify = (e) => {
     e.preventDefault()
     try{
-      axios.post("http://localhost:5000/sign-up-confirmation",{verificationCode,email:userData.email_id})
+      axios.post("http://localhost:5000/sign-up-confirmation",{verificationCode,email:userEmail})
       .then(res=>{
         if(res.data=="success"){
           setLoggedIn(true)

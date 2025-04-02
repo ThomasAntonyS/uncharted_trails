@@ -19,7 +19,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: process.env.DB_password,
-    database: 'uncharted_trails'
+    database: 'uncharted_trails',
 });
 
 db.connect(err => {
@@ -87,37 +87,52 @@ const sendEmail = async (toEmail, subject, message) => {
     }
 };
 
-app.post('/sign-up', async (req, res) => {
-  const { username, email, password } = req.body;
-  const checkData = "SELECT `email_id` FROM login_signup WHERE `email_id` = ?";
-  const currentDate = new Date().toISOString().slice(0, 19).replace("T", " ");
+app.post("/sign-up", async (req, res) => {
+    const { username, email, phone_number, password } = req.body;
+    const checkData = "SELECT `email_id` FROM login_signup WHERE `email_id` = ?";
+    const currentDate = new Date().toISOString().slice(0, 19).replace("T", " ");
 
-  try {
-      const [data] = await db.promise().query(checkData, [email]);
-      if (data.length === 1) return res.json("Email Already Exists");
+    try {
+        const [data] = await db.promise().query(checkData, [email]);
+        if (data.length > 0) {
+            return res.status(400).json("Email Already Exists");
+        }
 
-      // Hash the password before storing it
-      const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Generate a unique verification code
-      const verificationCode = await generateUniqueCode();
-      const emailSent = await sendEmail(email, "Your Verification Code", `Your verification code is: ${verificationCode}`);
+        const verificationCode = await generateUniqueCode();
 
-      if (!emailSent) return res.status(500).json("Failed to send verification email");
+        const emailSent = await sendEmail(email, "Your Verification Code", `Your verification code is: ${verificationCode}`);
+        if (!emailSent) {
+            return res.status(500).json("Failed to send verification email");
+        }
 
-      // Insert into login_signup table
-      const sql = "INSERT INTO login_signup (`username`, `email_id`, `password`, `time_stamp`) VALUES (?, ?, ?, ?)";
-      await db.promise().query(sql, [username, email, hashedPassword, currentDate]);
+        // Insert into the 'verification_table'
+        const verifySql = `
+            INSERT INTO verification_table (email_id, verification_code, time_stamp)
+            VALUES (?, ?, ?)
+        `;
+        await db.promise().query(verifySql, [email, verificationCode, currentDate]);
 
-      // Insert into verification_table
-      const verifySql = "INSERT INTO verification_table (`email_id`, `verification_code`, `time_stamp`) VALUES (?, ?, ?)";
-      await db.promise().query(verifySql, [email, verificationCode, currentDate]);
+        // Insert into the 'login_signup' table
+        const loginSignupSql = `
+            INSERT INTO login_signup (email_id, password, username, phone_number, time_stamp)
+            VALUES (?, ?, ?, ?, ?)
+        `;
+        await db.promise().query(loginSignupSql, [email, hashedPassword, username, phone_number, currentDate]);
 
-      res.send("success");
-  } catch (error) {
-      console.error(error);
-      res.status(500).json("Server error");
-  }
+        // Insert into the 'users' table
+        const usersSql = `
+            INSERT INTO users (username, email_id, phone_number, created_at)
+            VALUES (?, ?, ?, ?)
+        `;
+        await db.promise().query(usersSql, [username, email, phone_number, currentDate]);
+
+        res.json("Verification email sent. Please verify your email.");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
+    }
 });
 
 app.post('/sign-up-confirmation', async (req, res) => {
@@ -183,6 +198,38 @@ app.post('/sign-up-code-resend', async (req, res) => {
         console.error(error);
         res.status(500).json("Server error");
     }
+});
+
+app.get("/user/:email", (req, res) => {
+    const email = req.params.email;
+    db.query("SELECT * FROM users WHERE email_id = ?", [email], (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      if (result.length === 0) return res.status(404).json({ message: "User not found" });
+      res.json(result[0]);
+    });
+});
+  
+app.post("/update-user", (req, res) => {
+  const { username, email_id, phone_number, home_airport, street_address, city, postal_code, region, country } = req.body;
+
+  const query = `
+    INSERT INTO users (username, email_id, phone_number, home_airport, street_address, city, postal_code, region, country)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE 
+    username = VALUES(username), 
+    phone_number = VALUES(phone_number), 
+    home_airport = VALUES(home_airport), 
+    street_address = VALUES(street_address), 
+    city = VALUES(city), 
+    postal_code = VALUES(postal_code), 
+    region = VALUES(region), 
+    country = VALUES(country)
+  `;
+
+  db.query(query, [username, email_id, phone_number, home_airport, street_address, city, postal_code, region, country], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: "User information updated successfully!" });
+  });
 });
 
 app.post('/news-letter',async (req,res)=>{

@@ -14,10 +14,21 @@ import axios from "axios";
 {/* Main Components */}
 
 const UserProfile = () => {
-
   const [activeTab, setActiveTab] = useState("Personal Info");
+  const [userData, setUserData] = useState({});
+  const { wishList, setWishList, userEmail } = useContext(UserContext);
 
-  const {wishList,setWishList, userData} = useContext(UserContext)
+  useEffect(() => {
+    if (userEmail) {
+      axios
+        .get(`http://localhost:5000/user/${userEmail}`)
+        .then((response) => {
+          setUserData(response.data);
+          sessionStorage.setItem("userData", JSON.stringify(response.data));
+        })
+        .catch((error) => console.error("Error fetching user data:", error));
+    }
+  }, [userEmail]);
 
   return (
     <>
@@ -25,15 +36,15 @@ const UserProfile = () => {
 
       <div className="flex flex-col p-5 mt-[10vh] md:flex-row sm:py-5 sm:px-10 h-max">
         {/* Sidebar */}
-        <div className="w-full h-max md:w-1/4 bg-white shadow-md rounded-lg p-4 md:p-6">
+        <div className="w-full h-full md:w-1/4 bg-white shadow-md rounded-lg p-4 md:p-6">
           <div className="flex flex-col items-center">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s"
               alt="User"
               className="w-24 h-24 rounded-full"
             />
-            <h2 className="text-lg font-semibold mt-2 font-libreCaslon">{userData.username}</h2>
-            <p className="text-sm text-gray-500 font-poppins">Exploring the World Since {userData.joined_at}</p>
+            <h2 className="text-lg font-semibold mt-2 font-libreCaslon">John Brown</h2>
+            <p className="text-sm text-gray-500 font-poppins">MEMBER SINCE MAY 2012</p>
           </div>
 
           <div className="mt-6" >
@@ -52,7 +63,7 @@ const UserProfile = () => {
           {activeTab=="Booking" ? <UserBooking/>:null}
           {activeTab=="Booking History" ? <BookingHistory/>:null}
           {activeTab=="Wishlist" ? <Wishlist wishList={wishList} setWishList={setWishList} />:null}
-          {activeTab=="Settings" ? <InformationUpdate/>:null}
+          {activeTab=="Settings" ? <InformationUpdate userData={userData} setUserData={setUserData}/>:null}
         </div>
 
       </div>
@@ -61,6 +72,7 @@ const UserProfile = () => {
     </>
   );
 };
+
 
 
 
@@ -271,64 +283,67 @@ const Wishlist = ({ wishList, setWishList }) => {
   );
 };
 
+const InformationUpdate = ({userData,setUserData}) => {
 
-const InformationUpdate = () => {
+  const handleChange = (e) => {
+    const updatedData = { ...userData, [e.target.name]: e.target.value };
+    setUserData(updatedData);
+    sessionStorage.setItem("userData", JSON.stringify(updatedData));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:5000/update-user", userData);
+      alert(response.data.message);
+      sessionStorage.setItem("userData", JSON.stringify(userData));
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
+  };
+
   return (
     <div className="bg-white shadow-md rounded-lg p-6 w-full mx-auto">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4 font-libreCaslon">Change Personal Information</h2>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">Name</label>
-          <input type="text" className="w-full p-2 border rounded-md font-poppins" value="John Brown" readOnly />
+      <h2 className="text-2xl font-bold mb-4">Change Personal Information</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {userData && Object.keys(userData).map((key) => (
+            key !== "email_id" && key !== "created_at" && key !== "id" ? (
+              <div key={key}>
+                <label className="block text-gray-700 text-sm font-semibold mb-1">
+                  {key.replace("_", " ").toUpperCase()}
+                </label>
+                <input
+                  type="text"
+                  name={key}
+                  placeholder={userData[key]}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded-md"
+                />
+              </div>
+            ) : (
+              key === "email_id" && (
+                <div key={key}>
+                  <label className="block text-gray-700 text-sm font-semibold mb-1">EMAIL</label>
+                  <input
+                    type="email"
+                    name={key}
+                    value={userData[key]}
+                    readOnly
+                    className="w-full p-2 border rounded-md bg-gray-100"
+                  />
+                </div>
+              )
+            )
+          ))}
         </div>
-
-        <div>
-          <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">Email</label>
-          <input type="email" className="w-full p-2 border rounded-md font-poppins" value="johnbrown@test.mail.com" readOnly />
-        </div>
-
-        <div>
-          <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">Phone Number</label>
-          <input type="text" className="w-full p-2 border rounded-md font-poppins" value="+0 000-000-000" readOnly />
-        </div>
-
-        <div>
-          <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">Home Airport</label>
-          <input type="text" className="w-full p-2 border rounded-md font-poppins" value="London Heathrow Airport (LHR)" readOnly />
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">Street Address</label>
-          <input type="text" className="w-full p-2 border rounded-md font-poppins" value="46 Gray's Inn Rd, London, WC1X 8LP" readOnly />
-        </div>
-
-        <div>
-          <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">City</label>
-          <input type="text" className="w-full p-2 border rounded-md font-poppins" value="London" readOnly />
-        </div>
-
-        <div>
-          <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">Postal Code</label>
-          <input type="text" className="w-full p-2 border rounded-md font-poppins" value="69106" readOnly />
-        </div>
-
-        <div>
-          <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">State/Province/Region</label>
-          <input type="text" className="w-full p-2 border rounded-md font-poppins" value="London" readOnly />
-        </div>
-
-        <div>
-          <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">Country</label>
-          <input type="text" className="w-full p-2 border rounded-md font-poppins" value="United Kingdom" readOnly />
-        </div>
-      </div>
-
-      <button className="mt-6 w-full bg-black text-white py-2 rounded-md hover:bg-black transition font-agdasima tracking-wide">
-        SAVE CHANGES
-      </button>
+        <button type="submit" className="mt-6 w-full bg-black text-white py-2 rounded-md hover:bg-gray-800">
+          SAVE CHANGES
+        </button>
+      </form>
     </div>
   );
+  
 };
 
 
