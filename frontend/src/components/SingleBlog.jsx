@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import NotFound from './Pages/NotFound'
-import blogData from "../data/data";
+import {blogData} from "../data/data";
 
 const SingleBlog = () => {
   const { id } = useParams();
@@ -54,10 +54,10 @@ const SingleBlog = () => {
           </div>
 
           <div className="mt-6 text-black text-md sm:text-lg font-poppins text-justify leading-relaxed">
-  {blog.content.split("\n").map((paragraph, index) => (
-    <p key={index} className="mb-4">{paragraph}</p>
-  ))}
-</div>
+            {blog.content.split("\n").map((paragraph, index) => (
+              <p key={index} className="mb-4">{paragraph}</p>
+            ))}
+          </div>
 
 
           {blog.tags && blog.tags.length > 0 && (
