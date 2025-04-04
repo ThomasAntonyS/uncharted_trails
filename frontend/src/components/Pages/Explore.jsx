@@ -9,40 +9,40 @@ import FloatingPopup from "../FloatingPopup";
 
 const destinations = [
   {
-    name: "Paris, France",
+    location: "Paris, France",
     description: "Experience the City of Light with its iconic Eiffel Tower and romantic streets.",
     price: "₹1,20,000",
-    image: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
+    imageUrl: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg",
   },
   {
-    name: "Tokyo, Japan",
+    location: "Tokyo, Japan",
     description: "Explore the vibrant culture, amazing food, and bustling streets of Tokyo.",
     price: "₹1,50,000",
-    image: "https://images.pexels.com/photos/161309/traditional-and-technology-zojoji-temple-tokyo-culture-161309.jpeg?auto=compress&cs=tinysrgb&w=600",
+    imageUrl: "https://images.pexels.com/photos/161309/traditional-and-technology-zojoji-temple-tokyo-culture-161309.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
-    name: "New York, USA",
+    location: "New York, USA",
     description: "Discover the Big Apple with its skyscrapers, Broadway shows, and famous landmarks.",
     price: "₹1,80,000",
-    image: "https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg",
+    imageUrl: "https://images.pexels.com/photos/374710/pexels-photo-374710.jpeg",
   },
   {
-    name: "Sydney, Australia",
+    location: "Sydney, Australia",
     description: "Enjoy Sydney's beaches, opera house, and sunny weather.",
     price: "₹1,40,000",
-    image: "https://images.pexels.com/photos/2193300/pexels-photo-2193300.jpeg",
+    imageUrl: "https://images.pexels.com/photos/2193300/pexels-photo-2193300.jpeg",
   },
   {
-    name: "Cairo, Egypt",
+    location: "Cairo, Egypt",
     description: "Visit the pyramids of Giza and immerse yourself in ancient history.",
     price: "₹1,10,000",
-    image: "https://images.pexels.com/photos/9865385/pexels-photo-9865385.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    imageUrl: "https://images.pexels.com/photos/9865385/pexels-photo-9865385.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
-    name: "Cape Town, South Africa",
+    location: "Cape Town, South Africa",
     description: "Witness breathtaking mountains and coastlines in Cape Town.",
     price: "₹1,30,000",
-    image: "https://images.pexels.com/photos/213940/pexels-photo-213940.jpeg",
+    imageUrl: "https://images.pexels.com/photos/213940/pexels-photo-213940.jpeg",
   },
 ];
 
@@ -122,14 +122,14 @@ const Explore = () => {
                 className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition duration-300"
               >
                 <img
-                  src={destination.image}
+                  src={destination.imageUrl}
                   alt={destination.name}
                   className="w-full h-52 object-cover"
                   loading="lazy"
                 />
                 <div className="p-4">
                   <h3 className="text-lg font-semibold text-gray-800 font-agdasima">
-                    {destination.name}
+                    {destination.location}
                   </h3>
                   <p className="text-sm text-gray-600 my-2 font-poppins">
                     {destination.description}

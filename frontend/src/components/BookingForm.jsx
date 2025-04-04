@@ -2,7 +2,8 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../Context/UserContextProvider";
 
 const BookingForm = () => {
-  const { formOpen, setFormOpen, booking } = useContext(UserContext);
+  const { formOpen, setFormOpen, selectedBooking, setSelectedBooking, booking, setBooking } = useContext(UserContext);
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -13,7 +14,7 @@ const BookingForm = () => {
     specialRequests: "",
   });
 
-  if (!formOpen || !booking) return null;
+  if (!formOpen) return null;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,15 +22,44 @@ const BookingForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Booking confirmed for ${booking.name}!`);
+  
+    const newBooking = {
+      ...selectedBooking,
+      ...formData,
+    };
+  
+    const alreadyBooked = booking.some(
+      (b) => b.location === selectedBooking.location
+    );
+  
+    if (alreadyBooked) {
+      alert(`You've already booked ${selectedBooking.location}.`);
+      return;
+    }
+  
+    setBooking((prev) => [...prev, newBooking]);
+  
+    alert(`Booking confirmed for ${selectedBooking.location}!`);
+  
     setFormOpen(false);
+    setSelectedBooking(null);
+    setFormData({
+      fullName: "",
+      email: "",
+      phone: "",
+      travelers: 1,
+      startDate: "",
+      endDate: "",
+      specialRequests: "",
+    });
   };
+  
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-[90%] sm:w-[30%] shadow-lg max-h-[95%] overflow-y-auto">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 font-libreCaslon">
-          Book Your Trip to {booking.name}
+          Book Your Trip to {selectedBooking.location}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -39,7 +69,6 @@ const BookingForm = () => {
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
-              required
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
@@ -50,7 +79,6 @@ const BookingForm = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              required
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
@@ -61,7 +89,6 @@ const BookingForm = () => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              required
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
@@ -73,7 +100,6 @@ const BookingForm = () => {
               min="1"
               value={formData.travelers}
               onChange={handleChange}
-              required
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
@@ -84,7 +110,6 @@ const BookingForm = () => {
               name="startDate"
               value={formData.startDate}
               onChange={handleChange}
-              required
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
@@ -95,7 +120,6 @@ const BookingForm = () => {
               name="endDate"
               value={formData.endDate}
               onChange={handleChange}
-              required
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
@@ -116,7 +140,10 @@ const BookingForm = () => {
           </button>
         </form>
         <button
-          onClick={() => setFormOpen(false)}
+          onClick={() => {
+            setFormOpen(false);
+            setSelectedBooking(null);
+          }}
           className="mt-4 text-red-500 hover:underline"
         >
           Cancel

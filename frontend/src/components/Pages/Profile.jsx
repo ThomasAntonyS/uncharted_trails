@@ -1,22 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaUser, FaHistory, FaHeart, FaWrench,FaNewspaper } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
-import { MdFlight, MdLocationOn, MdPublic, MdApartment } from "react-icons/md";
-import PlusFade from '../../assets/icons'
 import Navbar from '../Navbar'
 import Footer from '../Footer'
 import { UserContext } from "../../Context/UserContextProvider";
-import { Link } from "react-router-dom";
-import BookingForm from "../BookingForm";
+import { PersonalInfo, UserBooking, BookingHistory, Wishlist, InformationUpdate } from "../ProfileTabsComponent";
 import axios from "axios";
-
-
-{/* Main Components */}
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("Personal Info");
   const [userData, setUserData] = useState({});
-  const { wishList, setWishList, userEmail } = useContext(UserContext);
+  const { userEmail } = useContext(UserContext);
 
   useEffect(() => {
     if (userEmail) {
@@ -62,7 +56,7 @@ const UserProfile = () => {
           {activeTab=="Personal Info" ? <PersonalInfo userData={userData}/>:null}
           {activeTab=="Booking" ? <UserBooking/>:null}
           {activeTab=="Booking History" ? <BookingHistory/>:null}
-          {activeTab=="Wishlist" ? <Wishlist wishList={wishList} setWishList={setWishList} />:null}
+          {activeTab=="Wishlist" ? <Wishlist />:null}
           {activeTab=="Settings" ? <InformationUpdate userData={userData} setUserData={setUserData}/>:null}
         </div>
 
@@ -74,281 +68,6 @@ const UserProfile = () => {
 };
 
 
-
-
-{/* Sub/ Nester Components */}
-const PersonalInfo = ({userData}) =>{
-  
-  const [travelData, setTravelData] = useState({
-    miles: 0,
-    cities: 0,
-    world: 0,
-    countries: 0,
-  });
-  
-  useEffect(() => {
-    fetchTravelData();
-  }, []);
-  
-  const fetchTravelData = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/travel-data");
-      if (res.data) {
-        setTravelData(res.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-
-  return(
-    <>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <InfoCard icon={<MdFlight size={32} className=" text-orange-500" />} value={travelData.miles} label="MILES" />
-        <InfoCard icon={<MdApartment size={32} className="text-orange-500" />} value={travelData.cities} label="CITIES" />
-        <InfoCard icon={<MdPublic size={32} className="text-orange-500" />} value={travelData.world+"%"} label="WORLD" />
-        <InfoCard icon={<MdLocationOn size={32} className="text-orange-500" />} value={travelData.countries} label="COUNTRIES" />
-      </div>
-      <div className="bg-white shadow-md rounded-lg p-6 mt-6">
-        <p className=" text-2xl font-bold font-libreCaslon">User Details</p>
-        <UserInfo label="NAME:" value={userData.username} />
-        <UserInfo label="E-MAIL:" value={userData.email_id} />
-        <UserInfo label="PHONE NUMBER:" value={userData.phone_number} />
-        <UserInfo label="HOME AIRPORT:" value={userData.home_airport} />
-        <UserInfo label="STREET ADDRESS:" value={userData.street_address} />
-        <UserInfo label="CITY:" value={userData.city} />
-        <UserInfo label="STATE/PROVINCE/REGION:" value={userData.region} />
-        <UserInfo label="POSTAL CODE:" value={userData.postal_code} />
-        <UserInfo label="COUNTRY:" value={userData.country} />
-      </div>
-    </>
-  )
-}
-
-const UserBooking = () => {
-  const bookingData = [
-    {
-      name: "Cape Town, South Africa",
-      description: "Witness breathtaking mountains and coastlines in Cape Town.",
-      price: "$1,300",
-      image: "https://images.pexels.com/photos/213940/pexels-photo-213940.jpeg",
-    },
-    {
-      name: "Cape Town, South Africa",
-      description: "Witness breathtaking mountains and coastlines in Cape Town.",
-      price: "$1,300",
-      image: "https://images.pexels.com/photos/213940/pexels-photo-213940.jpeg",
-    },
-    {
-      name: "Cape Town, South Africa",
-      description: "Witness breathtaking mountains and coastlines in Cape Town.",
-      price: "$1,300",
-      image: "https://images.pexels.com/photos/213940/pexels-photo-213940.jpeg",
-    }
-];
-
-  return (
-    <div className="bg-white rounded-lg sm:shadow-md sm:p-6 w-full overflow-x-auto">
-      <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Bookings</h2>
-      <div className="w-auto mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-        {bookingData.map((destination, index) => (
-          <div key={index} className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300">
-            <img src={destination.image} alt={destination.name} className="w-full h-56 object-cover" />
-            <div className="p-5">
-              <h3 className="text-lg font-semibold text-gray-800 font-agdasima">{destination.name}</h3>
-              <p className="text-sm text-gray-600 my-3 font-poppins">{destination.description}</p>
-              <div className="flex justify-between items-center mt-4 font-agdasima">
-                <span className="text-lg font-bold text-indigo-600">{destination.price}</span>
-                <button className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider">
-                  Book Now
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const BookingHistory = () => {
-  const bookings = [
-    { title: "Wellington Hotel", location: "San Francisco", orderDate: "1/01/2014", stayDates: "1/05/2014 - 1/15/2014", cost: "$1280", status: "Completed" },
-    { title: "Ruzzini Palace Hotel", location: "Kiev", orderDate: "7/03/2014", stayDates: "9/05/2014 - 15/05/2014", cost: "$7498", status: "In Progress" },
-    { title: "Foscari Palace", location: "Copenhagen", orderDate: "23/06/2014", stayDates: "14/07/2014 - 28/07/2014", cost: "$890", status: "Completed" },
-    { title: "Hilton Hotel", location: "New York", orderDate: "14/09/2014", stayDates: "18/09/2014 - 19/10/2014", cost: "$2453", status: "Cancelled" },
-    { title: "Wellington Hotel", location: "San Francisco", orderDate: "08/04/2014", stayDates: "8/08/2014 - 17/09/2014", cost: "$1653", status: "Completed" },
-    { title: "Hilton Molino Stucky", location: "Copenhagen", orderDate: "02/09/2014", stayDates: "12/06/2014 - 16/06/2014", cost: "$1280", status: "Completed" },
-    { title: "Hilton Hotel", location: "San Francisco", orderDate: "1/01/2014", stayDates: "18/09/2014 - 19/10/2014", cost: "$3615", status: "In Progress" },
-    { title: "Wellington Hotel", location: "Stockholm", orderDate: "1/01/2014", stayDates: "8/08/2014 - 17/09/2014", cost: "$859", status: "Completed" },
-  ];
-
-  return (
-    <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-x-auto">
-    <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Booking History</h2>
-      <table className="w-max sm:w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-800 text-left text-white text-sm uppercase font-agdasima tracking-wide">
-            <th className="p-3">Title</th>
-            <th className="p-3">Location</th>
-            <th className="p-3">Order Date</th>
-            <th className="p-3">Dates of Your Stay</th>
-            <th className="p-3">Cost</th>
-            <th className="p-3">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bookings.map((booking, index) => (
-            <tr key={index} className="border-b font-poppins hover:bg-gray-50 text-gray-700">
-              <td className="p-3">{booking.title}</td>
-              <td className="p-3">{booking.location}</td>
-              <td className="p-3">{booking.orderDate}</td>
-              <td className="p-3">{booking.stayDates}</td>
-              <td className="p-3">{booking.cost}</td>
-              <td className={`p-3 font-semibold ${booking.status === "Completed" ? "text-green-500" : booking.status === "In Progress" ? "text-yellow-500" : "text-red-500"}`}>
-                {booking.status}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {/* Pagination */}
-      <div className="flex justify-end mt-4 text-sm text-gray-600">
-        <span className="cursor-pointer hover:text-blue-500 mr-4">&laquo; prev</span>
-        <span className="cursor-pointer hover:text-blue-500">next &raquo;</span>
-      </div>
-    </div>
-  );
-};
-
-const Wishlist = ({ wishList, setWishList }) => {
-  const { setFormOpen, setBooking } = useContext(UserContext);
-
-  const handleBookNow = (destination) => {
-    setBooking(destination);
-    setFormOpen(true);
-  };
-
-  const handleRemoveWishList = (e, index) => {
-    e.preventDefault();
-    const data = wishList.filter((_, i) => i !== index);
-    setWishList(data);
-  };
-
-  return (
-    <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-x-auto">
-      <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Wishlist</h2>
-      <div className="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 mt-8">
-        {wishList.length > 0 ? (
-          wishList.map((destination, index) => (
-            <div key={index} className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300">
-              <img src={destination.image} alt={destination.name} className="w-full h-56 object-cover" />
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-800 font-agdasima">{destination.name}</h3>
-                <p className="text-sm text-gray-600 my-3 font-poppins">{destination.description}</p>
-                <div className="flex justify-between align-middle mt-4 font-agdasima sm:flex-col xl:flex-row">
-                  <span className="text-lg font-bold text-indigo-600 h-max my-auto">{destination.price}</span>
-                  <div className="flex w-max space-x-3 sm:mt-3 xl:mt-0">
-                    <button 
-                      className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider"
-                      onClick={() => handleBookNow(destination)}
-                    >
-                      Book Now
-                    </button>
-                    <button 
-                      className="flex px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 tracking-wider"
-                      onClick={(e) => handleRemoveWishList(e, index)}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <Link to="/explore" className="bg-white border-2 border-dashed transform transition duration-300 p-6 flex flex-col items-center justify-center">
-            <div className="w-fit mx-auto">
-              <PlusFade />
-            </div>
-            <p className="text-gray-600 text-center mt-4 font-poppins">
-              Add your want-to-go destination.
-            </p>
-          </Link>
-        )}
-      </div>
-      <BookingForm />
-    </div>
-  );
-};
-
-const InformationUpdate = ({userData,setUserData}) => {
-
-  const handleChange = (e) => {
-    const updatedData = { ...userData, [e.target.name]: e.target.value };
-    setUserData(updatedData);
-    sessionStorage.setItem("userData", JSON.stringify(updatedData));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:5000/update-user", userData);
-      alert(response.data.message);
-      sessionStorage.setItem("userData", JSON.stringify(userData));
-    } catch (error) {
-      console.error("Error updating user data:", error);
-    }
-  };
-
-  return (
-    <div className="bg-white shadow-md rounded-lg p-6 w-full mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Change Personal Information</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {userData && Object.keys(userData).map((key) => (
-            key !== "email_id" && key !== "created_at" && key !== "id" ? (
-              <div key={key}>
-                <label className="block text-gray-700 text-sm font-semibold mb-1">
-                  {key.replace("_", " ").toUpperCase()}
-                </label>
-                <input
-                  type="text"
-                  name={key}
-                  placeholder={userData[key]}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
-            ) : (
-              key === "email_id" && (
-                <div key={key}>
-                  <label className="block text-gray-700 text-sm font-semibold mb-1">EMAIL</label>
-                  <input
-                    type="email"
-                    name={key}
-                    value={userData[key]}
-                    readOnly
-                    className="w-full p-2 border rounded-md bg-gray-100"
-                  />
-                </div>
-              )
-            )
-          ))}
-        </div>
-        <button type="submit" className="mt-6 w-full bg-black text-white py-2 rounded-md hover:bg-gray-800">
-          SAVE CHANGES
-        </button>
-      </form>
-    </div>
-  );
-  
-};
-
-
-
-
 {/* Micro Components */}
 
 const SidebarItem = ({ icon, text, active, onClick }) => (
@@ -358,21 +77,6 @@ const SidebarItem = ({ icon, text, active, onClick }) => (
   >
     {icon}
     <span>{text}</span>
-  </div>
-);
-
-const InfoCard = ({ icon, value, label }) => (
-  <div className="bg-gray-800 shadow-md rounded-lg p-4 flex flex-col items-center text-center">
-    {icon}
-    <h3 className="text-xl text-white font-semibold mt-2 font-agdasima">{value}</h3>
-    <p className="text-sm text-gray-200 font-poppins">{label}</p>
-  </div>
-);
-
-const UserInfo = ({ label, value }) => (
-  <div className="flex flex-col md:flex-row md:justify-between border-b py-2">
-    <span className="font-semibold text-gray-800 font-agdasima tracking-wide">{label}</span>
-    <span className="text-gray-700 font-poppins">{value}</span>
   </div>
 );
 
