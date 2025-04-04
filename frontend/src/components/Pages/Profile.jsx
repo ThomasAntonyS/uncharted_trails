@@ -6,11 +6,13 @@ import Footer from '../Footer'
 import { UserContext } from "../../Context/UserContextProvider";
 import { PersonalInfo, UserBooking, BookingHistory, Wishlist, InformationUpdate } from "../ProfileTabsComponent";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("Personal Info");
   const [userData, setUserData] = useState({});
-  const { userEmail } = useContext(UserContext);
+  const { userEmail, setLoggedIn, setUserEmail } = useContext(UserContext);
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (userEmail) {
@@ -23,6 +25,12 @@ const UserProfile = () => {
         .catch((error) => console.error("Error fetching user data:", error));
     }
   }, [userEmail]);
+
+  const handleLogout = ()=>{
+    setLoggedIn(false)
+    setUserEmail("")
+    navigate("/")
+  }
 
   return (
     <>
@@ -47,7 +55,10 @@ const UserProfile = () => {
             <SidebarItem icon={<FaHistory />} text="Booking History" active={activeTab === "Booking History"} onClick={() => setActiveTab("Booking History")} />
             <SidebarItem icon={<FaHeart />} text="Wishlist" active={activeTab === "Wishlist"} onClick={() => setActiveTab("Wishlist")} />
             <SidebarItem icon={<FaWrench />} text="Settings" active={activeTab === "Settings"} onClick={() => setActiveTab("Settings")} />
-            <button className="flex w-full p-2 bg-black text-white justify-center my-4 font-agdasima tracking-wide">Log Out <span className=" my-auto m-2"><MdLogout/></span> </button>
+            <button className="flex w-full p-2 bg-black text-white justify-center my-4 font-agdasima tracking-wide"
+            onClick={handleLogout}
+            >Log Out <span className=" my-auto m-2"><MdLogout/>
+            </span> </button>
           </div>
         </div>
 

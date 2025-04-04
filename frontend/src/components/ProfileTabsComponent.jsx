@@ -229,8 +229,11 @@ import axios from 'axios'
   };
   
   export const InformationUpdate = ({userData,setUserData}) => {
+
+    const [stateChange,setStateChange] = useState(false)
   
     const handleChange = (e) => {
+      setStateChange(true)
       const updatedData = { ...userData, [e.target.name]: e.target.value };
       setUserData(updatedData);
       sessionStorage.setItem("userData", JSON.stringify(updatedData));
@@ -238,24 +241,30 @@ import axios from 'axios'
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-      try {
-        const response = await axios.post("http://localhost:5000/update-user", userData);
-        alert(response.data.message);
-        sessionStorage.setItem("userData", JSON.stringify(userData));
-      } catch (error) {
-        console.error("Error updating user data:", error);
+      if(stateChange){
+        try {
+          const response = await axios.post("http://localhost:5000/update-user", userData);
+          alert(response.data.message);
+          setStateChange(false)
+          sessionStorage.setItem("userData", JSON.stringify(userData));
+        } 
+        catch (error) {
+          console.error("Error updating user data:", error);
+        }
       }
+      else
+      alert("No data changed to update")
     };
   
     return (
       <div className="bg-white shadow-md rounded-lg p-6 w-full mx-auto">
-        <h2 className="text-2xl font-bold mb-4">Change Personal Information</h2>
+        <h2 className="text-2xl font-bold font-libreCaslon mb-4">Change Personal Information</h2>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {userData && Object.keys(userData).map((key) => (
               key !== "email_id" && key !== "created_at" && key !== "id" ? (
                 <div key={key}>
-                  <label className="block text-gray-700 text-sm font-semibold mb-1">
+                  <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">
                     {key.replace("_", " ").toUpperCase()}
                   </label>
                   <input
@@ -263,26 +272,26 @@ import axios from 'axios'
                     name={key}
                     placeholder={userData[key]}
                     onChange={handleChange}
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2 border rounded-md font-poppins"
                   />
                 </div>
               ) : (
                 key === "email_id" && (
                   <div key={key}>
-                    <label className="block text-gray-700 text-sm font-semibold mb-1">EMAIL</label>
+                    <label className="block text-gray-700 text-sm font-semibold mb-1 font-agdasima tracking-wide">EMAIL</label>
                     <input
                       type="email"
                       name={key}
                       value={userData[key]}
                       readOnly
-                      className="w-full p-2 border rounded-md bg-gray-100"
+                      className="w-full p-2 border rounded-md bg-gray-100 font-poppins"
                     />
                   </div>
                 )
               )
             ))}
           </div>
-          <button type="submit" className="mt-6 w-full bg-black text-white py-2 rounded-md hover:bg-gray-800">
+          <button type="submit" className="mt-6 w-full bg-black text-white py-2 rounded-md font-agdasima tracking-wide">
             SAVE CHANGES
           </button>
         </form>
