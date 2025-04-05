@@ -1,11 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { UserContext } from "../Context/UserContextProvider";
+import axios from "axios";
 
 const BookingForm = () => {
-  const { formOpen, setFormOpen, selectedBooking, setSelectedBooking, booking, setBooking } = useContext(UserContext);
+  const {
+    formOpen,
+    setFormOpen,
+    selectedBooking,
+    setSelectedBooking,
+    booking,
+    setBooking,
+  } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
+    destination: "",
     fullName: "",
     email: "",
     phone: "",
@@ -13,7 +22,19 @@ const BookingForm = () => {
     startDate: "",
     endDate: "",
     specialRequests: "",
+    price: "",
+    bookingData: new Date().toUTCString(),
   });
+
+  useEffect(() => {
+    if (selectedBooking) {
+      setFormData((prev) => ({
+        ...prev,
+        destination: selectedBooking.location,
+        price: selectedBooking.price,
+      }));
+    }
+  }, [selectedBooking]);
 
   if (!formOpen) return null;
 
@@ -21,47 +42,54 @@ const BookingForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
+    const userEmail = sessionStorage.getItem("userEmail");
+    if (!userEmail) {
+      alert("User not logged in. Please sign in first.");
+      return;
+    }
+
     const newBooking = {
-      ...selectedBooking,
       ...formData,
+      email: userEmail,
     };
-  
+
     const alreadyBooked = booking.some(
-      (b) => b.location === selectedBooking.location
+      (b) => b.destination === selectedBooking.location
     );
-  
+
     if (alreadyBooked) {
       alert(`You've already booked ${selectedBooking.location}.`);
       return;
     }
-  
-    setBooking((prev) => [...prev, newBooking]);
-  
-    alert(`Booking confirmed for ${selectedBooking.location}!`);
-  
-    setFormOpen(false);
-    setSelectedBooking(null);
-    setFormData({
-      fullName: "",
-      email: "",
-      phone: "",
-      travelers: 1,
-      startDate: "",
-      endDate: "",
-      specialRequests: "",
-    });
+
+    try {
+      const response = await axios.post("http://localhost:5000/booking", newBooking);
+
+      if (response.status === 201) {
+        setBooking((prev) => [...prev, newBooking]);
+        alert(`Booking confirmed for ${selectedBooking.location}!`);
+        setFormOpen(false);
+        setSelectedBooking(null);
+      } else {
+        alert("Booking failed: " + response.data.message);
+      }
+    } catch (error) {
+      console.error("Booking error:", error);
+      alert("An error occurred while booking. Please try again.");
+    }
   };
-  
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="flex flex-col bg-white rounded-lg p-6 w-[90%] sm:w-[50%] lg:w-[30%] shadow-lg max-h-[95%] overflow-y-auto">
-        <button className=" flex justify-end my-2" onClick={()=>setFormOpen(false)} ><IoClose size={20}/></button>
+        <button className="flex justify-end my-2" onClick={() => setFormOpen(false)}>
+          <IoClose size={20} />
+        </button>
         <h2 className="text-2xl font-bold text-gray-800 mb-4 font-libreCaslon">
-          Book Your Trip to {selectedBooking.location}
+          Book Your Trip to {selectedBooking?.location}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -72,6 +100,7 @@ const BookingForm = () => {
               value={formData.fullName}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              required
             />
           </div>
           <div>
@@ -79,9 +108,9 @@ const BookingForm = () => {
             <input
               type="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              value={sessionStorage.getItem("userEmail") || ""}
+              readOnly
+              className="w-full px-3 py-2 border rounded bg-gray-100"
             />
           </div>
           <div>
@@ -92,6 +121,7 @@ const BookingForm = () => {
               value={formData.phone}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              required
             />
           </div>
           <div>
@@ -103,6 +133,7 @@ const BookingForm = () => {
               value={formData.travelers}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              required
             />
           </div>
           <div>
@@ -113,6 +144,7 @@ const BookingForm = () => {
               value={formData.startDate}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              required
             />
           </div>
           <div>
@@ -123,6 +155,7 @@ const BookingForm = () => {
               value={formData.endDate}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              required
             />
           </div>
           <div>
@@ -140,16 +173,16 @@ const BookingForm = () => {
           >
             Confirm Booking
           </button>
-
           <button
-          onClick={() => {
-            setFormOpen(false);
-            setSelectedBooking(null);
-          }}
-          className="bg-red-500 font-agdasima tracking-wider text-white mx-2 px-4 py-2 rounded hover:bg-red-600 transition"
-        >
-          Cancel
-        </button>
+            type="button"
+            onClick={() => {
+              setFormOpen(false);
+              setSelectedBooking(null);
+            }}
+            className="bg-red-500 font-agdasima tracking-wider text-white mx-2 px-4 py-2 rounded hover:bg-red-600 transition"
+          >
+            Cancel
+          </button>
         </form>
       </div>
     </div>

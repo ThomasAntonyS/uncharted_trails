@@ -261,9 +261,109 @@ app.get("/travel-data", async (req, res) => {
     }
 });
 
-app.get("/",(req,res)=>{
-    res.send("Running uncharted trails backend")
-})
+app.post("/booking", (req, res) => {
+    const {
+      fullName,
+      email,
+      phone,
+      destination,
+      travelers,
+      startDate,
+      endDate,
+      specialRequests,
+      price,
+      bookingData,
+    } = req.body;
+  
+    if (!email || !fullName || !destination || !startDate || !endDate) {
+      return res.status(400).json({ message: "Missing required fields." });
+    }
+  
+    const sql = `INSERT INTO booking 
+      (fullName, email_id, phone, destination, travelers, startDate, endDate, specialRequests, price, bookingDate)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  
+    db.query(
+      sql,
+      [
+        fullName,
+        email,
+        phone,
+        destination,
+        travelers,
+        startDate,
+        endDate,
+        specialRequests,
+        price,
+        new Date(bookingData),
+      ],
+      (err, result) => {
+        if (err) {
+          console.error("Insert error:", err);
+          return res.status(500).json({ message: "Booking failed. Try again." });
+        }
+  
+        res.status(201).json({ message: "Booking successful", id: result.insertId });
+      }
+    );
+});
+
+app.get('/getBookings/:userEmail', async (req, res) => {
+    const email = req.params.userEmail;
+    
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+  
+    const sql = `SELECT booking_id, destination AS location, bookingDate AS orderDate, travelers, startDate, endDate, price AS cost
+                 FROM booking
+                 WHERE email_id = ?`;
+  
+    try {
+      const [results] = await db.promise().query(sql, [email]);
+  
+
+      const bookings = results.map(b => {
+        const endDate = new Date(b.endDate);
+        const today = new Date();
+      
+        return {
+          booking_id: b.booking_id,
+          location: b.location,
+          orderDate: new Date(b.orderDate).toLocaleDateString(),
+          travellers: b.travelers.toString(),
+          stayDates: `${new Date(b.startDate).toLocaleDateString()} - ${endDate.toLocaleDateString()}`,
+          cost: `$${b.cost}`,
+          status: today <= endDate ? "In Progress" : "Completed",
+        };
+      });
+  
+      res.status(200).json(bookings);
+    } catch (err) {
+      console.error("Error fetching bookings:", err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+app.delete("/delete-booking/:bookingId&email_id=:email", (req, res) => {
+    const bookingId = req.params.bookingId;
+    const email = req.params.email;
+  
+    const query = "DELETE FROM booking WHERE booking_id = ? AND email_id = ?";
+    db.query(query, [bookingId, email], (err, result) => {
+      if (err) {
+        console.error("Error deleting booking:", err);
+        return res.status(500).json({ message: "Internal Server Error" });
+      }
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+  
+      res.status(200).json({ message: "Booking deleted successfully" });
+    });
+});
+  
 
 app.listen(5000, () => {
     console.log("Server running");

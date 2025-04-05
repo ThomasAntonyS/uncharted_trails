@@ -45,8 +45,8 @@ const UserProfile = () => {
               alt="User"
               className="w-24 h-24 rounded-full"
             />
-            <h2 className="text-lg font-semibold mt-2 font-libreCaslon">John Brown</h2>
-            <p className="text-sm text-gray-500 font-poppins">MEMBER SINCE MAY 2012</p>
+            <h2 className="text-lg font-semibold mt-2 font-libreCaslon">{userData.username || "N/A"}</h2>
+            <p className="text-sm text-gray-500 font-poppins">MEMBER SINCE {userData.created_at || "N/A"}</p>
           </div>
 
           <div className="mt-6" >
