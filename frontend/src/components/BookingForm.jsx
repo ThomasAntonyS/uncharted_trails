@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { IoClose } from "react-icons/io5";
 import { UserContext } from "../Context/UserContextProvider";
 
 const BookingForm = () => {
@@ -57,7 +58,8 @@ const BookingForm = () => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-[90%] sm:w-[30%] shadow-lg max-h-[95%] overflow-y-auto">
+      <div className="flex flex-col bg-white rounded-lg p-6 w-[90%] sm:w-[50%] lg:w-[30%] shadow-lg max-h-[95%] overflow-y-auto">
+        <button className=" flex justify-end my-2" onClick={()=>setFormOpen(false)} ><IoClose size={20}/></button>
         <h2 className="text-2xl font-bold text-gray-800 mb-4 font-libreCaslon">
           Book Your Trip to {selectedBooking.location}
         </h2>
@@ -134,20 +136,21 @@ const BookingForm = () => {
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+            className="bg-blue-500 font-agdasima tracking-wider text-white px-4 py-2 rounded hover:bg-blue-600 transition"
           >
             Confirm Booking
           </button>
-        </form>
-        <button
+
+          <button
           onClick={() => {
             setFormOpen(false);
             setSelectedBooking(null);
           }}
-          className="mt-4 text-red-500 hover:underline"
+          className="bg-red-500 font-agdasima tracking-wider text-white mx-2 px-4 py-2 rounded hover:bg-red-600 transition"
         >
           Cancel
         </button>
+        </form>
       </div>
     </div>
   );

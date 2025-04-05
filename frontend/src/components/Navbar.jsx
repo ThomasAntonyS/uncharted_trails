@@ -64,7 +64,6 @@ const Navbar = () => {
           onClick={()=>setIsMenuOpen(!isMenuOpen)}
           className="text-white focus:outline-none "
         >
-          {/* Hamburger icon */}
           {isMenuOpen ? 
               <svg
               xmlns="http://www.w3.org/2000/svg"

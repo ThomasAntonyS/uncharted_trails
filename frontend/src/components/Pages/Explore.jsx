@@ -57,20 +57,20 @@ const Explore = () => {
 
   const handleWishList = (e,index) =>{
     e.preventDefault()
-    const wishListItem = destinations.find(item => item.name == destinations[index].name)
+    const wishListItem = destinations.find(item => item.location == destinations[index].location)
 
 
-    const isPresent = wishList.findIndex(item => item.name == wishListItem.name)
+    const isPresent = wishList.findIndex(item => item.location == wishListItem.location)
 
     if(isPresent==-1){
       const data = [...wishList,wishListItem]
       setError(false)
       setWishList(data)    
-      setPopupData(`${wishListItem.name} added to wishlist`)
+      setPopupData(`${wishListItem.location} added to wishlist`)
       setPopup(true)
     }
     else{
-      setPopupData(`${wishListItem.name} already on your wishlist`)
+      setPopupData(`${wishListItem.location} already on your wishlist`)
       setError(true)
       setPopup(true)
     }  

@@ -14,6 +14,13 @@ const FloatingPopup = ({ data, setPopup, error, setError,navLink, navName }) => 
     return () => clearTimeout(timer);
   }, []);
 
+  const  handleNavigate = () =>{
+    window.scrollTo({
+      behavior:"smooth",
+      top:0
+    })
+  }
+
   return (
     <div className="fixed top-[10%] right-[5%] z-10 bg-white shadow-lg p-4 rounded-md border border-gray-200 flex items-center gap-3 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl w-auto">
       {
@@ -29,7 +36,7 @@ const FloatingPopup = ({ data, setPopup, error, setError,navLink, navName }) => 
           </button>
         </div>
         <div className="text-blue-700 underline text-sm sm:text-base font-poppins">
-          <Link to={navLink} className="flex items-center gap-1">
+          <Link to={navLink} onClick={handleNavigate} className="flex items-center gap-1">
             {navName}
             <GoChevronRight className="text-blue-700 h-4 w-4" />
           </Link>
