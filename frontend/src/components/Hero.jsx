@@ -1,6 +1,7 @@
 import Navbar from './Navbar';
 import Hero_video from '../assets/Hero_video.mp4';
 import { MdArrowRightAlt } from "react-icons/md";
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
@@ -51,7 +52,7 @@ const Hero = () => {
           </div>
 
           <div className='Hero_Button flex w-full sm:w-[20%] font-libreCaslon bg-black text-white text-[1rem] sm:text-[1.2rem] tracking-wider'>
-            <button className='mx-auto w-full py-2 flex items-center justify-center'>Click here <MdArrowRightAlt size={30} className="ml-2" /></button>
+            <Link to='/pricing' className='mx-auto w-full py-2 flex items-center justify-center'>Click here <MdArrowRightAlt size={30} className="ml-2" /></Link>
           </div>
         </div>
 

@@ -43,15 +43,15 @@ export const PersonalInfo = ({userData}) =>{
       </div>
       <div className="bg-white shadow-md rounded-lg p-6 mt-6">
         <p className=" text-2xl font-bold font-libreCaslon">User Details</p>
-        <UserInfo label="NAME:" value={userData.username} />
-        <UserInfo label="E-MAIL:" value={userData.email_id} />
-        <UserInfo label="PHONE NUMBER:" value={userData.phone_number} />
-        <UserInfo label="HOME AIRPORT:" value={userData.home_airport} />
-        <UserInfo label="STREET ADDRESS:" value={userData.street_address} />
-        <UserInfo label="CITY:" value={userData.city} />
-        <UserInfo label="STATE/PROVINCE/REGION:" value={userData.region} />
-        <UserInfo label="POSTAL CODE:" value={userData.postal_code} />
-        <UserInfo label="COUNTRY:" value={userData.country} />
+        <UserInfo label="NAME:" value={userData.username || "N/A"} />
+        <UserInfo label="E-MAIL:" value={userData.email_id || "N/A"} />
+        <UserInfo label="PHONE NUMBER:" value={userData.phone_number || "N/A"} />
+        <UserInfo label="HOME AIRPORT:" value={userData.home_airport || "N/A"} />
+        <UserInfo label="STREET ADDRESS:" value={userData.street_address || "N/A"} />
+        <UserInfo label="CITY:" value={userData.city || "N/A"} />
+        <UserInfo label="STATE/PROVINCE/REGION:" value={userData.region || "N/A"} />
+        <UserInfo label="POSTAL CODE:" value={userData.postal_code || "N/A"} />
+        <UserInfo label="COUNTRY:" value={userData.country || "N/A"} />
       </div>
     </>
   )
@@ -93,10 +93,13 @@ export const UserBooking = () => {
     try {
       const email = sessionStorage.getItem("userEmail");
       if (!email) return;
-      
-      await axios.delete(`http://localhost:5000/delete-booking/${bookingId}&email_id=${email}`);
-      const updatedBookings = booking.filter((_, i) => i !== index);
-      setBooking(updatedBookings);
+      let answer = prompt(`Do you want to delete the destination? Type "yes" if you want to delete.`)
+
+      if(answer.toLowerCase()==="yes"){
+        await axios.delete(`http://localhost:5000/delete-booking/${bookingId}&email_id=${email}`);
+        const updatedBookings = booking.filter((_, i) => i !== index);
+        setBooking(updatedBookings);
+      }
     } catch (error) {
       console.error("Error cancelling booking:", error);
     }
