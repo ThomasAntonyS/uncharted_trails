@@ -12,7 +12,6 @@ import UserContextProvider from './Context/UserContextProvider'
 import Profile from './components/Pages/Profile'
 import SingleBlog from './components/SingleBlog'
 import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
 function App() {
 
@@ -75,7 +74,6 @@ function App() {
       </UserContextProvider>
 
       <Analytics/>
-      <SpeedInsights/>
     </>
   )
 }
