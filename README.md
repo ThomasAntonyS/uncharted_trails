@@ -7,7 +7,7 @@
     A Full Stack Travel Booking Application<br>
     <br/>
     <br/>
-    <a href="https://uncharted-trails.vercel.app/](https://www.linkedin.com/posts/thomas-antony-s_reactjs-webapp-mysql-activity-7314549942239260672-40Bl?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEDlBAMBD4NpWuIGL8nkkJ_es4Saix5ZhJg" />Demo Link</a>
+    <a href="https://www.linkedin.com/posts/thomas-antony-s_reactjs-webapp-mysql-activity-7314549942239260672-40Bl?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEDlBAMBD4NpWuIGL8nkkJ_es4Saix5ZhJg" />Demo Link</a>
   </h2>
 </p>
 
