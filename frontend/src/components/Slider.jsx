@@ -115,7 +115,7 @@ const Slider = () => {
       {!atStart && (
         <button
           onClick={() => scroll('left')}
-          className="absolute top-1/2 left-2 z-10 p-2 bg-gray-800 text-white rounded-full transform -translate-y-1/2 hover:bg-gray-700"
+          className="absolute top-1/2 left-1 z-10 p-2 bg-gray-800 text-white rounded-full transform -translate-y-1/2 hover:bg-gray-700"
         >
           <FaArrowLeft className="h-7 w-7" />
         </button>
@@ -125,7 +125,7 @@ const Slider = () => {
       {!atEnd && (
         <button
           onClick={() => scroll('right')}
-          className="absolute top-1/2 right-2 z-10 p-2 bg-orange-500 text-white rounded-full transform -translate-y-1/2 hover:bg-orange-600"
+          className="absolute top-1/2 right-1 z-10 p-2 bg-orange-500 text-white rounded-full transform -translate-y-1/2 hover:bg-orange-600"
         >
           <FaArrowRight className="h-7 w-7" />
         </button>
