@@ -1,5 +1,4 @@
-// src/components/Slider.js
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import Card from './Card';
 
@@ -73,50 +72,75 @@ const destinations = [
 ];
 
 
-
 const Slider = () => {
-  const [current, setCurrent] = useState(0);
+  const scrollRef = useRef(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
 
-  const cards = destinations.length ;
+  const scroll = (direction) => {
+    const el = scrollRef.current;
+    if (!el) return;
 
-  const handlePrev = () => {
-    setCurrent((prev) => (prev === 0 ? cards - 1 : prev - 1));
+    const { scrollLeft, clientWidth } = el;
+    const scrollAmount = clientWidth * 0.8;
+
+    el.scrollTo({
+      left: direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
+      behavior: 'smooth',
+    });
   };
 
-  const handleNext = () => {
-    setCurrent((prev) => (prev === cards - 1 ? 0 : prev + 1));
+  const checkScrollPosition = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    setAtStart(el.scrollLeft <= 0);
+    setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 1);
   };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) {
+      el.addEventListener('scroll', checkScrollPosition);
+      checkScrollPosition();
+
+      return () => {
+        el.removeEventListener('scroll', checkScrollPosition);
+      };
+    }
+  }, []);
 
   return (
-    <div className="relative flex h-[80%] w-[90%] sm:h-[35vh] xl:h-[80%] lg:w-[90%] mx-auto overflow-hidden">
-      {/* Navigation Buttons */}
-      <button
-        onClick={handlePrev}
-        className="absolute top-1/2 left-0 z-10 ml-2 p-2 bg-gray-800 rounded-full text-white transform -translate-y-1/2"
-      >
-        <FaArrowLeft className="h-6 w-6" />
-      </button>
+    <div className="relative w-[90%] mx-auto py-6">
+      {!atStart && (
+        <button
+          onClick={() => scroll('left')}
+          className="absolute top-1/2 left-2 z-10 p-2 bg-gray-800 text-white rounded-full transform -translate-y-1/2 hover:bg-gray-700"
+        >
+          <FaArrowLeft className="h-7 w-7" />
+        </button>
+      )}
 
-      <button
-        onClick={handleNext}
-        className="absolute top-1/2 right-0 z-10 mr-2 p-2 bg-orange-500 rounded-full text-white transform -translate-y-1/2"
-      >
-        <FaArrowRight className="h-6 w-6" />
-      </button>
+      {/* Right Arrow */}
+      {!atEnd && (
+        <button
+          onClick={() => scroll('right')}
+          className="absolute top-1/2 right-2 z-10 p-2 bg-orange-500 text-white rounded-full transform -translate-y-1/2 hover:bg-orange-600"
+        >
+          <FaArrowRight className="h-7 w-7" />
+        </button>
+      )}
 
-      {/* Slider Container */}
+      {/* Scrollable Cards */}
       <div
-        className="h-full flex transition-transform duration-500 ease-in-out"
-        style={{ transform: `translateX(-${current * 20}%)` }}
+        ref={scrollRef}
+        className="flex overflow-x-scroll no-scrollbar scroll-smooth gap-4"
       >
         {destinations.map((destination) => (
-          <div
-            key={destination.id}
-            className="min-w-[calc(100%/4)] flex-shrink-0"
-          >
+          <div key={destination.id} className="flex-shrink-0 w-[75vw] sm:w-[50vw] md:w-[35vw] lg:w-[25vw] xl:w-[20vw]">
             <Card {...destination} />
           </div>
-        ))} 
+        ))}
       </div>
     </div>
   );
