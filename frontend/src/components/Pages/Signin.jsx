@@ -51,7 +51,7 @@ const Signin = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-[110vh] sm:h-screen">
       {/* Top Navbar */}
       <div className="flex fixed top-0 justify-between items-center h-[8vh] w-[100vw] bg-black bg-opacity-50 z-[20] px-4 sm:px-8">
         <Link to={"/"} className="Logo_">
@@ -93,7 +93,6 @@ const Signin = () => {
             />
           </div>
 
-          {/* ✅ Phone Number Field */}
           <div className="mb-2">
             <label className="block text-gray-700 font-poppins">Phone Number</label>
             <input
@@ -106,7 +105,6 @@ const Signin = () => {
             />
           </div>
 
-          {/* Password Field */}
           <div className="mb-2">
             <label className="block text-gray-700 font-poppins">Password</label>
             <input
@@ -120,7 +118,6 @@ const Signin = () => {
             </div>
           </div>
 
-          {/* Confirm Password Field */}
           <div className="mb-4">
             <label className="block text-gray-700 font-poppins">Repeat password</label>
             <input
@@ -134,7 +131,6 @@ const Signin = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
           <button className="w-full font-agdasima tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
             Sign up
           </button>
@@ -145,7 +141,6 @@ const Signin = () => {
         </p>
       </div>
 
-      {/* Right Section */}
       <div className="hidden md:flex w-1/2 bg-purple-200 justify-center items-center">
         <div className="w-full h-full">
           <img src="https://images.pexels.com/photos/3621344/pexels-photo-3621344.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Illustration"

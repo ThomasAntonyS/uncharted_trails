@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import BookingForm from "./BookingForm";
 import {destinations} from '../data/data'
 import axios from 'axios'
+import ConfirmDeletePopup from './ConfirmDeletePopup';
 
 export const PersonalInfo = ({userData}) =>{
 
@@ -59,57 +60,70 @@ export const PersonalInfo = ({userData}) =>{
   
 export const UserBooking = () => {
   const { booking, setBooking } = useContext(UserContext);
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
+  const [deleteName, setDeleteName] = useState('');
+  const [deleteId, setDeleteId] = useState(null);
+
   useEffect(() => {
     const fetchBookings = async () => {
       const email = sessionStorage.getItem("userEmail");
       if (!email) return;
-
+    
       try {
-        const response = await axios.get(`http://localhost:5000/getBookings/${email}`);
-        const fetchedBookings = response.data;
-
-        const data = fetchedBookings.map(b => {
-          const matchedDestination = destinations.find(d =>
-            d.location.toLowerCase() === b.location.toLowerCase()
-          );
-          return {
-            ...matchedDestination,
-            ...b,
-          };
-        });
-
-        setBooking(data);
-        
+        const response = await axios.get(`http://localhost:5000/get-bookings/${email}`);
+        const bookingData = response.data;
+    
+        const matchedBookings = bookingData
+          .map((booking) => {
+            const matchedDestination = destinations.find(
+              (place) => place.location === booking.location
+            );
+            if (matchedDestination) {
+              return {
+                ...matchedDestination,
+                bookingDetails: booking, 
+              };
+            }
+            return null;
+          })
+          .filter((item) => item !== null);
+    
+        setBooking(matchedBookings);
       } catch (error) {
         console.error("Failed to fetch bookings:", error);
       }
     };
-
     fetchBookings();
   }, [setBooking]);
 
-  const handleCancelBooking = async (e, index, bookingId) => {
+  const openCancelPopup = (e,index, id, name) => {
     e.preventDefault()
+    setDeleteIndex(index);
+    setDeleteId(id);
+    setDeleteName(name);
+    setPopupOpen(true);
+  };
+
+  const handleConfirmCancel = async () => {
     try {
       const email = sessionStorage.getItem("userEmail");
       if (!email) return;
-      let answer = prompt(`Do you want to delete the destination? Type "yes" if you want to delete.`)
 
-      if(answer.toLowerCase()==="yes"){
-        await axios.delete(`http://localhost:5000/delete-booking/${bookingId}&email_id=${email}`);
-        const updatedBookings = booking.filter((_, i) => i !== index);
-        setBooking(updatedBookings);
-      }
+      await axios.delete(`http://localhost:5000/delete-booking/${deleteId}&email_id=${email}`);
+      const updatedBookings = booking.filter((_, i) => i !== deleteIndex);
+      setBooking(updatedBookings);
+      setPopupOpen(false);
     } catch (error) {
       console.error("Error cancelling booking:", error);
     }
   };
-  
+
   return (
     <div className="bg-white rounded-lg sm:shadow-md sm:p-6 w-full overflow-x-auto">
       <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Bookings</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-        {booking.filter(b => b.status !== "Completed").length > 0 ? (
+        {booking.filter((b) => b.status !== "Completed").length > 0 ? (
           booking
             .filter((destination) => destination.status !== "Completed")
             .map((destination, index) => (
@@ -131,10 +145,12 @@ export const UserBooking = () => {
                   </p>
                   <div className="flex justify-between items-center mt-4 font-agdasima">
                     <span className="text-lg font-bold text-indigo-600">
-                      {destination.price}
+                      {destination.price || "N/A"}
                     </span>
                     <button
-                      onClick={(e) => handleCancelBooking(e, index, destination.booking_id)}
+                      onClick={(e) =>
+                        openCancelPopup(e,index, destination.bookingDetails.booking_id, destination.location)
+                      }
                       className="flex px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 tracking-wider"
                     >
                       <span className="h-max my-auto mr-2">
@@ -160,6 +176,13 @@ export const UserBooking = () => {
           </Link>
         )}
       </div>
+
+      <ConfirmDeletePopup
+        isOpen={popupOpen}
+        onClose={() => setPopupOpen(false)}
+        onConfirm={handleConfirmCancel}
+        destinationName={deleteName}
+      />
     </div>
   );
 };
@@ -171,7 +194,7 @@ export const BookingHistory = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/getBookings/${userEmail}`)
+        const response = await axios.get(`http://localhost:5000/get-bookings/${userEmail}`)
         setBooking(response.data);
       } catch (error) {
         console.error("Failed to fetch bookings:", error);
@@ -230,17 +253,26 @@ export const BookingHistory = () => {
 };
   
 export const Wishlist = () => {
-  const { setFormOpen, wishList, setWishList, setSelectedBooking} = useContext(UserContext);
+  const { setFormOpen, wishList, setWishList, setSelectedBooking } = useContext(UserContext);
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
+  const [deleteName, setDeleteName] = useState('');
 
-  const handleBookNow = (destination) => {     
+  const handleBookNow = (destination) => {
     setSelectedBooking(destination);
     setFormOpen(true);
   };
 
-  const handleRemoveWishList = (e, index) => {
-    e.preventDefault();
-    const updatedList = wishList.filter((_, i) => i !== index);
+  const handleRemoveClick = (index, name) => {
+    setDeleteIndex(index);
+    setDeleteName(name);
+    setPopupOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    const updatedList = wishList.filter((_, i) => i !== deleteIndex);
     setWishList(updatedList);
+    setPopupOpen(false);
   };
 
   return (
@@ -249,13 +281,24 @@ export const Wishlist = () => {
       <div className="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 mt-8">
         {wishList.length > 0 ? (
           wishList.map((destination, index) => (
-            <div key={index} className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300">
-              <img src={destination.image || destination.imageUrl} alt={destination.location} className="w-full h-56 object-cover" />
+            <div
+              key={index}
+              className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300"
+            >
+              <img
+                src={destination.image || destination.imageUrl}
+                alt={destination.location}
+                className="w-full h-56 object-cover"
+              />
               <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-800 font-agdasima">{destination.location}</h3>
+                <h3 className="text-lg font-semibold text-gray-800 font-agdasima">
+                  {destination.location}
+                </h3>
                 <p className="text-sm text-gray-600 my-3 font-poppins">{destination.description}</p>
                 <div className="flex justify-between align-middle mt-4 font-agdasima flex-col xl:flex-row">
-                  <span className="text-lg font-bold text-indigo-600 h-max my-auto">{destination.price}</span>
+                  <span className="text-lg font-bold text-indigo-600 h-max my-auto">
+                    {destination.price}
+                  </span>
                   <div className="flex w-max space-x-3 sm:mt-3 xl:mt-0">
                     <button
                       className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider"
@@ -265,7 +308,7 @@ export const Wishlist = () => {
                     </button>
                     <button
                       className="flex px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 tracking-wider"
-                      onClick={(e) => handleRemoveWishList(e, index)}
+                      onClick={() => handleRemoveClick(index, destination.location)}
                     >
                       Remove
                     </button>
@@ -275,7 +318,10 @@ export const Wishlist = () => {
             </div>
           ))
         ) : (
-          <Link to="/explore" className="bg-white border-2 border-dashed transform transition duration-300 p-6 flex flex-col items-center justify-center">
+          <Link
+            to="/explore"
+            className="bg-white border-2 border-dashed transform transition duration-300 p-6 flex flex-col items-center justify-center"
+          >
             <div className="w-fit mx-auto">
               <PlusFade />
             </div>
@@ -285,10 +331,19 @@ export const Wishlist = () => {
           </Link>
         )}
       </div>
+
+      <ConfirmDeletePopup
+        isOpen={popupOpen}
+        onClose={() => setPopupOpen(false)}
+        onConfirm={handleConfirmDelete}
+        destinationName={deleteName}
+      />
+
       <BookingForm />
     </div>
   );
 };
+
   
 export const InformationUpdate = ({userData,setUserData}) => {
   const [stateChange,setStateChange] = useState(false)

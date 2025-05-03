@@ -308,7 +308,7 @@ app.post("/booking", (req, res) => {
     );
 });
 
-app.get('/getBookings/:userEmail', async (req, res) => {
+app.get('/get-bookings/:userEmail', async (req, res) => {
     const email = req.params.userEmail;
     
     if (!email) {
