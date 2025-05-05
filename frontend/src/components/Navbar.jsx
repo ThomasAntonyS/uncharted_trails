@@ -20,7 +20,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="flex fixed top-0 justify-between items-center h-[8vh] w-full bg-black bg-opacity-25 z-[20] px-4 sm:px-8">
+    <div className="flex fixed top-0 justify-between items-center h-[8vh] w-full bg-black bg-opacity-25 z-[20] px-4 sm:px-8 backdrop-blur-sm">
       {/* Logo */}
       <Link onClick={(e) => handleNavigation(e, "/")} className="Logo_">
         <img src={Logo} alt="Logo" height={100} width={160} />
