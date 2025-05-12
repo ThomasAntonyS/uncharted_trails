@@ -9,7 +9,7 @@ const Signin = () => {
   const [registerData, setRegisterData] = useState({
     username: "",
     email: "",
-    phone_number: "", // ✅ Added phone number field
+    phone_number: "", 
     password: "",
     cnf_password: "",
   });
@@ -51,7 +51,7 @@ const Signin = () => {
   };
 
   return (
-    <div className="flex h-[110vh] sm:h-screen">
+    <div className="flex h-[110vh] ">
       {/* Top Navbar */}
       <div className="flex fixed top-0 justify-between items-center h-[8vh] w-[100vw] bg-black bg-opacity-50 z-[20] px-4 sm:px-8">
         <Link to={"/"} className="Logo_">
