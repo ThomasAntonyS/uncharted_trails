@@ -11,10 +11,22 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://uncharted-trails.vercel.app"
+];
+
 app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); 
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error("CORS policy does not allow this origin"), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
 }));
+
 
 const db = mysql.createConnection({
     host: `${process.env.DB_host}`,
