@@ -30,6 +30,9 @@ db.connect(err => {
     console.log("Database Connected");
 });
 
+app.get("/", (req, res) => {
+  res.send("Welcome to Uncharted Trails Backend!");
+});
 
 app.post('/log-in', async (req, res) => {
     const { email, password } = req.body;
@@ -369,6 +372,9 @@ app.delete("/delete-booking/:bookingId&email_id=:email", (req, res) => {
   
 module.exports.handler = serverless(app);
 
-app.listen(5000, () => {
-    console.log("Server running");
-});
+if (process.env.NODE_ENV !== "production") {
+  const PORT = 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}

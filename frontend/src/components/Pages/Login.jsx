@@ -19,7 +19,7 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post("http://localhost:5000/log-in", loginData)
+        axios.post(`${import.meta.env.VITE_API_BASE_URL}/log-in`, loginData)
             .then((res) => {
                 if (res.data === "success") {
                     setLoggedIn(true)

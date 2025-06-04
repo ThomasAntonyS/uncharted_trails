@@ -66,7 +66,7 @@ const BookingForm = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/booking", newBooking);
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/booking`, newBooking);
 
       if (response.status === 201) {
         setBooking((prev) => [...prev, newBooking]);
