@@ -30,7 +30,7 @@ const Signin = () => {
       return alert("Passwords don't match.");
     }
 
-    axios.post(`${import.meta.env.VITE_API_BASE_URL}/sign-up`, registerData)
+    axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/sign-up`, registerData)
       .then(res => {
         if (res.data === "Verification email sent. Please verify your email.") {
           setUserEmail(registerData.email)

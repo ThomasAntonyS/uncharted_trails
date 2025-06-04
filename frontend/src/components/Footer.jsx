@@ -13,7 +13,7 @@ const Footer = () => {
     e.preventDefault();
     setBtnSubmit(true);
     try {
-      axios.post(`${import.meta.env.VITE_API_BASE_URL}/news-letter`, { email_id: email })
+      axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/news-letter`, { email_id: email })
         .then((res) => {
           if (res.status === 200) {
             alert("Subscribed successfully");

@@ -24,7 +24,7 @@ export const PersonalInfo = ({userData}) =>{
   
   const fetchTravelData = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/travel-data`);
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/travel-data`);
       if (res.data) {
         setTravelData(res.data);
       }
@@ -71,7 +71,7 @@ export const UserBooking = () => {
       if (!email) return;
     
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/get-bookings/${email}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/get-bookings/${email}`);
         const bookingData = response.data;
     
         const matchedBookings = bookingData
@@ -110,7 +110,7 @@ export const UserBooking = () => {
       const email = sessionStorage.getItem("userEmail");
       if (!email) return;
 
-      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/delete-booking/${deleteId}&email_id=${email}`);
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/delete-booking/${deleteId}&email_id=${email}`);
       const updatedBookings = booking.filter((_, i) => i !== deleteIndex);
       setBooking(updatedBookings);
       setPopupOpen(false);
@@ -194,7 +194,7 @@ export const BookingHistory = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/get-bookings/${userEmail}`)
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/get-bookings/${userEmail}`)
         setBooking(response.data);
       } catch (error) {
         console.error("Failed to fetch bookings:", error);
@@ -359,7 +359,7 @@ export const InformationUpdate = ({userData,setUserData}) => {
     e.preventDefault();
     if(stateChange){
       try {
-        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/update-user`, userData);
+        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/update-user`, userData);
         alert(response.data.message);
         setStateChange(false)
         sessionStorage.setItem("userData", JSON.stringify(userData));

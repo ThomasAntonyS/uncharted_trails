@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to Uncharted Trails Backend!");
 });
 
-app.post('/log-in', async (req, res) => {
+app.post('/api/log-in', async (req, res) => {
     const { email, password } = req.body;
     const sql = "SELECT `email_id`, `password` FROM login_signup WHERE `email_id` = ?";
     try {
@@ -105,7 +105,7 @@ const sendEmail = async (toEmail, subject, message) => {
     }
 };
 
-app.post("/sign-up", async (req, res) => {
+app.post("/api/sign-up", async (req, res) => {
     const { username, email, phone_number, password } = req.body;
     const checkData = "SELECT `email_id` FROM login_signup WHERE `email_id` = ?";
     const currentDate = new Date().toISOString().slice(0, 19).replace("T", " ");
@@ -153,7 +153,7 @@ app.post("/sign-up", async (req, res) => {
     }
 });
 
-app.post('/sign-up-confirmation', async (req, res) => {
+app.post('/api/sign-up-confirmation', async (req, res) => {
     try {
         const { verificationCode, email } = req.body;
         const values = [verificationCode, email];
@@ -186,7 +186,7 @@ app.post('/sign-up-confirmation', async (req, res) => {
     }
 });
 
-app.post('/sign-up-code-resend', async (req, res) => {
+app.post('/api/sign-up-code-resend', async (req, res) => {
     
     const { email } = req.body;
 
@@ -218,7 +218,7 @@ app.post('/sign-up-code-resend', async (req, res) => {
     }
 });
 
-app.get("/user/:email", (req, res) => {
+app.get("/api/user/:email", (req, res) => {
     const email = req.params.email;
     db.query("SELECT * FROM users WHERE email_id = ?", [email], (err, result) => {
       if (err) return res.status(500).json({ error: err.message });
@@ -227,7 +227,7 @@ app.get("/user/:email", (req, res) => {
     });
 });
   
-app.post("/update-user", (req, res) => {
+app.post("/api/update-user", (req, res) => {
   const { username, email_id, phone_number, home_airport, street_address, city, postal_code, region, country } = req.body;
 
   const query = `
@@ -250,7 +250,7 @@ app.post("/update-user", (req, res) => {
   });
 });
 
-app.post('/news-letter',async (req,res)=>{
+app.post('/api/news-letter',async (req,res)=>{
     const email_id = req.body.email_id
     const sql = "INSERT INTO news_letter (email_id) VALUES (?)";
 
@@ -262,7 +262,7 @@ app.post('/news-letter',async (req,res)=>{
     }
 })
 
-app.get("/travel-data", async (req, res) => {
+app.get("/api/travel-data", async (req, res) => {
     try {
         const sql = `SELECT miles, cities, world, countries FROM travel_data WHERE email="abc@gmail.com"`;
         db.query(sql, (err, result) => {
@@ -279,7 +279,7 @@ app.get("/travel-data", async (req, res) => {
     }
 });
 
-app.post("/booking", (req, res) => {
+app.post("/api/booking", (req, res) => {
     const {
       fullName,
       email,
@@ -326,7 +326,7 @@ app.post("/booking", (req, res) => {
     );
 });
 
-app.get('/get-bookings/:userEmail', async (req, res) => {
+app.get('/api/get-bookings/:userEmail', async (req, res) => {
     const email = req.params.userEmail;
     
     if (!email) {
@@ -363,7 +363,7 @@ app.get('/get-bookings/:userEmail', async (req, res) => {
     }
 });
 
-app.delete("/delete-booking/:bookingId&email_id=:email", (req, res) => {
+app.delete("/api/delete-booking/:bookingId&email_id=:email", (req, res) => {
     const bookingId = req.params.bookingId;
     const email = req.params.email;
   

@@ -29,7 +29,7 @@ const Confirmation = () => {
   const handleVerify = (e) => {
     e.preventDefault()
     try{
-      axios.post(`${import.meta.env.VITE_API_BASE_URL}/sign-up-confirmation`,{verificationCode,email:userEmail})
+      axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/sign-up-confirmation`,{verificationCode,email:userEmail})
       .then(res=>{
         if(res.data=="success"){
           setLoggedIn(true)
@@ -53,7 +53,7 @@ const Confirmation = () => {
   const handleResend = (e) => {
     e.preventDefault()
     try{
-      axios.post(`${import.meta.env.VITE_API_BASE_URL}/sign-up-code-resend`,{email:userEmail})
+      axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/sign-up-code-resend`,{email:userEmail})
       .then(res=>{
         if(res.data=="success"){
           setMessage("")
