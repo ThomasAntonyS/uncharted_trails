@@ -5,7 +5,6 @@ const bodyParser = require('body-parser')
 const SibApiV3Sdk = require("sib-api-v3-sdk");
 require('dotenv').config()
 const bcrypt = require("bcrypt");
-const serverless = require("serverless-http");
 
 const app = express();
 app.use(bodyParser.json());
@@ -381,8 +380,6 @@ app.delete("/api/delete-booking/:bookingId&email_id=:email", (req, res) => {
       res.status(200).json({ message: "Booking deleted successfully" });
     });
 });
-  
-module.exports.handler = serverless(app);
 
 if (process.env.NODE_ENV !== "production") {
   const PORT = 5000;
