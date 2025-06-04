@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const SibApiV3Sdk = require("sib-api-v3-sdk");
 require('dotenv').config()
 const bcrypt = require("bcrypt");
+const serverless = require("serverless-http");
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,14 +17,16 @@ app.use(cors({
 }));
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: process.env.DB_password,
-    database: 'uncharted_trails',
+    host: `${process.env.DB_host}`,
+    user: `${process.env.DB_user}`,
+    password: `${process.env.DB_password}`,
+    database: 'uncharted_trails', 
+    port: `${process.env.DB_port}`,
 });
 
 db.connect(err => {
-    if (err) throw err;
+    if (err) console.log(err);
+    else
     console.log("Database Connected");
 });
 
@@ -69,12 +72,12 @@ const sendEmail = async (toEmail, subject, message) => {
     try {
         const defaultClient = SibApiV3Sdk.ApiClient.instance;
         const apiKey = defaultClient.authentications['api-key'];
-        apiKey.apiKey = process.env.BREVO_API_KEY;
+        apiKey.apiKey = `${process.env.BREVO_API_KEY}`;
 
         const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
         const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
-        sendSmtpEmail.sender = { name: "Uncharted Trails", email: process.env.sendSmtpEmail_sender };
+        sendSmtpEmail.sender = { name: "Uncharted Trails", email: `${process.env.sendSmtpEmail_sender}` };
         sendSmtpEmail.to = [{ email: toEmail }];
         sendSmtpEmail.subject = subject;
         sendSmtpEmail.textContent = message;
@@ -364,6 +367,7 @@ app.delete("/delete-booking/:bookingId&email_id=:email", (req, res) => {
     });
 });
   
+module.exports.handler = serverless(app);
 
 app.listen(5000, () => {
     console.log("Server running");
