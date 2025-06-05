@@ -17,22 +17,6 @@ export const PersonalInfo = ({userData}) =>{
     world: 0,
     countries: 0,
   });
-  
-  useEffect(() => {
-    fetchTravelData();
-  }, []);
-  
-  const fetchTravelData = async () => {
-    try {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/travel-data`);
-      if (res.data) {
-        setTravelData(res.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
 
   return(
     <>

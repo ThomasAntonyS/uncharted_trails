@@ -17,7 +17,7 @@ const UserProfile = () => {
   useEffect(() => {
     if (userEmail) {
       axios
-        .get(`http://localhost:5000/api/user/${userEmail}`)
+        .get(`${import.meta.env.VITE_API_BASE_URL}/api/user/${userEmail}`)
         .then((response) => {
           setUserData(response.data);
           sessionStorage.setItem("userData", JSON.stringify(response.data));
