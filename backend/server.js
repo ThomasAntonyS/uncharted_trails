@@ -115,7 +115,7 @@ app.post("/api/sign-up", async (req, res) => {
             return res.status(400).json("Email Already Exists");
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, process.env.Bcrypt_salt);
 
         const verificationCode = await generateUniqueCode();
 
