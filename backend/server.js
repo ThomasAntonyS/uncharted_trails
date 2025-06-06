@@ -36,9 +36,9 @@ const db = mysql.createConnection({
 });
 
 db.connect(err => {
-    if (err) console.log(err);
-    else
-    console.log("Database Connected");
+  if (err) console.log(err);
+  else
+  console.log("Database Connected");
 });
 
 app.get("/", (req, res) => {
@@ -289,7 +289,7 @@ app.post("/api/booking", (req, res) => {
       endDate,
       specialRequests,
       price,
-      bookingData,
+      bookingDate,
     } = req.body;
   
     if (!email || !fullName || !destination || !startDate || !endDate) {
@@ -312,7 +312,7 @@ app.post("/api/booking", (req, res) => {
         endDate,
         specialRequests,
         price,
-        new Date(bookingData),
+        new Date(bookingDate),
       ],
       (err, result) => {
         if (err) {

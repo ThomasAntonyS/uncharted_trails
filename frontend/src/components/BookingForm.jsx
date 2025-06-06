@@ -11,6 +11,7 @@ const BookingForm = () => {
     setSelectedBooking,
     booking,
     setBooking,
+    userEmail,
   } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
@@ -23,45 +24,89 @@ const BookingForm = () => {
     endDate: "",
     specialRequests: "",
     price: "",
-    bookingData: new Date().toUTCString(),
+    bookingDate: "",
   });
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
-    const data = JSON.parse(sessionStorage.getItem("userData"));
     if (selectedBooking) {
       setFormData((prev) => ({
         ...prev,
         destination: selectedBooking.location,
         price: selectedBooking.price,
-        fullName:data.username,
-        email: data.emial_id,
-        phone:data.phone_number
+        email: userEmail || sessionStorage.getItem("userEmail") || "",
       }));
     }
-  }, [selectedBooking]);
+  }, [selectedBooking, userEmail]);
 
   if (!formOpen) return null;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) {
+      setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (!formData.fullName) newErrors.fullName = "Full Name is required.";
+    if (!formData.phone) newErrors.phone = "Phone number is required.";
+    else if (formData.phone.length !== 10) newErrors.phone = "Phone number must be 10 digits.";
+    if (formData.travelers < 1) newErrors.travelers = "Number of travelers must be at least 1.";
+    if (!formData.startDate) newErrors.startDate = "Preferred Travel Start Date is required.";
+    if (!formData.endDate) newErrors.endDate = "Preferred Travel End Date is required.";
+
+    if (formData.startDate) {
+      const selectedStartDate = new Date(formData.startDate);
+      selectedStartDate.setHours(0, 0, 0, 0);
+
+      if (selectedStartDate <= today) {
+        newErrors.startDate = "Travel start date must be a future date.";
+      }
+    }
+
+    if (formData.endDate && formData.startDate) {
+      const selectedStartDate = new Date(formData.startDate);
+      const selectedEndDate = new Date(formData.endDate);
+      selectedStartDate.setHours(0, 0, 0, 0);
+      selectedEndDate.setHours(0, 0, 0, 0);
+
+      if (selectedEndDate <= selectedStartDate) {
+        newErrors.endDate = "Travel end date must be after the start date.";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!userEmail) {
       alert("User not logged in. Please sign in first.");
       return;
     }
-    console.log(data);
-    
-    setFormData({...formData,fullName:data.username})
 
+    if (!validateForm()) {
+      alert("Please correct the errors in the form.");
+      return;
+    }
+
+    const currentBookingDate = new Date().toISOString();
     const newBooking = {
       ...formData,
+      email: userEmail,
+      bookingDate: currentBookingDate,
     };
 
     const alreadyBooked = booking.some(
-      (b) => b.destination === selectedBooking.location
+      (b) => b.destination === selectedBooking.location && b.email === userEmail
     );
 
     if (alreadyBooked) {
@@ -69,20 +114,36 @@ const BookingForm = () => {
       return;
     }
 
-    try {
+    try {  
       const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/booking`, newBooking);
 
       if (response.status === 201) {
-        setBooking((prev) => [...prev, newBooking]);
+        setBooking((prev) => [...prev, response.data]);
         alert(`Booking confirmed for ${selectedBooking.location}!`);
         setFormOpen(false);
         setSelectedBooking(null);
+        setFormData({
+            destination: "",
+            fullName: "",
+            email: "",
+            phone: "",
+            travelers: 1,
+            startDate: "",
+            endDate: "",
+            specialRequests: "",
+            price: "",
+            bookingDate: "",
+        });
+        setErrors({});
       } else {
-        alert("Booking failed: " + response.data.message);
+        alert("Booking failed: " + (response.data.message || "Unknown error"));
       }
     } catch (error) {
-      console.error("Booking error:", error);
-      alert("An error occurred while booking. Please try again.");
+      console.error("Booking error:", error.response?.data || error.message);
+      alert(
+        "An error occurred while booking. Please try again. " +
+          (error.response?.data?.message || "")
+      );
     }
   };
 
@@ -102,17 +163,18 @@ const BookingForm = () => {
               type="text"
               name="fullName"
               value={formData.fullName}
-              readOnly
-              className="w-full px-3 py-2 border rounded bg-gray-100"
+              onChange={handleChange}
+              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${errors.fullName ? 'border-red-500' : 'focus:ring-blue-200'}`}
               required
             />
+            {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
           </div>
           <div>
             <label className="block text-gray-700 font-poppins">Email</label>
             <input
               type="email"
               name="email"
-              value={sessionStorage.getItem("userEmail") || ""}
+              value={userEmail || sessionStorage.getItem("userEmail") || ""}
               readOnly
               className="w-full px-3 py-2 border rounded bg-gray-100"
             />
@@ -123,10 +185,13 @@ const BookingForm = () => {
               type="tel"
               name="phone"
               value={formData.phone}
-              readOnly
-              className="w-full px-3 py-2 border rounded bg-gray-100"
+              onChange={handleChange}
+              minLength={10}
+              maxLength={10}
+              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${errors.phone ? 'border-red-500' : 'focus:ring-blue-200'}`}
               required
             />
+            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
           </div>
           <div>
             <label className="block text-gray-700 font-poppins">No. of Travelers</label>
@@ -134,11 +199,13 @@ const BookingForm = () => {
               type="number"
               name="travelers"
               min="1"
+              max={100}
               value={formData.travelers}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${errors.travelers ? 'border-red-500' : 'focus:ring-blue-200'}`}
               required
             />
+            {errors.travelers && <p className="text-red-500 text-sm mt-1">{errors.travelers}</p>}
           </div>
           <div>
             <label className="block text-gray-700 font-poppins">Preferred Travel Start Date</label>
@@ -147,9 +214,10 @@ const BookingForm = () => {
               name="startDate"
               value={formData.startDate}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${errors.startDate ? 'border-red-500' : 'focus:ring-blue-200'}`}
               required
             />
+            {errors.startDate && <p className="text-red-500 text-sm mt-1">{errors.startDate}</p>}
           </div>
           <div>
             <label className="block text-gray-700 font-poppins">Preferred Travel End Date</label>
@@ -158,9 +226,10 @@ const BookingForm = () => {
               name="endDate"
               value={formData.endDate}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${errors.endDate ? 'border-red-500' : 'focus:ring-blue-200'}`}
               required
             />
+            {errors.endDate && <p className="text-red-500 text-sm mt-1">{errors.endDate}</p>}
           </div>
           <div>
             <label className="block text-gray-700 font-poppins">Special Requests</label>
@@ -182,6 +251,19 @@ const BookingForm = () => {
             onClick={() => {
               setFormOpen(false);
               setSelectedBooking(null);
+              setFormData({
+                destination: "",
+                fullName: "",
+                email: "",
+                phone: "",
+                travelers: 1,
+                startDate: "",
+                endDate: "",
+                specialRequests: "",
+                price: "",
+                bookingDate: "",
+              });
+              setErrors({});
             }}
             className="bg-red-500 font-agdasima tracking-wider text-white mx-2 px-4 py-2 rounded hover:bg-red-600 transition"
           >

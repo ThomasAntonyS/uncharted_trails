@@ -11,7 +11,6 @@ import NotFound from './components/Pages/NotFound'
 import UserContextProvider from './Context/UserContextProvider'
 import Profile from './components/Pages/Profile'
 import SingleBlog from './components/SingleBlog'
-import { Analytics } from '@vercel/analytics/react';
 
 function App() {
 
@@ -72,8 +71,6 @@ function App() {
 
         </Routes>
       </UserContextProvider>
-
-      <Analytics/>
     </>
   )
 }
