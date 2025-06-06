@@ -7,7 +7,7 @@ import { destinations } from '../../data/data';
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const Pricing = () => {
-  const { setFormOpen, setSelectedBooking } = useContext(UserContext);
+  const { setFormOpen, setSelectedBooking,loggedIn } = useContext(UserContext);
   const [openAccordion, setOpenAccordion] = useState(null);
 
   document.title = "Uncharted Trails | Pricing";
@@ -17,8 +17,11 @@ const Pricing = () => {
   };
 
   const handleBookNow = (destination) => {
-    setSelectedBooking(destination);
-    setFormOpen(true);
+    if(loggedIn){
+      setSelectedBooking(destination);
+      setFormOpen(true);
+    }
+    else alert("You need to login first to book.")
   };
 
   return (
@@ -75,31 +78,31 @@ const Pricing = () => {
                     </span>
                   </div>
                   {openAccordion === destination.id && (
-                    <div className="p-4 font-poppins">
+                    <div className=" font-poppins">
                       <img
                         src={destination.imageUrl}
                         alt={destination.location}
                         loading="lazy"
-                        className="w-full h-[50vh] object-cover mb-4"
+                        className="w-full h-[35vh] sm:h-[50vh] object-cover mb-4 sm:p-4"
                       />
-                      <p>
+                      <p className="px-4">
                         <span className=" font-semibold">Price:</span> {destination.price}
                       </p>
-                      <p>
+                      <p className="px-4">
                         <span className=" font-semibold">Hotels:</span> {destination.hotels}
                       </p>
-                      <p>
+                      <p className="px-4">
                         <span className=" font-semibold">No. of Persons:</span> {destination.persons}
                       </p>
-                      <p>
+                      <p className="px-4">
                         <span className=" font-semibold">No. of Days:</span> {destination.days}
                       </p>
-                      <p>
+                      <p className="px-4">
                         <span className=" font-semibold">Description:</span> {destination.description}
                       </p>
                       <button
                         onClick={() => handleBookNow(destination)}
-                        className="mt-4 bg-black text-white px-4 py-2 rounded "
+                        className="my-4 mx-4 bg-black text-white px-4 py-2 rounded "
                       >
                         Book Now
                       </button>

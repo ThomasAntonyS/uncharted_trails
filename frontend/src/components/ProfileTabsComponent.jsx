@@ -237,14 +237,17 @@ export const BookingHistory = () => {
 };
   
 export const Wishlist = () => {
-  const { setFormOpen, wishList, setWishList, setSelectedBooking } = useContext(UserContext);
+  const { setFormOpen, wishList, setWishList, setSelectedBooking,loggedIn } = useContext(UserContext);
   const [popupOpen, setPopupOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [deleteName, setDeleteName] = useState('');
 
   const handleBookNow = (destination) => {
-    setSelectedBooking(destination);
-    setFormOpen(true);
+    if(loggedIn){
+      setSelectedBooking(destination);
+      setFormOpen(true);
+    }
+    else alert("You need to login first to book.")
   };
 
   const handleRemoveClick = (index, name) => {
