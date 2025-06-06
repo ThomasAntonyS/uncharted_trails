@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 
 const NotFound = () => {
+
+  document.title = "404_Not Found"
+
   return (
     <div
       className="relative flex items-center justify-center min-h-screen bg-cover bg-center"

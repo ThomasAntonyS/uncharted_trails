@@ -19,6 +19,8 @@ const Signin = () => {
   const navigate = useNavigate();
   const { setUserEmail} = useContext(UserContext);
 
+  document.title = "Uncharted Trails | SignUp"
+
   const handleSignup = (e) => {
     e.preventDefault();
 
@@ -51,7 +53,7 @@ const Signin = () => {
   };
 
   return (
-    <div className="flex h-[110vh] ">
+    <div className="flex h-[100vh] ">
       {/* Top Navbar */}
       <div className="flex fixed top-0 justify-between items-center h-[8vh] w-[100vw] bg-black bg-opacity-50 z-[20] px-4 sm:px-8">
         <Link to={"/"} className="Logo_">
@@ -72,72 +74,67 @@ const Signin = () => {
 
         <form className="w-full max-w-md" onSubmit={handleSignup}>
           {/* Username Field */}
-          <div className="mb-2">
-            <label className="block text-gray-700 font-poppins">Username</label>
+          <div className="mb-4">
             <input
               type="text"
               placeholder="Username"
               onChange={(e) => setRegisterData({ ...registerData, username: e.target.value })}
-              className="font-agdasima tracking-wider w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="font-poppins w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
           {/* Email Field */}
-          <div className="mb-2">
-            <label className="block text-gray-700 font-poppins">Email address</label>
+          <div className="mb-4">
             <input
               type="email"
               placeholder="Email address"
               onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
-              className="font-agdasima tracking-wider w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="font-poppins w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
-          <div className="mb-2">
-            <label className="block text-gray-700 font-poppins">Phone Number</label>
+          <div className="mb-4">
             <input
               type="text"
               minLength={10}
               maxLength={10}
               placeholder="Phone Number"
               onChange={(e) => setRegisterData({ ...registerData, phone_number: e.target.value })}
-              className="font-agdasima tracking-wider w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="font-poppins w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
-          <div className="mb-2">
-            <label className="block text-gray-700 font-poppins">Password</label>
+          <div className="mb-4">
             <input
               type={showPassword}
               placeholder="Password"
               onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
-              className="w-full font-agdasima tracking-wider p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full font-poppins p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-            <div className="flex align-middle w-full mt-2 gap-x-2 font-poppins">
-              <input type="checkbox" onChange={handleShowPassword} /> <p>Show password</p>
+            <div className="flex align-middle w-full gap-x-2 font-poppins text-gray-950">
+              <input type="checkbox" className=" cursor-pointer" onChange={handleShowPassword} /> <p>Show password</p>
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 font-poppins">Repeat password</label>
             <input
               type={showCnfPassword}
               placeholder="Repeat password"
               onChange={(e) => setRegisterData({ ...registerData, cnf_password: e.target.value })}
-              className="w-full font-agdasima tracking-wider p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full font-poppins p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-            <div className="flex align-middle w-full mt-2 gap-x-2 font-poppins">
-              <input type="checkbox" onChange={handleShowCnfPassword} /> <p>Show password</p>
+            <div className="flex align-middle w-full gap-x-2 font-poppins text-gray-950 ">
+              <input type="checkbox" className=" cursor-pointer" onChange={handleShowCnfPassword} /> <p>Show password</p>
             </div>
           </div>
 
-          <button className="w-full font-agdasima tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
+          <button className="w-full font-poppins tracking-wide bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
             Sign up
           </button>
         </form>
 
         <p className="mt-4 text-gray-600 font-poppins">
-          Already have an account? <Link to="/log-in" className="text-purple-600 font-agdasima">Log in</Link>
+          Already have an account? <Link to="/log-in" className="text-purple-600 font-poppins underline">Log in</Link>
         </p>
       </div>
 

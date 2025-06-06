@@ -9,6 +9,8 @@ import Navbar from '../Navbar'
 
 const Home = () => {
 
+  document.title = "Uncharted Trails | Home"
+
   return (
 
     <>

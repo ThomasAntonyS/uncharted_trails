@@ -11,10 +11,10 @@ const Login = () => {
         password: ""
     });
     const [showPassword, setShowPassword] = useState('password')
-
     const navigate = useNavigate()
-
     const {setLoggedIn,setUserEmail} = useContext(UserContext)
+
+    document.title = "Uncharted Trails | Login"
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -56,36 +56,34 @@ const Login = () => {
                 <p className="text-gray-500 mb-6 font-poppins">Login to your account</p>
 
                 <form className="w-full max-w-md" onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 font-poppins">Email address</label>
+                    <div className="mb-6">
                         <input
                             type="email"
                             placeholder="Email address"
                             onChange={e => setLoginData({ ...loginData, email: e.target.value })}
-                            className="w-full font-agdasima tracking-wider p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full font-poppins p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                         />
                     </div>
 
-                    <div className="mb-4">
-                        <label className="block text-gray-700 font-poppins">Password</label>
+                    <div className="mb-6">
                         <input
                             type={showPassword}
                             placeholder="Password"
                             onChange={e => setLoginData({ ...loginData, password: e.target.value })}
-                            className="w-full p-3 font-agdasima tracking-wider border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full p-3 font-poppins border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                         />
-                        <div className=" flex align-middle w-full mt-2 gap-x-2 font-poppins">
+                        <div className=" flex align-middle w-full mt-1 gap-x-2 font-poppins">
                             <input type="checkbox" onChange={handleShowPassword}/> <p>Show password</p>
                         </div>
                     </div>
 
-                    <button className="w-full font-agdasima tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
+                    <button className="w-full font-poppins tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
                         Log in
                     </button>
                 </form>
 
                 <p className="mt-4 text-gray-600 font-poppins">
-                    Already have an account? <Link to='/sign-up' className="text-purple-600 font-agdasima tracking-wider">Sign in</Link>
+                    Already have an account ? <Link to='/sign-up' className="text-purple-600 font-poppins tracking-wider underline">Sign in</Link>
                 </p>
             </div>
 

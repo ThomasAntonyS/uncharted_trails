@@ -278,12 +278,12 @@ export const Wishlist = () => {
                 <h3 className="text-lg font-semibold text-gray-800 font-agdasima">
                   {destination.location}
                 </h3>
-                <p className="text-sm text-gray-600 my-3 font-poppins">{destination.description}</p>
-                <div className="flex justify-between align-middle mt-4 font-agdasima flex-col xl:flex-row">
+                <p className="text-sm text-gray-600 my-3 font-poppins line-clamp-3">{destination.description}</p>
+                <div className="flex justify-between align-middle mt-4 font-agdasima flex-col">
                   <span className="text-lg font-bold text-indigo-600 h-max my-auto">
                     {destination.price}
                   </span>
-                  <div className="flex w-max space-x-3 sm:mt-3 xl:mt-0">
+                  <div className="flex w-max space-x-3 sm:mt-3">
                     <button
                       className="flex px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 tracking-wider"
                       onClick={() => handleBookNow(destination)}

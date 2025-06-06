@@ -69,6 +69,8 @@ const Blog = () => {
       author: "Emma Brown",
     },
   ];
+
+  document.title = "Uncharted Trails | Blogs"
   
   return (
     <>

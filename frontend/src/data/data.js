@@ -1,3 +1,22 @@
+import Blog_bali from '../assets/Pages/Blog/Blog_bali.jpeg'
+import Blog_japan from '../assets/Pages/Blog/Blog_japan.jpeg'
+import Blog_kenya from '../assets/Pages/Blog/Blog_kenya.jpeg'
+import Blog_maldives from '../assets/Pages/Blog/Blog_maldives.jpeg'
+import Blog_paris from '../assets/Pages/Blog/Blog_paris.jpeg'
+import Blog_patagonia from '../assets/Pages/Blog/Blog_patagonia.jpeg'
+import Blog_swiss from '../assets/Pages/Blog/Blog_swiss.jpeg'
+
+import Rome from '../assets/Pages/Pricing/Rome.jpeg'
+import Bali from '../assets/Pages/Pricing/Bali.jpeg'
+import Chile from '../assets/Pages/Pricing/Chile.jpeg'
+import Greece from '../assets/Pages/Pricing/Greece.jpeg'
+import Hawaii from '../assets/Pages/Pricing/Hawaii.jpeg'
+import Iceland from '../assets/Pages/Pricing/Iceland.jpeg'
+import Japan from '../assets/Pages/Pricing/Japan.jpeg'
+import Paris from '../assets/Pages/Pricing/Paris.jpeg'
+import Sydney from '../assets/Pages/Pricing/Sydney.jpeg'
+import Turkey from '../assets/Pages/Pricing/Turkey.jpeg'
+
 export const blogData = [
   {
     id: 1,
@@ -7,7 +26,7 @@ export const blogData = [
     From the lush Tegalalang Rice Terraces in Ubud to the serene beaches of Uluwatu, the island is filled with breathtaking landscapes. Enjoy a sunrise trek on Mount Batur, soak in the natural hot springs, or experience the vibrant nightlife of Seminyak.  \n
     For cultural experiences, visit the ancient Tanah Lot Temple, where waves crash against its rocky base, creating a mystical atmosphere. Don't forget to indulge in Balinese cuisine—try babi guling (suckling pig) or the famous nasi goreng.  \n
     Whether you're exploring waterfalls, temples, or the bustling local markets, Bali offers a unique mix of serenity and excitement.`,
-    imageUrl: "https://images.pexels.com/photos/2587004/pexels-photo-2587004.jpeg?auto=compress&cs=tinysrgb&w=600",
+    imageUrl: Blog_bali,
     date: "November 10, 2024",
     author: "Sophia Carter",
     tags: ["travel", "Bali", "beach", "adventure", "culture"],
@@ -20,7 +39,7 @@ export const blogData = [
     Begin your journey at the Eiffel Tower, where you can enjoy stunning panoramic views of the city. Wander through the Louvre Museum to see masterpieces like the Mona Lisa, or explore the artistic charm of Montmartre and the Sacré-Cœur Basilica.  \n
     Enjoy a sunset cruise along the Seine River, passing by landmarks like Notre-Dame Cathedral and the Musée d'Orsay. For a touch of luxury, explore the high-end boutiques along the Champs-Élysées or sip coffee at a sidewalk café in Saint-Germain-des-Prés.  \n
     Paris is a city that never loses its charm, leaving every visitor with unforgettable memories.`,
-    imageUrl: "https://images.pexels.com/photos/5101155/pexels-photo-5101155.jpeg?auto=compress&cs=tinysrgb&w=600",
+    imageUrl: Blog_paris,
     date: "November 12, 2024",
     author: "Liam Johnson",
     tags: ["travel", "Paris", "romance", "culture", "art"],
@@ -33,7 +52,7 @@ export const blogData = [
     The Torres del Paine National Park in Chile is one of the most breathtaking places on Earth. Towering granite peaks, glacial lakes, and vast grasslands create an otherworldly landscape. The park is perfect for hikers, offering trails like the W Trek, which takes you through Grey Glacier, French Valley, and the Base of the Towers. \n 
     Crossing into Argentina, the Perito Moreno Glacier is a sight to behold. Unlike most glaciers, this one is still advancing, with massive chunks of ice dramatically breaking off into the waters below.  \n
     Patagonia isn’t just about landscapes; it’s home to unique wildlife. Keep an eye out for pumas, guanacos, Andean condors, and Magellanic penguins. If you’re lucky, you might even spot an orca hunting along the coast.`,
-    imageUrl: "https://images.pexels.com/photos/23886059/pexels-photo-23886059/free-photo-of-clouds-covering-snowcapped-mountain-peaks-at-sunset.jpeg?auto=compress&cs=tinysrgb&w=600",
+    imageUrl: Blog_patagonia,
     date: "November 15, 2024",
     author: "Emily Walker",
     tags: ["adventure", "Patagonia", "hiking", "wildlife", "nature"],
@@ -45,7 +64,7 @@ export const blogData = [
     content: `A Kenyan safari is a once-in-a-lifetime adventure that brings you face to face with Africa’s most magnificent wildlife.  \n
     The Maasai Mara National Reserve is home to the Big Five—lions, leopards, elephants, rhinos, and buffaloes—as well as the Great Migration, where millions of wildebeest thunder across the plains.  \n
     Experience a sunrise hot-air balloon ride over the golden savannah, watching herds of elephants move gracefully below. After a day of exploring, unwind in a luxury tented camp, listening to the sounds of nature under a starlit sky.`,
-    imageUrl: "https://images.pexels.com/photos/1109896/pexels-photo-1109896.jpeg?auto=compress&cs=tinysrgb&w=600",
+    imageUrl: Blog_kenya,
     date: "November 17, 2024",
     author: "James Anderson",
     tags: ["safari", "wildlife", "Kenya", "nature"],
@@ -57,7 +76,7 @@ export const blogData = [
     content: `Japan’s beauty changes with the seasons, offering unique experiences throughout the year.  \n
     Spring welcomes cherry blossoms, summer brings vibrant festivals, autumn is painted in fiery maple leaves, and winter blankets the country in snow. \n 
     In Kyoto, you’ll find tranquil temples surrounded by gardens, while in Tokyo, neon-lit streets pulse with energy. No matter when you visit, Japan offers a blend of tradition and modernity that’s truly unique.`,
-    imageUrl: "https://images.pexels.com/photos/5503656/pexels-photo-5503656.jpeg?auto=compress&cs=tinysrgb&w=600",
+    imageUrl: Blog_japan,
     date: "November 19, 2024",
     author: "Olivia Martinez",
     tags: ["Japan", "seasons", "culture", "travel"],
@@ -72,7 +91,7 @@ export const blogData = [
     Winter sports lovers can enjoy skiing in St. Moritz, Verbier, or Zermatt, which offer world-class slopes and après-ski experiences. If skiing isn’t your thing, take a relaxing ride on the Glacier Express, a scenic train journey that connects Zermatt to St. Moritz through the most stunning landscapes.  \n
     For culture lovers, cities like Lucerne and Interlaken offer a mix of history, art, and Swiss gastronomy. Enjoy a plate of cheese fondue or raclette, and don’t forget to grab some authentic Swiss chocolates before heading home.  \n
     Whether you’re hiking through green meadows, skiing down powdery slopes, or simply enjoying a cup of Swiss hot chocolate with a view, the Swiss Alps provide an adventure of a lifetime.`,
-    imageUrl: "https://images.pexels.com/photos/14963419/pexels-photo-14963419/free-photo-of-trees-around-village-in-valley-in-mountains.jpeg?auto=compress&cs=tinysrgb&w=600",
+    imageUrl: Blog_swiss,
     date: "November 21, 2024",
     author: "Daniel Smith",
     tags: ["Switzerland", "mountains", "adventure", "hiking", "nature"],
@@ -87,7 +106,7 @@ export const blogData = [
     Adventure seekers can try kite surfing, jet skiing, or deep-sea fishing at one of the many luxury resorts. If relaxation is your goal, indulge in a spa session over the water, where you can enjoy a massage with the soothing sounds of the ocean in the background. \n
     When it comes to food, the Maldives offers an exotic mix of flavors. Try Mas Huni, a traditional Maldivian breakfast made of tuna, coconut, onion, and chili, served with fresh roshi bread. \n
     With its luxurious resorts, vibrant marine biodiversity, and unmatched tranquility, the Maldives is truly a dream destination that offers something for everyone—whether you're an adventurer, a honeymooner, or someone just seeking peace by the sea.`,
-    imageUrl: "https://images.pexels.com/photos/12858509/pexels-photo-12858509.jpeg?auto=compress&cs=tinysrgb&w=600",
+    imageUrl: Blog_maldives,
     date: "November 23, 2024",
     author: "Emma Brown",
     tags: ["Maldives", "beach", "island", "relaxation", "snorkeling"],
@@ -102,8 +121,8 @@ export const destinations = [
     hotels: "5-star Resort",
     persons: "2 Adults",
     days: "7 Days, 6 Nights",
-    description: "Explore the serene beaches and vibrant culture of Bali.",
-    imageUrl: "https://images.pexels.com/photos/2474687/pexels-photo-2474687.jpeg?auto=compress&cs=tinysrgb&w=600",
+    description: "Explore Bali's serene beaches and vibrant culture; a harmonious blend of natural beauty and profound spiritual heritage.",
+    imageUrl: Bali,
   },
   {
     id: 2,
@@ -112,8 +131,8 @@ export const destinations = [
     hotels: "Luxury Hotel",
     persons: "2 Adults, 1 Child",
     days: "5 Days, 4 Nights",
-    description: "Experience the romantic city of Paris with Eiffel Tower views.",
-    imageUrl: "https://images.pexels.com/photos/161901/paris-sunset-france-monument-161901.jpeg?auto=compress&cs=tinysrgb&w=400",
+    description: "Experience romantic Paris, where the Eiffel Tower casts its magical spell over charming streets and vibrant culture.",
+    imageUrl: Paris,
   },
   {
     id: 3,
@@ -122,8 +141,8 @@ export const destinations = [
     hotels: "Boutique Lodges",
     persons: "4 Persons",
     days: "10 Days, 9 Nights",
-    description: "Adventure through glaciers and mountains in Patagonia.",
-    imageUrl: "https://images.pexels.com/photos/27852901/pexels-photo-27852901/free-photo-of-the-mountains-and-water-in-the-background-of-a-landscape.jpeg?auto=compress&cs=tinysrgb&w=400",
+    description: "Embark on a grand adventure through Patagonia's majestic glaciers and towering mountains, an unforgettable wilderness experience.",
+    imageUrl: Chile,
   },
   {
     id: 4,
@@ -132,8 +151,8 @@ export const destinations = [
     hotels: "Traditional Ryokan",
     persons: "2 Persons",
     days: "6 Days, 5 Nights",
-    description: "Discover ancient temples and stunning cherry blossoms.",
-    imageUrl: "https://images.pexels.com/photos/1673978/pexels-photo-1673978.jpeg?auto=compress&cs=tinysrgb&w=400",
+    description: "Discover Japan's ancient temples beautifully framed by the stunning, ephemeral beauty of cherry blossoms in spring.",
+    imageUrl: Japan,
   },
   {
     id: 5,
@@ -142,8 +161,8 @@ export const destinations = [
     hotels: "Luxury Villa",
     persons: "2 Adults",
     days: "5 Days, 4 Nights",
-    description: "Relax on the iconic white beaches of Santorini.",
-    imageUrl: "https://images.pexels.com/photos/221532/pexels-photo-221532.jpeg?auto=compress&cs=tinysrgb&w=400",
+    description: "Relax on Santorini's iconic white beaches, basking in the Aegean sun with breathtaking caldera views.",
+    imageUrl: Greece,
   },
   {
     id: 6,
@@ -152,8 +171,8 @@ export const destinations = [
     hotels: "Cave Hotel",
     persons: "2 Adults",
     days: "4 Days, 3 Nights",
-    description: "Experience hot air balloon rides over stunning landscapes.",
-    imageUrl: "https://images.pexels.com/photos/13010103/pexels-photo-13010103.jpeg?auto=compress&cs=tinysrgb&w=400",
+    description: "Soar above breathtaking vistas, experiencing unparalleled serenity and unforgettable aerial perspectives of stunning landscapes.",
+    imageUrl: Turkey,
   },
   {
     id: 7,
@@ -162,8 +181,8 @@ export const destinations = [
     hotels: "Beachfront Resort",
     persons: "2 Adults, 2 Kids",
     days: "7 Days, 6 Nights",
-    description: "Enjoy tropical beaches and lush rainforests in Maui.",
-    imageUrl: "https://images.pexels.com/photos/19397878/pexels-photo-19397878/free-photo-of-view-of-a-tropical-beach-with-palm-trees.jpeg?auto=compress&cs=tinysrgb&w=400",
+    description: "Enjoy Maui's tropical beaches and lush rainforests, an unforgettable Hawaiian escape.",
+    imageUrl: Hawaii,
   },
   {
     id: 8,
@@ -172,8 +191,8 @@ export const destinations = [
     hotels: "Historic Hotel",
     persons: "2 Adults",
     days: "5 Days, 4 Nights",
-    description: "Explore ancient ruins and savor authentic Italian cuisine.",
-    imageUrl: "https://images.pexels.com/photos/29434694/pexels-photo-29434694/free-photo-of-iconic-baroque-architecture-in-rome-s-piazza-navona.jpeg?auto=compress&cs=tinysrgb&w=400",
+    description: "Explore Italy's ancient ruins and savor its authentic cuisine, a delicious journey through history and flavor.",
+    imageUrl: Rome,
   },
   {
     id: 9,
@@ -182,8 +201,8 @@ export const destinations = [
     hotels: "City Hotel",
     persons: "3 Persons",
     days: "6 Days, 5 Nights",
-    description: "Visit the Sydney Opera House and beautiful beaches.",
-    imageUrl: "https://images.pexels.com/photos/5707610/pexels-photo-5707610.jpeg?auto=compress&cs=tinysrgb&w=600",
+    description: "Visit Sydney's iconic Opera House, then relax on its beautiful, sun-kissed beaches, soaking in the vibrant coastal atmosphere.",
+    imageUrl: Sydney,
   },
   {
     id: 10,
@@ -192,7 +211,7 @@ export const destinations = [
     hotels: "Scenic Lodges",
     persons: "4 Persons",
     days: "8 Days, 7 Nights",
-    description: "Experience the Northern Lights and unique landscapes.",
-    imageUrl: "https://images.pexels.com/photos/7403885/pexels-photo-7403885.jpeg?auto=compress&cs=tinysrgb&w=600",
+    description: "Witness the mesmerizing Northern Lights illuminating unique, ethereal landscapes, an unforgettable celestial and earthly spectacle.",
+    imageUrl: Iceland,
   },
 ];

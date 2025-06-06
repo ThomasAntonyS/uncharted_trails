@@ -14,6 +14,8 @@ const Explore = () => {
   const [error, setError] = useState(false);
   const [popupData, setPopupData] = useState("");
 
+  document.title = "Uncharted Trails | Explore"
+
   const navigate = useNavigate();
   const { wishList, setWishList } = useContext(UserContext);
 
@@ -72,7 +74,7 @@ const Explore = () => {
             Discover stunning places around the world. Find your next travel adventure.
           </p>
 
-          <div className="w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="relative w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {destinations.slice(0, 6).map((destination, index) => (
               <div
                 key={index}
@@ -85,10 +87,10 @@ const Explore = () => {
                   loading="lazy"
                 />
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold text-gray-800 font-agdasima">
+                  <h3 className="text-lg font-semibold text-gray-800 text-left sm:text-center font-agdasima">
                     {destination.location}
                   </h3>
-                  <p className="text-sm text-gray-600 my-2 font-poppins">
+                  <p className="text-sm text-gray-600 my-2 font-poppins text-left sm:text-center line-clamp-2">
                     {destination.description}
                   </p>
                   <div className="flex justify-between items-center mt-4">
@@ -96,10 +98,10 @@ const Explore = () => {
                       {destination.price}
                     </span>
                     <button
-                      className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 font-agdasima"
+                      className="flex items-center px-4 py-2 bg-indigo-600 text-white text-[.9rem] rounded hover:bg-indigo-700 font-libreCaslon font-semibold tracking-wider"
                       onClick={e => handleWishList(e, index)}
                     >
-                      WishList <IoBookmark className="ml-2" size={15} />
+                      Wishlist <IoBookmark className="ml-2" size={15} />
                     </button>
                   </div>
                 </div>

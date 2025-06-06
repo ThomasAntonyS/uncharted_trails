@@ -51,7 +51,7 @@ const SpecialOffer = () => {
               {/* Content */}
               <div className="p-4">
                 <h3 className="font-bold font-libreCaslon text-lg mb-2">{card.title}</h3>
-                <p className="text-gray-500 text-sm font-poppins">{card.description}</p>
+                <p className="text-gray-500 text-sm font-poppins line-clamp-2">{card.description}</p>
           
                 {/* Price & Button */}
                 <div onClick={()=>{

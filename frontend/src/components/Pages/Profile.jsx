@@ -14,6 +14,8 @@ const UserProfile = () => {
   const { userEmail, setLoggedIn, setUserEmail } = useContext(UserContext);
   const navigate = useNavigate()
 
+  document.title = "Uncharted Trails | Profile"
+
   useEffect(() => {
     if (userEmail) {
       axios
@@ -30,6 +32,10 @@ const UserProfile = () => {
     setLoggedIn(false)
     setUserEmail("")
     navigate("/")
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    })
   }
 
   return (

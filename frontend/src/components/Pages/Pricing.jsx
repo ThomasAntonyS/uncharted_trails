@@ -3,11 +3,14 @@ import Footer from "../Footer";
 import Navbar from "../Navbar";
 import { UserContext } from "../../Context/UserContextProvider";
 import BookingForm from "../BookingForm";
-import {destinations} from '../../data/data'
+import { destinations } from '../../data/data';
+import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const Pricing = () => {
   const { setFormOpen, setSelectedBooking } = useContext(UserContext);
   const [openAccordion, setOpenAccordion] = useState(null);
+
+  document.title = "Uncharted Trails | Pricing";
 
   const toggleAccordion = (id) => {
     setOpenAccordion(openAccordion === id ? null : id);
@@ -15,7 +18,7 @@ const Pricing = () => {
 
   const handleBookNow = (destination) => {
     setSelectedBooking(destination);
-    setFormOpen(true);            
+    setFormOpen(true);
   };
 
   return (
@@ -62,40 +65,41 @@ const Pricing = () => {
                 >
                   <div
                     onClick={() => toggleAccordion(destination.id)}
-                    className="flex items-center justify-between p-4 cursor-pointer bg-white"
+                    className={`flex items-center justify-between p-4 cursor-pointer ${openAccordion === destination.id ? "bg-black text-white transition-all duration-300" : "bg-white"}`}
                   >
-                    <h3 className="text-lg font-bold text-gray-800 font-agdasima">
+                    <h3 className="text-lg font-bold font-agdasima">
                       {destination.location}
                     </h3>
-                    <span className="text-gray-500 text-2xl">
-                      {openAccordion === destination.id ? "-" : "+"}
+                    <span className=" text-2xl">
+                      {openAccordion === destination.id ? <FaMinus size={20} /> : <FaPlus size={20} />}
                     </span>
                   </div>
                   {openAccordion === destination.id && (
-                    <div className="p-4 bg-gray-50 font-poppins">
+                    <div className="p-4 font-poppins">
                       <img
                         src={destination.imageUrl}
                         alt={destination.location}
+                        loading="lazy"
                         className="w-full h-[50vh] object-cover mb-4"
                       />
                       <p>
-                        <strong>Price:</strong> {destination.price}
+                        <span className=" font-semibold">Price:</span> {destination.price}
                       </p>
                       <p>
-                        <strong>Hotels:</strong> {destination.hotels}
+                        <span className=" font-semibold">Hotels:</span> {destination.hotels}
                       </p>
                       <p>
-                        <strong>No. of Persons:</strong> {destination.persons}
+                        <span className=" font-semibold">No. of Persons:</span> {destination.persons}
                       </p>
                       <p>
-                        <strong>No. of Days:</strong> {destination.days}
+                        <span className=" font-semibold">No. of Days:</span> {destination.days}
                       </p>
                       <p>
-                        <strong>Description:</strong> {destination.description}
+                        <span className=" font-semibold">Description:</span> {destination.description}
                       </p>
                       <button
                         onClick={() => handleBookNow(destination)}
-                        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+                        className="mt-4 bg-black text-white px-4 py-2 rounded "
                       >
                         Book Now
                       </button>

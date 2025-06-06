@@ -27,11 +27,15 @@ const BookingForm = () => {
   });
 
   useEffect(() => {
+    const data = JSON.parse(sessionStorage.getItem("userData"));
     if (selectedBooking) {
       setFormData((prev) => ({
         ...prev,
         destination: selectedBooking.location,
         price: selectedBooking.price,
+        fullName:data.username,
+        email: data.emial_id,
+        phone:data.phone_number
       }));
     }
   }, [selectedBooking]);
@@ -44,16 +48,16 @@ const BookingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const userEmail = sessionStorage.getItem("userEmail");
     if (!userEmail) {
       alert("User not logged in. Please sign in first.");
       return;
     }
+    console.log(data);
+    
+    setFormData({...formData,fullName:data.username})
 
     const newBooking = {
       ...formData,
-      email: userEmail,
     };
 
     const alreadyBooked = booking.some(
@@ -98,8 +102,8 @@ const BookingForm = () => {
               type="text"
               name="fullName"
               value={formData.fullName}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              readOnly
+              className="w-full px-3 py-2 border rounded bg-gray-100"
               required
             />
           </div>
@@ -119,8 +123,8 @@ const BookingForm = () => {
               type="tel"
               name="phone"
               value={formData.phone}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              readOnly
+              className="w-full px-3 py-2 border rounded bg-gray-100"
               required
             />
           </div>

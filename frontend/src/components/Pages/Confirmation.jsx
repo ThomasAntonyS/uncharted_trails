@@ -13,6 +13,8 @@ const Confirmation = () => {
 
   const {setLoggedIn,userEmail} = useContext(UserContext)
 
+  document.title = "Uncharted Trails | Email-Confirmation"
+
   useEffect(() => {
     if (timer === 0) {
       setCanResend(true);
