@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa6";
 import axios from 'axios';
 
+
 const Footer = () => {
   const [email, setEmail] = useState("");
   const [btnSubmit, setBtnSubmit] = useState(false);

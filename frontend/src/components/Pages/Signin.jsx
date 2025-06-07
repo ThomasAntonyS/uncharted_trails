@@ -16,6 +16,7 @@ const Signin = () => {
 
   const [showPassword, setShowPassword] = useState("password");
   const [showCnfPassword, setShowCnfPassword] = useState("password");
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate();
   const { setUserEmail} = useContext(UserContext);
 
@@ -23,7 +24,7 @@ const Signin = () => {
 
   const handleSignup = (e) => {
     e.preventDefault();
-
+    setLoading(true)
     if (!registerData.username || !registerData.email || !registerData.phone_number || !registerData.password || !registerData.cnf_password) {
       return alert("Please fill in all fields.");
     }
@@ -41,7 +42,10 @@ const Signin = () => {
           alert("Signup failed: " + res.data);
         }
       })
-      .catch(err => alert(err));
+      .catch(err =>{
+        alert(err)
+      });
+      setLoading(false)
   };
 
   const handleShowPassword = () => {
@@ -129,7 +133,7 @@ const Signin = () => {
           </div>
 
           <button className="w-full font-poppins tracking-wide bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
-            Sign up
+            {(loading)?"Signing in...":"Sign up"}
           </button>
         </form>
 

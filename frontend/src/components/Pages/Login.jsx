@@ -11,6 +11,7 @@ const Login = () => {
         password: ""
     });
     const [showPassword, setShowPassword] = useState('password')
+    const [loading,setLoading] = useState(false)
     const navigate = useNavigate()
     const {setLoggedIn,setUserEmail} = useContext(UserContext)
 
@@ -18,7 +19,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+        setLoading(true)
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/log-in`, loginData)
             .then((res) => {
                 if (res.data === "success") {
@@ -30,6 +31,7 @@ const Login = () => {
                 }
             })
             .catch(err => alert(err));
+        setLoading(false)
     };
 
     const handleShowPassword = ()=>{
@@ -78,7 +80,7 @@ const Login = () => {
                     </div>
 
                     <button className="w-full font-poppins tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
-                        Log in
+                        {loading?"Logging in...":"Log in"}
                     </button>
                 </form>
 

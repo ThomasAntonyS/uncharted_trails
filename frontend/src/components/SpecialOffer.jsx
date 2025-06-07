@@ -1,5 +1,6 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom'
+import { FaChevronRight } from "react-icons/fa";
 const SpecialOffer = () => {
 
   const navigate = useNavigate()
@@ -59,8 +60,8 @@ const SpecialOffer = () => {
                   window.scrollTo({top:0,behavior:"smooth"})
                 }} className="mt-4 flex items-center justify-between">
                   <span className="text-orange-500 font-semibold font-agdasima text-lg">{card.price}</span>
-                  <button className="px-4 py-2 bg-orange-500 font-agdasima tracking-wide text-white rounded-lg hover:bg-orange-600 transition duration-300">
-                    DETAILS
+                  <button className="px-4 py-2 flex justify-center bg-orange-500 font-agdasima tracking-wide text-white rounded-lg hover:bg-orange-600 transition duration-300">
+                    DETAILS <FaChevronRight size={12} className="ml-2 h-max my-auto" />
                   </button>
                 </div>
               </div>

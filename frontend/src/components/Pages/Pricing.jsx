@@ -5,6 +5,7 @@ import { UserContext } from "../../Context/UserContextProvider";
 import BookingForm from "../BookingForm";
 import { destinations } from '../../data/data';
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { FaChevronRight } from "react-icons/fa";
 
 const Pricing = () => {
   const { setFormOpen, setSelectedBooking,loggedIn } = useContext(UserContext);
@@ -68,7 +69,7 @@ const Pricing = () => {
                 >
                   <div
                     onClick={() => toggleAccordion(destination.id)}
-                    className={`flex items-center justify-between p-4 cursor-pointer ${openAccordion === destination.id ? "bg-black text-white transition-all duration-300" : "bg-white"}`}
+                    className={`flex items-center justify-between p-4 cursor-pointer ${openAccordion === destination.id ? "bg-black text-white transition-all" : "bg-white"}`}
                   >
                     <h3 className="text-lg font-bold font-agdasima">
                       {destination.location}
@@ -102,9 +103,9 @@ const Pricing = () => {
                       </p>
                       <button
                         onClick={() => handleBookNow(destination)}
-                        className="my-4 mx-4 bg-black text-white px-4 py-2 rounded "
+                        className="flex my-4 mx-4 bg-black/90 hover:bg-black text-white px-4 py-2 rounded "
                       >
-                        Book Now
+                        Book Now <FaChevronRight size={12} className="ml-2 h-max my-auto" />
                       </button>
                     </div>
                   )}

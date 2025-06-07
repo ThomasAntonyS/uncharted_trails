@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import Footer from "../Footer";
 import { IoBookmark } from "react-icons/io5";
-import { MdArrowRightAlt } from "react-icons/md";
+import { FaChevronRight } from "react-icons/fa";
 import Navbar from "../Navbar";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContextProvider";
@@ -60,7 +60,7 @@ const Explore = () => {
             className="flex mx-auto px-4 py-3 bg-indigo-600 text-white text-lg font-semibold rounded hover:bg-indigo-700 font-agdasima tracking-wider"
             onClick={() => navigate("/pricing")}
           >
-            Get Started <MdArrowRightAlt className="my-auto ml-2" size={25} />
+            Get Started <FaChevronRight className="my-auto ml-2" size={15} />
           </button>
         </div>
       </div>
