@@ -19,19 +19,30 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
+        
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/log-in`, loginData)
             .then((res) => {
-                if (res.data === "success") {
-                    setLoggedIn(true)
-                    setUserEmail(loginData.email)
-                    navigate('/')
-                } else {
-                    alert('Login failed!');
+                if (res.status === 200) {
+                    setLoggedIn(true);
+                    setUserEmail(loginData.email); 
+                    navigate('/');
                 }
             })
-            .catch(err => alert(err));
-        setLoading(false)
+            .catch((error) => {
+                if (error.response) {
+                    const errorMessage = error.response.data.message || "An error occurred during login.";
+                    alert(errorMessage);
+                
+                } else if (error.request) {
+                    alert('No response from server. Please check your network connection.');
+                } else {
+                    alert('Error: ' + error.message);
+                }
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
 
     const handleShowPassword = ()=>{

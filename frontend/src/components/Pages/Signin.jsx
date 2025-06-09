@@ -24,28 +24,57 @@ const Signin = () => {
 
   const handleSignup = (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
+
     if (!registerData.username || !registerData.email || !registerData.phone_number || !registerData.password || !registerData.cnf_password) {
-      return alert("Please fill in all fields.");
+        setLoading(false);
+        return alert("Please fill in all fields.");
     }
 
     if (registerData.password !== registerData.cnf_password) {
-      return alert("Passwords don't match.");
+        setLoading(false);
+        return alert("Passwords don't match.");
     }
 
     axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/sign-up`, registerData)
-      .then(res => {
-        if (res.data === "Verification email sent. Please verify your email.") {
-          setUserEmail(registerData.email)
-          navigate("/sign-up-confirmation");
-        } else {
-          alert("Signup failed: " + res.data);
-        }
-      })
-      .catch(err =>{
-        alert(err)
-      });
-      setLoading(false)
+        .then(res => {
+            if (res.status === 200) {
+                setUserEmail(registerData.email);
+                navigate("/sign-up-confirmation");
+            }
+        })
+        .catch(err => {
+            if (err.response) {
+                const serverMessage = err.response.data.message;
+
+                if (serverMessage === "Email already exists but is unverified. Please check your email for the verification code or try logging in.") {
+                    alert("Email already exists but is unverified. Redirecting to confirmation page.");
+                    setUserEmail(registerData.email);
+                    navigate("/sign-up-confirmation");
+                } 
+                else if (serverMessage === "An account with this email already exists.") {
+                    alert("An account with this email already exists. Please try logging in.");
+                } 
+                else if (serverMessage === "Failed to send verification email. Please try again.") {
+                    alert("Failed to send verification email. Please try signing up again.");
+                } 
+                else if (err.response.status === 409) {
+                    alert(serverMessage || "Conflict: Data already exists.");
+                } 
+                else if (err.response.status === 500) {
+                    alert(serverMessage || "An internal server error occurred. Please try again later.");
+                } else {
+                    alert(`An unexpected error occurred: ${serverMessage || err.response.status}`);
+                }
+            } else if (err.request) {
+                alert("No response from the server. Please check your internet connection.");
+            } else {
+                alert(`Error: ${err.message}`);
+            }
+        })
+        .finally(() => {
+            setLoading(false);
+        });
   };
 
   const handleShowPassword = () => {

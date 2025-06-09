@@ -46,22 +46,26 @@ app.get("/", (req, res) => {
 });
 
 app.post('/api/log-in', async (req, res) => {
-    const { email, password } = req.body;
-    const sql = "SELECT `email_id`, `password` FROM login_signup WHERE `email_id` = ?";
-    try {
-        const [data] = await db.promise().query(sql, [email]);
-  
-        if (data.length === 0) return res.json("Fail");
-  
-        const isMatch = await bcrypt.compare(password, data[0].password);
-        if (!isMatch) return res.json("Fail");
-  
-        res.json("success");
-    } catch (error) {
-        console.error("Database Error:", error);
-        res.status(500).send("Database Error");
-    }
-});  
+  const { email, password } = req.body;
+  const sql = "SELECT `email_id`, `password` FROM login_signup WHERE `email_id` = ? AND `isVerified`=1";
+  try {
+      const [data] = await db.promise().query(sql, [email]);
+      if (data.length === 0) {
+        return res.status(401).json({ message: "User not found." });
+      }
+
+      const isMatch = await bcrypt.compare(password, data[0].password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Invalid credentials." });
+      }
+
+      return res.status(200).json({ message: "Login Successful", userEmail: data[0].email_id });
+
+  } catch (error) {
+      console.error("Database Error during login:", error);
+      res.status(500).json({ message: "An unexpected server error occurred. Please try again later." });
+  }
+}); 
 
 const generateUniqueCode = async () => {
     let isUnique = false;
@@ -106,49 +110,58 @@ const sendEmail = async (toEmail, subject, message) => {
 
 app.post("/api/sign-up", async (req, res) => {
     const { username, email, phone_number, password } = req.body;
-    const checkData = "SELECT `email_id` FROM login_signup WHERE `email_id` = ?";
+    const checkData = "SELECT `email_id`, `isVerified` FROM login_signup WHERE `email_id` = ?";
     const currentDate = new Date().toISOString().slice(0, 19).replace("T", " ");
 
     try {
         const [data] = await db.promise().query(checkData, [email]);
+
         if (data.length > 0) {
-            return res.status(400).json("Email Already Exists");
+            const existingUser = data[0]; 
+
+            if (existingUser.isVerified === 0) {
+                return res.status(409).json({ message: "Email already exists but is unverified. Please check your email for the verification code or try logging in." });
+            } else {
+                return res.status(409).json({ message: "An account with this email already exists." });
+            }
         }
 
-        const hashedPassword = await bcrypt.hash(password, process.env.Bcrypt_salt);
+        const saltVal = parseInt(process.env.Bcrypt_salt);
+        const hashedPassword = await bcrypt.hash(password, saltVal);
 
         const verificationCode = await generateUniqueCode();
 
         const emailSent = await sendEmail(email, "Your Verification Code", `Your verification code is: ${verificationCode}`);
         if (!emailSent) {
-            return res.status(500).json("Failed to send verification email");
+            return res.status(500).json({ message: "Failed to send verification email. Please try again." });
         }
 
-        // Insert into the 'verification_table'
         const verifySql = `
             INSERT INTO verification_table (email_id, verification_code, time_stamp)
             VALUES (?, ?, ?)
         `;
         await db.promise().query(verifySql, [email, verificationCode, currentDate]);
 
-        // Insert into the 'login_signup' table
         const loginSignupSql = `
-            INSERT INTO login_signup (email_id, password, username, phone_number, time_stamp)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO login_signup (email_id, password, username, phone_number, time_stamp, isVerified)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
-        await db.promise().query(loginSignupSql, [email, hashedPassword, username, phone_number, currentDate]);
+        await db.promise().query(loginSignupSql, [email, hashedPassword, username, phone_number, currentDate, 0]);
 
-        // Insert into the 'users' table
         const usersSql = `
             INSERT INTO users (username, email_id, phone_number, created_at)
             VALUES (?, ?, ?, ?)
         `;
         await db.promise().query(usersSql, [username, email, phone_number, currentDate]);
 
-        res.json("Verification email sent. Please verify your email.");
+        res.status(200).json({ message: "Verification email sent. Please verify your email." });
+
     } catch (error) {
         console.error(error);
-        res.status(500).send("Server error");
+        if (error.code === 'ER_DUP_ENTRY' || error.errno === 1062) {
+             return res.status(409).json({ message: "A user with this username or phone number may already exist." });
+        }
+        res.status(500).json({ message: "An unexpected server error occurred. Please try again later." });
     }
 });
 
@@ -167,12 +180,13 @@ app.post('/api/sign-up-confirmation', async (req, res) => {
 
             if (data.length > 0) {
                 const delCodeSql = "DELETE FROM verification_table WHERE `verification_code` = ? AND `email_id` = ?";
-                
+                const setSql = "UPDATE login_signup SET isVerified=1 WHERE `email_id`=? "
                 try {
+                    await db.promise().query(setSql, [email])
                     await db.promise().query(delCodeSql, values);
                     return res.json("success");
                 } catch (deleteErr) {
-                    console.error("Error deleting verification code");
+                    console.error("Error deleting verification code",deleteErr);
                     return res.status(500).json({ message: "Failed to delete verification code" });
                 }
             } else {
