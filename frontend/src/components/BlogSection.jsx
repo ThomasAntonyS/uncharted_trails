@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaChevronRight } from "react-icons/fa";
 
 const BlogSection = () => {
   return (
@@ -42,8 +43,8 @@ const BlogSection = () => {
             encounter consequences that are extremely painful. Nor again is there
             anyone who loves or pursues.
           </p>
-          <a href="#/blog/2" className="text-orange-500 font-semibold hover:underline">
-            Read More &rarr;
+          <a href="#/blog/2" className="flex w-max font-agdasima text-orange-500 font-semibold underline sm:no-underline hover:underline">
+            Read More <span className=' h-max my-auto ml-1 mt-[7px]'><FaChevronRight size={12}/></span>
           </a>
         </div>
       </div>

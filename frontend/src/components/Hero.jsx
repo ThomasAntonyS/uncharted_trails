@@ -52,7 +52,7 @@ const Hero = () => {
           </div>
 
           <div className='Hero_Button flex w-full sm:w-[20%] font-libreCaslon bg-black text-white text-[1rem] sm:text-[1.2rem] tracking-wider'>
-            <Link to='/pricing' className='mx-auto w-full py-2 flex items-center justify-center'>Click here <FaChevronRight size={15} className="ml-2" /></Link>
+            <Link to='/pricing' className='mx-auto w-full py-2 flex items-center justify-center'>Click here <FaChevronRight size={11} className="ml-2" /></Link>
           </div>
         </div>
 

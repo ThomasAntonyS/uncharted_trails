@@ -1,18 +1,19 @@
 import React, { useContext, useState } from "react";
 import Logo from "../assets/Logo.webp";
 import { Link, useNavigate } from "react-router-dom";
-import { FaCaretRight, FaUser } from "react-icons/fa";
+import { FaUserAlt} from "react-icons/fa";
+import { IoMdLogOut } from "react-icons/io";
 import { UserContext } from "../Context/UserContextProvider";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { loggedIn, userEmail } = useContext(UserContext);
+  const { loggedIn,setLoggedIn } = useContext(UserContext);
   const navigate = useNavigate();
 
   function handleNavigation(e, navLink) {
     e.preventDefault();
     navigate(navLink);
-    setIsMenuOpen(false); // Close mobile menu if open
+    setIsMenuOpen(false);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -28,17 +29,18 @@ const Navbar = () => {
 
       {/* Desktop Navigation */}
       <div className="hidden xl:flex items-center space-x-16 font-poppins text-[1rem] sm:text-[1.1rem] text-white">
-        <Link onClick={(e) => handleNavigation(e, "/")}>Home</Link>
-        <Link onClick={(e) => handleNavigation(e, "/explore")}>Explore</Link>
-        <Link onClick={(e) => handleNavigation(e, "/blog")}>Blog</Link>
-        <Link onClick={(e) => handleNavigation(e, "/pricing")}>Pricing</Link>
+        <Link onClick={(e) => handleNavigation(e, "/")} className="hover:border-white hover:border-b-[1.5px] transition-all delay-100">Home</Link>
+        <Link onClick={(e) => handleNavigation(e, "/explore")} className="hover:border-white hover:border-b-[1.5px] transition-all delay-100">Explore</Link>
+        <Link onClick={(e) => handleNavigation(e, "/blog")} className="hover:border-white hover:border-b-[1.5px] transition-all delay-100">Blog</Link>
+        <Link onClick={(e) => handleNavigation(e, "/pricing")} className="hover:border-white hover:border-b-[1.5px] transition-all delay-100">Pricing</Link>
       </div>
 
       {/* Desktop Profile or Auth Links */}
       {loggedIn ? (
-        <div className="hidden xl:flex items-center space-x-4 font-poppins text-[1rem] sm:bg-black sm:bg-opacity-45 rounded-md text-white sm:mx-4">
-          <Link to="/profile" className="flex p-2 font-agdasima tracking-widest text-md">
-            <span className="my-auto mr-2 mt-1"><FaUser /></span> {userEmail}
+        <div className="hidden xl:flex items-center space-x-6 font-poppins text-[1rem] rounded-full text-white sm:mx-4">
+          <button onClick={()=>setLoggedIn(false)} className=" flex border-white border-b-2 transition-all py-1 font-poppins">Logout <span className=" h-max my-auto ml-1"><IoMdLogOut size={20}/></span></button>
+          <Link to="/profile" className="flex sm:bg-black sm:bg-opacity-30 p-3 rounded-full font-agdasima tracking-widest text-md" title="Profile">
+            <span className="my-auto "><FaUserAlt /></span>
           </Link>
         </div>
       ) : (
@@ -95,7 +97,8 @@ const Navbar = () => {
             {loggedIn ? (
               <div className="flex flex-col items-center space-y-2 mt-4">
                 <Link onClick={(e) => handleNavigation(e, "/profile")} className="flex">
-                  Profile <span className="my-auto ml-1"><FaCaretRight /></span>
+                  <span className="my-auto mr-2 h-max"><FaUserAlt size={15} /></span> 
+                    Profile 
                 </Link>
               </div>
             ) : (

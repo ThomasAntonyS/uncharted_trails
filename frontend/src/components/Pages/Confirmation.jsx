@@ -45,7 +45,6 @@ const Confirmation = () => {
         console.error(err); 
         setMessage(err.response?.data || err.message || "Something went wrong");
       });
-      
     } 
     catch(err){
       setMessage(err);

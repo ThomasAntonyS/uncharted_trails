@@ -54,7 +54,7 @@ function AppRoutes() {
             path='/sign-up-confirmation'
           />
           <Route
-            element={<Profile />}
+            element={loggedIn? <Profile /> : <Navigate to="/" replace/>}
             path='/profile'
           />
           <Route
