@@ -6,6 +6,7 @@ import BlogSection from '../BlogSection'
 import DestinationGallery from '../DestinationGallery'
 import Footer from '../Footer'
 import Navbar from '../Navbar'
+import AlertBox from '../AlertBox'
 
 const Home = () => {
 
@@ -14,6 +15,7 @@ const Home = () => {
   return (
 
     <>
+      <AlertBox/>
       <Navbar/>
       <Hero/>
       <Popular_Dest/>

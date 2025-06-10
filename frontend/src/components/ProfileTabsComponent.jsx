@@ -5,11 +5,11 @@ import { IoMdClose } from "react-icons/io";
 import PlusFade from '../assets/icons'
 import { Link } from "react-router-dom";
 import BookingForm from "./BookingForm";
-import {destinations} from '../data/data'
+import { destinations } from '../data/data'
 import axios from 'axios'
 import ConfirmDeletePopup from './ConfirmDeletePopup';
 
-export const PersonalInfo = ({userData}) =>{
+export const PersonalInfo = ({ userData }) => {
 
   const [travelData, setTravelData] = useState({
     miles: 0,
@@ -18,12 +18,12 @@ export const PersonalInfo = ({userData}) =>{
     countries: 0,
   });
 
-  return(
+  return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <InfoCard icon={<MdFlight size={32} className=" text-orange-500" />} value={travelData.miles} label="MILES" />
         <InfoCard icon={<MdApartment size={32} className="text-orange-500" />} value={travelData.cities} label="CITIES" />
-        <InfoCard icon={<MdPublic size={32} className="text-orange-500" />} value={travelData.world+"%"} label="WORLD" />
+        <InfoCard icon={<MdPublic size={32} className="text-orange-500" />} value={travelData.world + "%"} label="WORLD" />
         <InfoCard icon={<MdLocationOn size={32} className="text-orange-500" />} value={travelData.countries} label="COUNTRIES" />
       </div>
       <div className="bg-white shadow-md rounded-lg p-6 mt-6">
@@ -41,9 +41,9 @@ export const PersonalInfo = ({userData}) =>{
     </>
   )
 }
-  
+
 export const UserBooking = () => {
-  const { booking, setBooking } = useContext(UserContext);
+  const { booking, setBooking, setAlertBox } = useContext(UserContext);
   const [popupOpen, setPopupOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [deleteName, setDeleteName] = useState('');
@@ -53,35 +53,40 @@ export const UserBooking = () => {
     const fetchBookings = async () => {
       const email = sessionStorage.getItem("userEmail");
       if (!email) return;
-    
+
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/get-bookings/${email}`);
         const bookingData = response.data;
-    
+
         const matchedBookings = bookingData
-          .map((booking) => {
+          .map((bookingItem) => { // Renamed 'booking' to 'bookingItem' to avoid conflict with 'booking' state
             const matchedDestination = destinations.find(
-              (place) => place.location === booking.location
+              (place) => place.location === bookingItem.location
             );
             if (matchedDestination) {
               return {
                 ...matchedDestination,
-                bookingDetails: booking, 
+                bookingDetails: bookingItem,
               };
             }
             return null;
           })
           .filter((item) => item !== null);
-    
+
         setBooking(matchedBookings);
       } catch (error) {
         console.error("Failed to fetch bookings:", error);
+        setAlertBox({
+          isOpen: true,
+          message: "Failed to fetch bookings. Please try again later.",
+          isError: true,
+        });
       }
     };
     fetchBookings();
-  }, [setBooking]);
+  }, [setBooking, setAlertBox]);
 
-  const openCancelPopup = (e,index, id, name) => {
+  const openCancelPopup = (e, index, id, name) => {
     e.preventDefault()
     setDeleteIndex(index);
     setDeleteId(id);
@@ -98,8 +103,19 @@ export const UserBooking = () => {
       const updatedBookings = booking.filter((_, i) => i !== deleteIndex);
       setBooking(updatedBookings);
       setPopupOpen(false);
+      setAlertBox({
+        isOpen: true,
+        message: "Booking cancelled successfully!",
+        isError: false,
+      });
     } catch (error) {
       console.error("Error cancelling booking:", error);
+      setPopupOpen(false);
+      setAlertBox({
+        isOpen: true,
+        message: "Failed to cancel booking. Please try again.",
+        isError: true,
+      });
     }
   };
 
@@ -107,12 +123,12 @@ export const UserBooking = () => {
     <div className="bg-white rounded-lg sm:shadow-md sm:p-6 w-full overflow-x-auto">
       <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Bookings</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-        {booking.filter((b) => b.status !== "Completed").length > 0 ? (
+        {booking.filter((b) => b.bookingDetails?.status !== "Completed").length > 0 ? (
           booking
-            .filter((destination) => destination.status !== "Completed")
+            .filter((destination) => destination.bookingDetails?.status !== "Completed")
             .map((destination, index) => (
               <div
-                key={destination.booking_id}
+                key={destination.bookingDetails?.booking_id || index}
                 className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300"
               >
                 <img
@@ -124,7 +140,7 @@ export const UserBooking = () => {
                   <h3 className="text-lg font-semibold text-gray-800 font-agdasima">
                     {destination.location}
                   </h3>
-                  <p className="text-sm text-gray-600 my-3 font-poppins">
+                  <p className="text-sm text-gray-600 my-3 font-poppins line-clamp-3">
                     {destination.description}
                   </p>
                   <div className="flex justify-between items-center mt-4 font-agdasima">
@@ -133,7 +149,7 @@ export const UserBooking = () => {
                     </span>
                     <button
                       onClick={(e) =>
-                        openCancelPopup(e,index, destination.bookingDetails.booking_id, destination.location)
+                        openCancelPopup(e, index, destination.bookingDetails?.booking_id, destination.location)
                       }
                       className="flex px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 tracking-wider"
                     >
@@ -172,7 +188,7 @@ export const UserBooking = () => {
 };
 
 export const BookingHistory = () => {
-  const {booking, setBooking} = useContext(UserContext);
+  const { booking, setBooking, setAlertBox } = useContext(UserContext);
 
   const userEmail = sessionStorage.getItem("userEmail");
   useEffect(() => {
@@ -182,13 +198,18 @@ export const BookingHistory = () => {
         setBooking(response.data);
       } catch (error) {
         console.error("Failed to fetch bookings:", error);
+        setAlertBox({
+          isOpen: true,
+          message: "Failed to load booking history. Please try again.",
+          isError: true,
+        });
       }
     };
 
     if (userEmail) {
       fetchBookings();
     }
-  }, [userEmail]);
+  }, [userEmail, setBooking, setAlertBox]);
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-x-auto">
@@ -209,23 +230,23 @@ export const BookingHistory = () => {
             </tr>
           </thead>
           <tbody>
-            {booking.map((booking, index) => (
+            {booking.map((bookingItem, index) => (
               <tr key={index} className="border-b font-poppins hover:bg-gray-50 text-gray-700">
-                <td className="p-3">{booking.location}</td>
-                <td className="p-3">{booking.orderDate}</td>
-                <td className="p-3">{booking.travellers}</td>
-                <td className="p-3">{booking.stayDates}</td>
-                <td className="p-3">{booking.cost}</td>
+                <td className="p-3">{bookingItem.location}</td>
+                <td className="p-3">{bookingItem.orderDate}</td>
+                <td className="p-3">{bookingItem.travellers}</td>
+                <td className="p-3">{bookingItem.stayDates}</td>
+                <td className="p-3">{bookingItem.cost}</td>
                 <td
                   className={`p-3 font-semibold ${
-                    booking.status === "Completed"
+                    bookingItem.status === "Completed"
                       ? "text-green-500"
-                      : booking.status === "In Progress"
-                      ? "text-yellow-500"
-                      : "text-red-500"
+                      : bookingItem.status === "In Progress"
+                        ? "text-yellow-500"
+                        : "text-red-500"
                   }`}
                 >
-                  {booking.status}
+                  {bookingItem.status}
                 </td>
               </tr>
             ))}
@@ -235,19 +256,23 @@ export const BookingHistory = () => {
     </div>
   );
 };
-  
+
 export const Wishlist = () => {
-  const { setFormOpen, wishList, setWishList, setSelectedBooking,loggedIn } = useContext(UserContext);
+  const { setFormOpen, wishList, setWishList, setSelectedBooking, loggedIn, setAlertBox } = useContext(UserContext);
   const [popupOpen, setPopupOpen] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [deleteName, setDeleteName] = useState('');
 
   const handleBookNow = (destination) => {
-    if(loggedIn){
+    if (loggedIn) {
       setSelectedBooking(destination);
       setFormOpen(true);
     }
-    else alert("You need to login first to book.")
+    else setAlertBox({
+      isOpen: true,
+      message: "You need to log in first to book.",
+      isError: true,
+    });
   };
 
   const handleRemoveClick = (index, name) => {
@@ -260,6 +285,11 @@ export const Wishlist = () => {
     const updatedList = wishList.filter((_, i) => i !== deleteIndex);
     setWishList(updatedList);
     setPopupOpen(false);
+    setAlertBox({
+      isOpen: true,
+      message: `${deleteName} removed from wishlist.`,
+      isError: false,
+    });
   };
 
   return (
@@ -331,9 +361,10 @@ export const Wishlist = () => {
   );
 };
 
-  
-export const InformationUpdate = ({userData,setUserData}) => {
-  const [stateChange,setStateChange] = useState(false)
+
+export const InformationUpdate = ({ userData, setUserData }) => {
+  const [stateChange, setStateChange] = useState(false)
+  const { setAlertBox } = useContext(UserContext); 
 
   const handleChange = (e) => {
     setStateChange(true)
@@ -344,20 +375,34 @@ export const InformationUpdate = ({userData,setUserData}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(stateChange){
+    if (stateChange) {
       try {
         const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/update-user`, userData);
-        alert(response.data.message);
+        setAlertBox({
+          isOpen: true,
+          message: response.data.message,
+          isError: false
+        });
         setStateChange(false)
         sessionStorage.setItem("userData", JSON.stringify(userData));
-        window.location.reload()
-      } 
+        window.location.reload() 
+      }
       catch (error) {
         console.error("Error updating user data:", error);
+        setAlertBox({
+          isOpen: true,
+          message: error.response?.data?.message || "Failed to update information.",
+          isError: true
+        });
       }
     }
-    else
-    alert("No data changed to update")
+    else {
+      setAlertBox({
+        isOpen: true,
+        message: "No data changed to update.",
+        isError: true
+      });
+    }
   };
 
   return (
@@ -401,7 +446,7 @@ export const InformationUpdate = ({userData,setUserData}) => {
       </form>
     </div>
   );
-  
+
 };
 
 const InfoCard = ({ icon, value, label }) => (

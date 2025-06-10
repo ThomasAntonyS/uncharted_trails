@@ -8,7 +8,7 @@ import { FaMinus, FaPlus } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa";
 
 const Pricing = () => {
-  const { setFormOpen, setSelectedBooking,loggedIn } = useContext(UserContext);
+  const { setFormOpen, setSelectedBooking,loggedIn, setAlertBox } = useContext(UserContext);
   const [openAccordion, setOpenAccordion] = useState(null);
 
   document.title = "Uncharted Trails | Pricing";
@@ -22,7 +22,11 @@ const Pricing = () => {
       setSelectedBooking(destination);
       setFormOpen(true);
     }
-    else alert("You need to login first to book.")
+    else setAlertBox({
+      isOpen:true,
+      message:"Login to book a destination.",
+      isError:true
+    })
   };
 
   return (

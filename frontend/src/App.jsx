@@ -1,22 +1,24 @@
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Home from './components/Pages/Home';
-import Explore from './components/Pages/Explore';
-import Blog from './components/Pages/Blog';
-import Pricing from './components/Pages/Pricing';
-import Signin from './components/Pages/Signin';
-import Login from './components/Pages/Login';
-import Confirmation from './components/Pages/Confirmation';
-import NotFound from './components/Pages/NotFound';
+import Home from './components/pages/Home';
+import Explore from './components/pages/Explore';
+import Blog from './components/pages/Blog';
+import Pricing from './components/pages/Pricing';
+import Signin from './components/pages/Signin';
+import Login from './components/pages/Login';
+import Confirmation from './components/pages/Confirmation';
+import NotFound from './components/pages/NotFound';
 import UserContextProvider, { UserContext } from './Context/UserContextProvider';
-import Profile from './components/Pages/Profile';
+import Profile from './components/pages/Profile';
 import SingleBlog from './components/SingleBlog';
 import { useContext } from 'react';
+import AlertBox from './components/AlertBox';
 
 function App() {
     return (
         <UserContextProvider>
-            <AppRoutes /> 
+          <AlertBox/>
+          <AppRoutes /> 
         </UserContextProvider>
     );
 }

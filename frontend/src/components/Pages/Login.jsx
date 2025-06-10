@@ -1,56 +1,65 @@
 import React, { useContext, useState } from "react";
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/Logo.webp';
 import { FaHome } from "react-icons/fa";
 import axios from 'axios';
-import {UserContext} from '../../Context/UserContextProvider'
+import { UserContext } from '../../Context/UserContextProvider';
 
 const Login = () => {
     const [loginData, setLoginData] = useState({
-        email: "", 
+        email: "",
         password: ""
     });
-    const [showPassword, setShowPassword] = useState('password')
-    const [loading,setLoading] = useState(false)
-    const navigate = useNavigate()
-    const {setLoggedIn,setUserEmail} = useContext(UserContext)
+    const [showPassword, setShowPassword] = useState('password');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const { setLoggedIn, setUserEmail, setAlertBox } = useContext(UserContext);
 
-    document.title = "Uncharted Trails | Login"
+    document.title = "Uncharted Trails | Login";
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        
+
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/log-in`, loginData)
             .then((res) => {
                 if (res.status === 200) {
                     setLoggedIn(true);
-                    setUserEmail(loginData.email); 
+                    setUserEmail(loginData.email);
+                    setAlertBox({
+                        isOpen: true,
+                        message: "Login successful!",
+                        isError: false
+                    });
                     navigate('/');
                 }
             })
             .catch((error) => {
+                let errorMessage = "An unexpected error occurred.";
                 if (error.response) {
-                    const errorMessage = error.response.data.message || "An error occurred during login.";
-                    alert(errorMessage);
-                
+                    errorMessage = error.response.data.message || errorMessage;
                 } else if (error.request) {
-                    alert('No response from server. Please check your network connection.');
+                    errorMessage = 'No response from server. Please check your network connection.';
                 } else {
-                    alert('Error: ' + error.message);
+                    errorMessage = error.message;
                 }
+                setAlertBox({
+                    isOpen: true,
+                    message: errorMessage,
+                    isError: true
+                });
             })
             .finally(() => {
                 setLoading(false);
             });
     };
 
-    const handleShowPassword = ()=>{
-        if(showPassword=="text")
-            setShowPassword("password")
-        else 
-            setShowPassword("text")
-    }
+    const handleShowPassword = () => {
+        if (showPassword === "text")
+            setShowPassword("password");
+        else
+            setShowPassword("text");
+    };
 
     return (
         <div className="flex h-screen">
@@ -59,11 +68,10 @@ const Login = () => {
                     <img src={Logo} alt="Logo" height={100} width={160} />
                 </Link>
                 <div className="flex text-white align-middle sm:text-lg font-libreCaslon font-bold bg-black px-2 py-1 rounded-sm bg-opacity-65">
-                    <Link to="/" className="flex"><FaHome className="mx-1 my-auto"/>Home</Link>
+                    <Link to="/" className="flex"><FaHome className="mx-1 my-auto" />Home</Link>
                 </div>
             </div>
 
-            {/* Left Section */}
             <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 bg-white">
                 <h1 className="text-3xl font-bold mb-2 font-libreCaslon">Welcome back</h1>
                 <p className="text-gray-500 mb-6 font-poppins">Login to your account</p>
@@ -86,21 +94,20 @@ const Login = () => {
                             className="w-full p-3 font-poppins border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                         />
                         <div className=" flex align-middle w-full mt-1 gap-x-2 font-poppins">
-                            <input type="checkbox" onChange={handleShowPassword}/> <p>Show password</p>
+                            <input type="checkbox" onChange={handleShowPassword} /> <p>Show password</p>
                         </div>
                     </div>
 
                     <button className="w-full font-poppins tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
-                        {loading?"Logging in...":"Log in"}
+                        {loading ? "Logging in..." : "Log in"}
                     </button>
                 </form>
 
                 <p className="mt-4 text-gray-600 font-poppins">
-                    Already have an account ? <Link to='/sign-up' className="text-purple-600 font-poppins tracking-wider underline">Sign in</Link>
+                    Don't have an account ? <Link to='/sign-up' className="text-purple-600 font-poppins tracking-wider underline">Sign up</Link>
                 </p>
             </div>
 
-            {/* Right Section */}
             <div className="hidden md:flex w-1/2 bg-purple-200 justify-center items-center">
                 <div className=" w-full h-full">
                     <img src="https://images.pexels.com/photos/3621344/pexels-photo-3621344.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Illustration"

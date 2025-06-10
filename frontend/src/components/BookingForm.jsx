@@ -12,6 +12,7 @@ const BookingForm = () => {
     booking,
     setBooking,
     userEmail,
+    setAlertBox,
   } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
@@ -89,12 +90,20 @@ const BookingForm = () => {
     e.preventDefault();
 
     if (!userEmail) {
-      alert("User not logged in. Please sign in first.");
+      setAlertBox({
+        isOpen: true,
+        message: "User not logged in. Please sign in first.",
+        isError: true,
+      });
       return;
     }
 
     if (!validateForm()) {
-      alert("Please correct the errors in the form.");
+      setAlertBox({
+        isOpen: true,
+        message: "Please correct the errors in the form.",
+        isError: true,
+      });
       return;
     }
 
@@ -110,40 +119,55 @@ const BookingForm = () => {
     );
 
     if (alreadyBooked) {
-      alert(`You've already booked ${selectedBooking.location}.`);
+      setAlertBox({
+        isOpen: true,
+        message: `You've already booked ${selectedBooking.location}.`,
+        isError: true,
+      });
       return;
     }
 
-    try {  
+    try {
       const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/booking`, newBooking);
 
       if (response.status === 201) {
         setBooking((prev) => [...prev, response.data]);
-        alert(`Booking confirmed for ${selectedBooking.location}!`);
+        setAlertBox({
+          isOpen: true,
+          message: `Booking confirmed for ${selectedBooking.location}!`,
+          isError: false,
+        });
         setFormOpen(false);
         setSelectedBooking(null);
         setFormData({
-            destination: "",
-            fullName: "",
-            email: "",
-            phone: "",
-            travelers: 1,
-            startDate: "",
-            endDate: "",
-            specialRequests: "",
-            price: "",
-            bookingDate: "",
+          destination: "",
+          fullName: "",
+          email: "",
+          phone: "",
+          travelers: 1,
+          startDate: "",
+          endDate: "",
+          specialRequests: "",
+          price: "",
+          bookingDate: "",
         });
         setErrors({});
       } else {
-        alert("Booking failed: " + (response.data.message || "Unknown error"));
+        setAlertBox({
+          isOpen: true,
+          message: "Booking failed: " + (response.data.message || "Unknown error"),
+          isError: true,
+        });
       }
     } catch (error) {
       console.error("Booking error:", error.response?.data || error.message);
-      alert(
-        "An error occurred while booking. Please try again. " +
-          (error.response?.data?.message || "")
-      );
+      setAlertBox({
+        isOpen: true,
+        message:
+          "An error occurred while booking. Please try again. " +
+          (error.response?.data?.message || ""),
+        isError: true,
+      });
     }
   };
 

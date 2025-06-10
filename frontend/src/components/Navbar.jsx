@@ -7,7 +7,7 @@ import { UserContext } from "../Context/UserContextProvider";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { loggedIn,setLoggedIn } = useContext(UserContext);
+  const { loggedIn,setLoggedIn, setAlertBox } = useContext(UserContext);
   const navigate = useNavigate();
 
   function handleNavigation(e, navLink) {
@@ -18,6 +18,16 @@ const Navbar = () => {
       top: 0,
       behavior: "smooth",
     });
+  }
+
+  function handleLogout(e){
+    e.preventDefault();
+    setLoggedIn(false)
+    setAlertBox({
+      message:"Logged out successfully.",
+      isError: false,
+      isOpen: true
+    })
   }
 
   return (
@@ -35,10 +45,10 @@ const Navbar = () => {
         <Link onClick={(e) => handleNavigation(e, "/pricing")} className="hover:border-white hover:border-b-[1.5px] transition-all delay-100">Pricing</Link>
       </div>
 
-      {/* Desktop Profile or Auth Links */}
+      {/* Desktop Profile */}
       {loggedIn ? (
         <div className="hidden xl:flex items-center space-x-6 font-poppins text-[1rem] rounded-full text-white sm:mx-4">
-          <button onClick={()=>setLoggedIn(false)} className=" flex border-white border-b-2 transition-all py-1 font-poppins">Logout <span className=" h-max my-auto ml-1"><IoMdLogOut size={20}/></span></button>
+          <button onClick={(e)=>handleLogout(e)} className=" flex border-white border-b-2 transition-all py-1 font-poppins">Logout <span className=" h-max my-auto ml-1"><IoMdLogOut size={20}/></span></button>
           <Link to="/profile" className="flex sm:bg-black sm:bg-opacity-30 p-3 rounded-full font-agdasima tracking-widest text-md" title="Profile">
             <span className="my-auto "><FaUserAlt /></span>
           </Link>

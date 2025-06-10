@@ -9,6 +9,11 @@ const UserContextProvider = ({ children }) => {
     const [booking, setBooking] = useState([]);
     const [selectedBooking, setSelectedBooking] = useState(null);
     const [formOpen, setFormOpen] = useState(false);
+    const [alertBox, setAlertBox] = useState({
+        isOpen: false,
+        message: "", 
+        isError: false
+    });
 
     useEffect(() => {
         sessionStorage.setItem("userEmail", userEmail);
@@ -22,7 +27,8 @@ const UserContextProvider = ({ children }) => {
             wishList, setWishList,
             booking, setBooking,
             selectedBooking, setSelectedBooking,
-            formOpen, setFormOpen
+            formOpen, setFormOpen,
+            alertBox, setAlertBox
         }}>
             {children}
         </UserContext.Provider>
