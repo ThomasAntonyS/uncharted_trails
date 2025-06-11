@@ -24,7 +24,6 @@ const Signin = () => {
 
   const handleSignup = (e) => {
     e.preventDefault();
-    setLoading(true);
 
     if (
       !registerData.username ||
@@ -41,6 +40,7 @@ const Signin = () => {
       });
       return;
     }
+    setLoading(true);
 
     if (registerData.password !== registerData.cnf_password) {
       setLoading(false);

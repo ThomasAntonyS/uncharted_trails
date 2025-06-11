@@ -19,8 +19,16 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setLoading(true);
+        if(!(loginData.email.trim() && loginData.password.trim())){
+            setAlertBox({
+                isOpen: true,
+                message: "Feilds can't be empty.",
+                isError: true                
+            })
+            return
+        }
 
+        setLoading(true);
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/log-in`, loginData)
             .then((res) => {
                 if (res.status === 200) {
