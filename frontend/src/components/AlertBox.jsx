@@ -31,7 +31,7 @@ const AlertBox = () => {
     }
 
     return (
-        <div className={`fixed top-4 right-4 z-[100] ${alertBox.isError? 'bg-[#FF3F33]':'bg-[#44c662]' }
+        <div className={`fixed top-4 right-4 z-[100] ${alertBox.isError? 'bg-[#ff1100]':'bg-[#289a43]' }
                         shadow-lg p-4 rounded-md border
                         flex items-center gap-3
                         max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl w-auto
