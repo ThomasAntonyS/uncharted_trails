@@ -22,7 +22,7 @@ const Navbar = () => {
 
   function handleLogout(e){
     e.preventDefault();
-    localStorage.removeItem('authToken')
+    sessionStorage.removeItem('authToken')
     setLoggedIn(false)
     setTimeout(() => {
       navigate("/");

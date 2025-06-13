@@ -18,7 +18,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (userEmail) {
-      const token = localStorage.getItem('authToken')
+      const token = sessionStorage.getItem('authToken')
       axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/${userEmail}`,{
         method: 'GET',
         headers : {
@@ -35,7 +35,7 @@ const UserProfile = () => {
   }, [userEmail]);
 
   const handleLogout = ()=>{
-    localStorage.removeItem('authToken')
+    sessionStorage.removeItem('authToken')
     setLoggedIn(false)
     setUserEmail("")
     setTimeout(() => {

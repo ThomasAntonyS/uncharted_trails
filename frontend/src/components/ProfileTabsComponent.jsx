@@ -55,7 +55,7 @@ export const UserBooking = () => {
                 return;
             }
 
-            const token = localStorage.getItem('authToken');
+            const token = sessionStorage.getItem('authToken');
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/get-bookings/${userEmail}`, {
                     headers: {
@@ -108,7 +108,7 @@ export const UserBooking = () => {
                 return;
             }
 
-            const token = localStorage.getItem('authToken');
+            const token = sessionStorage.getItem('authToken');
             await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/delete-booking/${deleteId}&email_id=${userEmail}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -210,7 +210,7 @@ export const BookingHistory = () => {
                 console.warn("User email not available in context. Cannot fetch booking history.");
                 return;
             }
-            const token = localStorage.getItem('authToken');
+            const token = sessionStorage.getItem('authToken');
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/get-bookings/${userEmail}`, {
                     headers: {
@@ -384,7 +384,6 @@ export const Wishlist = () => {
     );
 };
 
-
 export const InformationUpdate = ({ userData, setUserData }) => {
     const [stateChange, setStateChange] = useState(false)
     const { setAlertBox, userEmail } = useContext(UserContext);
@@ -407,7 +406,7 @@ export const InformationUpdate = ({ userData, setUserData }) => {
                 return;
             }
 
-            const token = localStorage.getItem('authToken');
+            const token = sessionStorage.getItem('authToken');
             try {
                 const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/update-user`, userData, {
                     headers: {

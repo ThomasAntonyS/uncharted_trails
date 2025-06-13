@@ -128,7 +128,7 @@ const BookingForm = () => {
     }
 
     try {
-      const token = localStorage.getItem('authToken')
+      const token = sessionStorage.getItem('authToken')
       const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/booking`, newBooking,{
         headers:{
           'Authorization': `Bearer ${token}`
@@ -193,7 +193,7 @@ const BookingForm = () => {
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${errors.fullName ? 'border-red-500' : 'focus:ring-blue-200'}`}
+              className={`w-full px-3 py-2 border rounded font-poppins focus:outline-none focus:ring ${errors.fullName ? 'border-red-500' : 'focus:ring-blue-200'}`}
               required
             />
             {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
@@ -205,7 +205,7 @@ const BookingForm = () => {
               name="email"
               value={userEmail || sessionStorage.getItem("userEmail") || ""}
               readOnly
-              className="w-full px-3 py-2 border rounded bg-gray-100"
+              className="w-full px-3 py-2 border rounded font-poppins bg-gray-100"
             />
           </div>
           <div>
@@ -217,7 +217,7 @@ const BookingForm = () => {
               onChange={handleChange}
               minLength={10}
               maxLength={10}
-              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${errors.phone ? 'border-red-500' : 'focus:ring-blue-200'}`}
+              className={`w-full px-3 py-2 border rounded font-poppins focus:outline-none focus:ring ${errors.phone ? 'border-red-500' : 'focus:ring-blue-200'}`}
               required
             />
             {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
@@ -231,7 +231,7 @@ const BookingForm = () => {
               max={100}
               value={formData.travelers}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${errors.travelers ? 'border-red-500' : 'focus:ring-blue-200'}`}
+              className={`w-full px-3 py-2 border rounded font-poppins focus:outline-none focus:ring ${errors.travelers ? 'border-red-500' : 'focus:ring-blue-200'}`}
               required
             />
             {errors.travelers && <p className="text-red-500 text-sm mt-1">{errors.travelers}</p>}
@@ -243,7 +243,7 @@ const BookingForm = () => {
               name="startDate"
               value={formData.startDate}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${errors.startDate ? 'border-red-500' : 'focus:ring-blue-200'}`}
+              className={`w-full px-3 py-2 border rounded font-poppins focus:outline-none focus:ring ${errors.startDate ? 'border-red-500' : 'focus:ring-blue-200'}`}
               required
             />
             {errors.startDate && <p className="text-red-500 text-sm mt-1">{errors.startDate}</p>}
@@ -255,7 +255,7 @@ const BookingForm = () => {
               name="endDate"
               value={formData.endDate}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring ${errors.endDate ? 'border-red-500' : 'focus:ring-blue-200'}`}
+              className={`w-full px-3 py-2 border rounded font-poppins focus:outline-none focus:ring ${errors.endDate ? 'border-red-500' : 'focus:ring-blue-200'}`}
               required
             />
             {errors.endDate && <p className="text-red-500 text-sm mt-1">{errors.endDate}</p>}
@@ -266,7 +266,7 @@ const BookingForm = () => {
               name="specialRequests"
               value={formData.specialRequests}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
+              className="w-full px-3 py-2 border rounded font-poppins focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
           <button

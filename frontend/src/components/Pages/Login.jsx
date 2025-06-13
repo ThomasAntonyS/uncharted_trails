@@ -32,7 +32,7 @@ const Login = () => {
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/log-in`, loginData)
             .then((res) => {
                 if (res.status === 200) {
-                    localStorage.setItem('authToken', res.data.token); 
+                    sessionStorage.setItem('authToken', res.data.token); 
                     setLoggedIn(true);
                     setUserEmail(res.data.userEmail); 
                     setAlertBox({
