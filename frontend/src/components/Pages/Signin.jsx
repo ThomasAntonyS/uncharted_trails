@@ -62,7 +62,9 @@ const Signin = () => {
             message: "Account created! Please verify your email.",
             isError: false,
           });
-          navigate("/sign-up-confirmation");
+          setTimeout(() => {
+            navigate("/sign-up-confirmation");
+          }, 0); 
         }
       })
       .catch((err) => {
@@ -74,10 +76,16 @@ const Signin = () => {
           const statusCode = err.response.status;
 
           switch (serverMessage) {
-            case "Email already exists but is unverified. Please check your email for the verification code or try logging in.":
-              message = "Email already exists but is unverified. Redirecting to confirmation page.";
+            case "Email already exists but is unverified. Please verify your email or try logging in.":
               setUserEmail(registerData.email);
-              navigate("/sign-up-confirmation");
+              setAlertBox({
+                isOpen: true,
+                message: "Email already exists but is unverified. Redirecting to confirmation page.",
+                isError: false,
+              });
+              setTimeout(() => {
+                navigate("/sign-up-confirmation");
+              }, 1000);
               break;
             case "An account with this email already exists.":
               message = "An account with this email already exists. Please try logging in.";
@@ -101,11 +109,13 @@ const Signin = () => {
           message = `Error: ${err.message}`;
         }
 
-        setAlertBox({
-          isOpen: true,
-          message: message,
-          isError: isError,
-        });
+        if (!setAlertBox.isOpen && message) { 
+          setAlertBox({
+            isOpen: true,
+            message: message,
+            isError: isError,
+          });
+        }
       })
       .finally(() => {
         setLoading(false);

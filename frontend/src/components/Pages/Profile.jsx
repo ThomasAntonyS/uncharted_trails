@@ -18,8 +18,14 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (userEmail) {
-      axios
-        .get(`${import.meta.env.VITE_API_BASE_URL}/api/user/${userEmail}`)
+      const token = localStorage.getItem('authToken')
+      axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/${userEmail}`,{
+        method: 'GET',
+        headers : {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
         .then((response) => {
           setUserData(response.data);
           sessionStorage.setItem("userData", JSON.stringify(response.data));
@@ -29,9 +35,12 @@ const UserProfile = () => {
   }, [userEmail]);
 
   const handleLogout = ()=>{
+    localStorage.removeItem('authToken')
     setLoggedIn(false)
     setUserEmail("")
-    navigate("/")
+    setTimeout(() => {
+      navigate("/");
+    }, 500);
     window.scrollTo({
       top:0,
       behavior:"smooth"

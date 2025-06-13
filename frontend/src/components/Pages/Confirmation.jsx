@@ -34,7 +34,8 @@ const Confirmation = () => {
     setLoading(true);
     axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/sign-up-confirmation`, { verificationCode, email: userEmail })
       .then(res => {
-        if (res.data === "success") {
+        if (res.data.message === "Verification successful.") {
+          localStorage.setItem('authToken',res.data.token)
           setLoggedIn(true);
           setAlertBox({
             isOpen: true,

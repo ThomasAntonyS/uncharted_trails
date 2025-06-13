@@ -4,7 +4,7 @@ const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const SibApiV3Sdk = require("sib-api-v3-sdk");
 const bcrypt = require("bcrypt");
-const fs = require('fs');
+const jwt = require("jsonwebtoken"); 
 
 require('dotenv').config();
 
@@ -61,6 +61,27 @@ async function initializeDatabase() {
 
 initializeDatabase();
 
+const generateToken = (email) => {
+    return jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+};
+
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) {
+        return res.status(401).json({ message: "Authentication token required." });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({ message: "Invalid or expired token." });
+        }
+        req.user = user;
+        next();
+    });
+};
+
 app.get("/", (req, res) => {
     res.send("Welcome to Uncharted Trails Backend!");
 });
@@ -80,7 +101,8 @@ app.post('/api/log-in', async (req, res) => {
             return res.status(401).json({ message: "Invalid credentials." });
         }
 
-        return res.status(200).json({ message: "Login Successful", userEmail: data[0].email_id });
+        const token = generateToken(data[0].email_id);
+        return res.status(200).json({ message: "Login Successful", userEmail: data[0].email_id, token });
 
     } catch (error) {
         console.error("Database Error during login:", error);
@@ -225,7 +247,10 @@ app.post('/api/sign-up-confirmation', async (req, res) => {
             await connection.query(delCodeSql, [verificationCode, email]);
             
             await connection.commit();
-            return res.status(200).json({ message: "Verification successful." });
+
+            const token = generateToken(email);
+
+            return res.status(200).json({ message: "Verification successful.", userEmail: email, token });
         } else {
             await connection.rollback();
             return res.status(400).json({ message: "Invalid verification code or email." });
@@ -294,8 +319,11 @@ app.post('/api/sign-up-code-resend', async (req, res) => {
     }
 });
 
-app.get("/api/user/:email", async (req, res) => {
+app.get("/api/user/:email", authenticateToken, async (req, res) => {
     const email = req.params.email;
+    if (req.user.email !== email) {
+        return res.status(403).json({ message: "Unauthorized: You can only access your own user data." });
+    }
     try {
         const [result] = await pool.query("SELECT * FROM users WHERE email_id = ?", [email]);
         if (result.length === 0) {
@@ -308,8 +336,12 @@ app.get("/api/user/:email", async (req, res) => {
     }
 });
  
-app.post("/api/update-user", async (req, res) => {
+app.post("/api/update-user", authenticateToken, async (req, res) => {
     const { username, email_id, phone_number, home_airport, street_address, city, postal_code, region, country } = req.body;
+
+    if (req.user.email !== email_id) {
+        return res.status(403).json({ message: "Unauthorized: You can only update your own user data." });
+    }
 
     const query = `
         INSERT INTO users (username, email_id, phone_number, home_airport, street_address, city, postal_code, region, country)
@@ -343,18 +375,21 @@ app.post('/api/news-letter', async (req, res) => {
         res.status(200).send("success");
     } catch (error) {
         console.error("Error subscribing to newsletter:", error);
+        if (error.code === 'ER_DUP_ENTRY' || error.errno === 1062) {
+            return res.status(409).json({ message: "This email is already subscribed to the newsletter." });
+        }
         res.status(500).json({ message: "Failed to subscribe to newsletter." });
     }
 });
 
-app.get("/api/travel-data", async (req, res) => {
-    // Note: Using hardcoded email "abc@gmail.com" here. Consider passing email dynamically from auth.
+app.get("/api/travel-data", authenticateToken, async (req, res) => {
+    const userEmail = req.user.email;
     try {
-        const sql = `SELECT miles, cities, world, countries FROM travel_data WHERE email_id="abc@gmail.com"`;
-        const [result] = await pool.query(sql);
+        const sql = `SELECT miles, cities, world, countries FROM travel_data WHERE email_id = ?`;
+        const [result] = await pool.query(sql, [userEmail]); 
         
         if (result.length === 0) {
-            return res.status(404).json({ error: "No data found for this email." });
+            return res.status(404).json({ error: "No travel data found for this user." });
         }
         res.json(result[0]);
     } catch (error) {
@@ -363,7 +398,7 @@ app.get("/api/travel-data", async (req, res) => {
     }
 });
 
-app.post("/api/booking", async (req, res) => {
+app.post("/api/booking", authenticateToken, async (req, res) => {
     const {
         fullName,
         email,
@@ -376,6 +411,10 @@ app.post("/api/booking", async (req, res) => {
         price,
         bookingDate,
     } = req.body;
+    
+    if (req.user.email !== email) {
+        return res.status(403).json({ message: "Unauthorized: Booking email does not match authenticated user." });
+    }
     
     if (!email || !fullName || !destination || !startDate || !endDate) {
         return res.status(400).json({ message: "Missing required fields." });
@@ -408,9 +447,13 @@ app.post("/api/booking", async (req, res) => {
     }
 });
 
-app.get('/api/get-bookings/:userEmail', async (req, res) => {
+app.get('/api/get-bookings/:userEmail', authenticateToken, async (req, res) => {
     const email = req.params.userEmail;
     
+    if (req.user.email !== email) {
+        return res.status(403).json({ message: "Unauthorized: You can only access your own bookings." });
+    }
+
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
     }
@@ -444,10 +487,14 @@ app.get('/api/get-bookings/:userEmail', async (req, res) => {
     }
 });
 
-app.delete("/api/delete-booking/:bookingId&email_id=:email", async (req, res) => {
+app.delete("/api/delete-booking/:bookingId&email_id=:email", authenticateToken, async (req, res) => {
     const bookingId = req.params.bookingId;
     const email = req.params.email;
     
+    if (req.user.email !== email) {
+        return res.status(403).json({ message: "Unauthorized: You can only delete your own bookings." });
+    }
+
     const query = "DELETE FROM booking WHERE booking_id = ? AND email_id = ?";
     try {
         const [result] = await pool.query(query, [bookingId, email]);

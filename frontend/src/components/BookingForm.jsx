@@ -128,7 +128,12 @@ const BookingForm = () => {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/booking`, newBooking);
+      const token = localStorage.getItem('authToken')
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/booking`, newBooking,{
+        headers:{
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
       if (response.status === 201) {
         setBooking((prev) => [...prev, response.data]);

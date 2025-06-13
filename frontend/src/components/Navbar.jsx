@@ -22,7 +22,11 @@ const Navbar = () => {
 
   function handleLogout(e){
     e.preventDefault();
+    localStorage.removeItem('authToken')
     setLoggedIn(false)
+    setTimeout(() => {
+      navigate("/");
+    }, 500);
     setAlertBox({
       message:"Logged out successfully.",
       isError: false,

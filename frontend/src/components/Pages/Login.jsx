@@ -22,7 +22,7 @@ const Login = () => {
         if(!(loginData.email.trim() && loginData.password.trim())){
             setAlertBox({
                 isOpen: true,
-                message: "Feilds can't be empty.",
+                message: "Fields can't be empty.",
                 isError: true                
             })
             return
@@ -32,8 +32,9 @@ const Login = () => {
         axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/log-in`, loginData)
             .then((res) => {
                 if (res.status === 200) {
+                    localStorage.setItem('authToken', res.data.token); 
                     setLoggedIn(true);
-                    setUserEmail(loginData.email);
+                    setUserEmail(res.data.userEmail); 
                     setAlertBox({
                         isOpen: true,
                         message: "Login successful!",
