@@ -154,7 +154,7 @@ const Signin = () => {
           <div className="mb-4">
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Username *"
               onChange={(e) =>
                 setRegisterData({ ...registerData, username: e.target.value })
               }
@@ -165,7 +165,7 @@ const Signin = () => {
           <div className="mb-4">
             <input
               type="email"
-              placeholder="Email address"
+              placeholder="Email address *"
               onChange={(e) =>
                 setRegisterData({ ...registerData, email: e.target.value })
               }
@@ -178,7 +178,7 @@ const Signin = () => {
               type="text"
               minLength={10}
               maxLength={10}
-              placeholder="Phone Number"
+              placeholder="Phone Number *"
               onChange={(e) =>
                 setRegisterData({
                   ...registerData,
@@ -192,7 +192,7 @@ const Signin = () => {
           <div className="mb-4">
             <input
               type={showPassword}
-              placeholder="Password"
+              placeholder="Password *"
               onChange={(e) =>
                 setRegisterData({ ...registerData, password: e.target.value })
               }
@@ -211,7 +211,7 @@ const Signin = () => {
           <div className="mb-4">
             <input
               type={showCnfPassword}
-              placeholder="Repeat password"
+              placeholder="Re-type password *"
               onChange={(e) =>
                 setRegisterData({
                   ...registerData,

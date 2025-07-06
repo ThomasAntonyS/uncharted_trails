@@ -89,7 +89,7 @@ const Login = () => {
                     <div className="mb-6">
                         <input
                             type="email"
-                            placeholder="Email address"
+                            placeholder="Email address *"
                             onChange={e => setLoginData({ ...loginData, email: e.target.value })}
                             className="w-full font-poppins p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                         />
@@ -98,7 +98,7 @@ const Login = () => {
                     <div className="mb-6">
                         <input
                             type={showPassword}
-                            placeholder="Password"
+                            placeholder="Password *"
                             onChange={e => setLoginData({ ...loginData, password: e.target.value })}
                             className="w-full p-3 font-poppins border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                         />

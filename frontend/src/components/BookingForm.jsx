@@ -187,7 +187,7 @@ const BookingForm = () => {
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-gray-700 font-poppins">Full Name</label>
+            <label className="block text-gray-700 font-poppins">Full Name <span className=" text-red-600">*</span></label>
             <input
               type="text"
               name="fullName"
@@ -199,7 +199,7 @@ const BookingForm = () => {
             {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
           </div>
           <div>
-            <label className="block text-gray-700 font-poppins">Email</label>
+            <label className="block text-gray-700 font-poppins">Email <span className=" text-red-600">*</span></label>
             <input
               type="email"
               name="email"
@@ -209,7 +209,7 @@ const BookingForm = () => {
             />
           </div>
           <div>
-            <label className="block text-gray-700 font-poppins">Phone Number</label>
+            <label className="block text-gray-700 font-poppins">Phone Number <span className=" text-red-600">*</span></label>
             <input
               type="tel"
               name="phone"
@@ -223,7 +223,7 @@ const BookingForm = () => {
             {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
           </div>
           <div>
-            <label className="block text-gray-700 font-poppins">No. of Travelers</label>
+            <label className="block text-gray-700 font-poppins">No. of Travelers <span className=" text-red-600">*</span></label>
             <input
               type="number"
               name="travelers"
@@ -237,7 +237,7 @@ const BookingForm = () => {
             {errors.travelers && <p className="text-red-500 text-sm mt-1">{errors.travelers}</p>}
           </div>
           <div>
-            <label className="block text-gray-700 font-poppins">Preferred Travel Start Date</label>
+            <label className="block text-gray-700 font-poppins">Preferred Travel Start Date <span className=" text-red-600">*</span></label>
             <input
               type="date"
               name="startDate"
@@ -249,7 +249,7 @@ const BookingForm = () => {
             {errors.startDate && <p className="text-red-500 text-sm mt-1">{errors.startDate}</p>}
           </div>
           <div>
-            <label className="block text-gray-700 font-poppins">Preferred Travel End Date</label>
+            <label className="block text-gray-700 font-poppins">Preferred Travel End Date <span className=" text-red-600">*</span></label>
             <input
               type="date"
               name="endDate"
