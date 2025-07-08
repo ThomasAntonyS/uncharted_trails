@@ -4,7 +4,7 @@ import Logo from '../../assets/Logo.webp';
 import { FaHome } from "react-icons/fa";
 import { useEffect } from "react";
 
-const ResetPassword = () => {
+const ResetPasswordPage = () => {
   const [currentStep, setCurrentStep] = useState( sessionStorage.getItem("step") || "enterEmail");
   const [email, setEmail] = useState( sessionStorage.getItem("email") || "");
   const [otp, setOtp] = useState("");
@@ -20,7 +20,8 @@ const ResetPassword = () => {
 
   useEffect(()=>{
     sessionStorage.setItem("step",currentStep)
-    sessionStorage.setItem("email",email)
+    if(email)
+      sessionStorage.setItem("email",email)
   },[email,currentStep])
 
   const handleShowPassword = () => {
@@ -129,6 +130,7 @@ const ResetPassword = () => {
       if (response.ok) {
         sessionStorage.removeItem("currentStep")
         sessionStorage.removeItem("email")
+        setCurrentStep("enterEmail")
         setSuccessMessage("Your password has been successfully reset! Redirecting to login...");
         setTimeout(() => {
           navigate('/log-in')
@@ -260,4 +262,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordPage;

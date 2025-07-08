@@ -12,7 +12,7 @@ import UserContextProvider from './Context/UserContextProvider';
 import Profile from './components/Pages/Profile';
 import SingleBlog from './components/SingleBlog';
 import AlertBox from './components/AlertBox';
-import ResetPassword from './components/Pages/ResetPassword';
+import ResetPasswordPage from './components/Pages/ResetPasswordPage';
 
 function App() {
     return (
@@ -64,7 +64,7 @@ function AppRoutes() {
             path='/blog/:id'
           />
           <Route
-            element={<ResetPassword/>}
+            element={!authToken ? <ResetPasswordPage/> : <Navigate to="/" replace/>}
             path='/reset-password'
           />
           <Route path="*"

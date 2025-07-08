@@ -108,7 +108,7 @@ const Explore = () => {
                       </button>
                       :
                       <Link to={'/log-in'} className="flex items-center px-4 py-2 bg-indigo-600 text-white text-[.9rem] rounded hover:bg-indigo-700 font-libreCaslon font-semibold tracking-wider">
-                        Log-in to save
+                        Log-in to wishlist
                       </Link>
                     }
                   </div>

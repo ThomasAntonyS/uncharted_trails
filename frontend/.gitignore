@@ -12,7 +12,6 @@ dist
 dist-ssr
 *.local
 testApi.http
-todo.txt
 
 .env.development
 .env.production
