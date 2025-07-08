@@ -8,11 +8,11 @@ import Signin from './components/Pages/Signin';
 import Login from './components/Pages/Login';
 import Confirmation from './components/Pages/Confirmation';
 import NotFound from './components/Pages/NotFound';
-import UserContextProvider, { UserContext } from './Context/UserContextProvider';
+import UserContextProvider from './Context/UserContextProvider';
 import Profile from './components/Pages/Profile';
 import SingleBlog from './components/SingleBlog';
-import { useContext } from 'react';
 import AlertBox from './components/AlertBox';
+import ResetPassword from './components/Pages/ResetPassword';
 
 function App() {
     return (
@@ -24,7 +24,7 @@ function App() {
 }
 
 function AppRoutes() {
-  const { loggedIn } = useContext(UserContext);
+  const authToken = sessionStorage.getItem("authToken")
   return (
       <Routes>
           <Route
@@ -45,23 +45,27 @@ function AppRoutes() {
           />
           <Route
             path='/log-in'
-            element={loggedIn ? <Navigate to="/" replace /> : <Login />}
+            element={authToken ? <Navigate to="/" replace /> : <Login />}
           />
           <Route
             path='/sign-up'
-            element={loggedIn ? <Navigate to="/" replace /> : <Signin />}
+            element={authToken ? <Navigate to="/" replace /> : <Signin />}
           />
           <Route
             element={<Confirmation />}
             path='/sign-up-confirmation'
           />
           <Route
-            element={loggedIn? <Profile /> : <Navigate to="/" replace/>}
+            element={authToken ? <Profile /> : <Navigate to="/" replace/>}
             path='/profile'
           />
           <Route
             element={<SingleBlog />}
             path='/blog/:id'
+          />
+          <Route
+            element={<ResetPassword/>}
+            path='/reset-password'
           />
           <Route path="*"
             element={<NotFound />}

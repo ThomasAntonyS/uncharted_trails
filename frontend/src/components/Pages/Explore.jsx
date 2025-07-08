@@ -3,7 +3,7 @@ import Footer from "../Footer";
 import { IoBookmark } from "react-icons/io5";
 import { FaChevronRight } from "react-icons/fa";
 import Navbar from "../Navbar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContextProvider";
 import FloatingPopup from "../FloatingPopup";
 import { destinations } from "../../data/data";
@@ -13,6 +13,7 @@ const Explore = () => {
   const [popup, setPopup] = useState(false);
   const [error, setError] = useState(false);
   const [popupData, setPopupData] = useState("");
+  const authToken = sessionStorage.getItem("authToken")
 
   document.title = "Uncharted Trails | Explore"
 
@@ -97,12 +98,19 @@ const Explore = () => {
                     <span className="text-lg font-bold font-agdasima text-indigo-600">
                       {destination.price}
                     </span>
-                    <button
-                      className="flex items-center px-4 py-2 bg-indigo-600 text-white text-[.9rem] rounded hover:bg-indigo-700 font-libreCaslon font-semibold tracking-wider"
-                      onClick={e => handleWishList(e, index)}
-                    >
-                      Wishlist <IoBookmark className="ml-2" size={15} />
-                    </button>
+                    {
+                      authToken?
+                      <button
+                        className="flex items-center px-4 py-2 bg-indigo-600 text-white text-[.9rem] rounded hover:bg-indigo-700 font-libreCaslon font-semibold tracking-wider"
+                        onClick={e => handleWishList(e, index)}
+                        >
+                        Wishlist <IoBookmark className="ml-2" size={15} />
+                      </button>
+                      :
+                      <Link to={'/log-in'} className="flex items-center px-4 py-2 bg-indigo-600 text-white text-[.9rem] rounded hover:bg-indigo-700 font-libreCaslon font-semibold tracking-wider">
+                        Log-in to save
+                      </Link>
+                    }
                   </div>
                 </div>
               </div>

@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaUser, FaHistory, FaHeart, FaWrench,FaNewspaper } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import Navbar from '../Navbar'
 import Footer from '../Footer'
-import { UserContext } from "../../Context/UserContextProvider";
 import { PersonalInfo, UserBooking, BookingHistory, Wishlist, InformationUpdate } from "../ProfileTabsComponent";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -11,14 +10,14 @@ import { useNavigate } from "react-router-dom";
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("Personal Info");
   const [userData, setUserData] = useState({});
-  const { userEmail, setLoggedIn, setUserEmail } = useContext(UserContext);
   const navigate = useNavigate()
+  const userEmail = sessionStorage.getItem("userEmail")
+  const token = sessionStorage.getItem('authToken')
 
   document.title = "Uncharted Trails | Profile"
 
   useEffect(() => {
-    if (userEmail) {
-      const token = sessionStorage.getItem('authToken')
+    if (token && userEmail) {
       axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/${userEmail}`,{
         method: 'GET',
         headers : {
@@ -36,9 +35,9 @@ const UserProfile = () => {
 
   const handleLogout = ()=>{
     sessionStorage.removeItem('authToken')
-    setLoggedIn(false)
-    setUserEmail("")
+    sessionStorage.removeItem('userEmail')
     setTimeout(() => {
+      window.location.reload(true)
       navigate("/");
     }, 500);
     window.scrollTo({

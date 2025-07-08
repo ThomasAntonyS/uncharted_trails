@@ -11,7 +11,6 @@ const BookingForm = () => {
     setSelectedBooking,
     booking,
     setBooking,
-    userEmail,
     setAlertBox,
   } = useContext(UserContext);
 
@@ -27,6 +26,8 @@ const BookingForm = () => {
     price: "",
     bookingDate: "",
   });
+
+  const userEmail = sessionStorage.getItem("userEmail")
 
   const [errors, setErrors] = useState({});
 

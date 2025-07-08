@@ -18,7 +18,7 @@ const Signin = () => {
   const [showCnfPassword, setShowCnfPassword] = useState("password");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUserEmail, setAlertBox } = useContext(UserContext);
+  const { setAlertBox } = useContext(UserContext);
 
   document.title = "Uncharted Trails | SignUp";
 
@@ -56,7 +56,7 @@ const Signin = () => {
       .post(`${import.meta.env.VITE_API_BASE_URL}/api/sign-up`, registerData)
       .then((res) => {
         if (res.status === 200) {
-          setUserEmail(registerData.email);
+          sessionStorage.setItem("userEmail",registerData.email)
           setAlertBox({
             isOpen: true,
             message: "Account created! Please verify your email.",
@@ -77,7 +77,7 @@ const Signin = () => {
 
           switch (serverMessage) {
             case "Email already exists but is unverified. Please verify your email or try logging in.":
-              setUserEmail(registerData.email);
+              sessionStorage.setItem("userEmail",registerData.email);
               setAlertBox({
                 isOpen: true,
                 message: "Email already exists but is unverified. Redirecting to confirmation page.",
@@ -158,7 +158,7 @@ const Signin = () => {
               onChange={(e) =>
                 setRegisterData({ ...registerData, username: e.target.value })
               }
-              className="font-poppins w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="font-poppins w-full p-3 border border-gray-600 placeholder:text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
@@ -169,7 +169,7 @@ const Signin = () => {
               onChange={(e) =>
                 setRegisterData({ ...registerData, email: e.target.value })
               }
-              className="font-poppins w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="font-poppins w-full p-3 border border-gray-600 placeholder:text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
@@ -185,7 +185,7 @@ const Signin = () => {
                   phone_number: e.target.value,
                 })
               }
-              className="font-poppins w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="font-poppins w-full p-3 border border-gray-600 placeholder:text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
@@ -196,7 +196,7 @@ const Signin = () => {
               onChange={(e) =>
                 setRegisterData({ ...registerData, password: e.target.value })
               }
-              className="w-full font-poppins p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full font-poppins p-3 border border-gray-600 placeholder:text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             <div className="flex align-middle w-full gap-x-2 font-poppins text-gray-950">
               <input
@@ -204,7 +204,7 @@ const Signin = () => {
                 className=" cursor-pointer"
                 onChange={handleShowPassword}
               />{" "}
-              <p>Show password</p>
+              <p className=" text-gray-800">Show password</p>
             </div>
           </div>
 
@@ -218,7 +218,7 @@ const Signin = () => {
                   cnf_password: e.target.value,
                 })
               }
-              className="w-full font-poppins p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full font-poppins p-3 border border-gray-600 placeholder:text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             <div className="flex align-middle w-full gap-x-2 font-poppins text-gray-950 ">
               <input
@@ -226,12 +226,12 @@ const Signin = () => {
                 className=" cursor-pointer"
                 onChange={handleShowCnfPassword}
               />{" "}
-              <p>Show password</p>
+              <p className=" text-gray-800">Show password</p>
             </div>
           </div>
 
           <button
-            className="w-full font-poppins tracking-wide bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
+            className="w-full font-poppins font-semibold tracking-wide bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
             type="submit"
           >
             {loading ? "Signing in..." : "Sign up"}

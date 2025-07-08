@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import Logo from "../assets/Logo.webp";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUserAlt} from "react-icons/fa";
@@ -7,8 +7,10 @@ import { UserContext } from "../Context/UserContextProvider";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { loggedIn,setLoggedIn, setAlertBox } = useContext(UserContext);
+  const { setAlertBox } = useContext(UserContext);
   const navigate = useNavigate();
+
+  const authToken = sessionStorage.getItem("authToken")
 
   function handleNavigation(e, navLink) {
     e.preventDefault();
@@ -23,8 +25,9 @@ const Navbar = () => {
   function handleLogout(e){
     e.preventDefault();
     sessionStorage.removeItem('authToken')
-    setLoggedIn(false)
+    sessionStorage.removeItem('userEmail')
     setTimeout(() => {
+      window.location.reload(true)
       navigate("/");
     }, 500);
     setAlertBox({
@@ -50,7 +53,7 @@ const Navbar = () => {
       </div>
 
       {/* Desktop Profile */}
-      {loggedIn ? (
+      {authToken ? (
         <div className="hidden xl:flex items-center space-x-6 font-poppins text-[1rem] rounded-full text-white sm:mx-4">
           <button onClick={(e)=>handleLogout(e)} className=" flex border-white border-b-2 transition-all py-1 font-poppins">Logout <span className=" h-max my-auto ml-1"><IoMdLogOut size={20}/></span></button>
           <Link to="/profile" className="flex sm:bg-black sm:bg-opacity-30 p-3 rounded-full font-agdasima tracking-widest text-md" title="Profile">
@@ -108,7 +111,7 @@ const Navbar = () => {
             <Link onClick={(e) => handleNavigation(e, "/blog")}>Blog</Link>
             <Link onClick={(e) => handleNavigation(e, "/pricing")}>Pricing</Link>
 
-            {loggedIn ? (
+            {authToken ? (
               <div className="flex flex-col items-center space-y-2 mt-4">
                 <Link onClick={(e) => handleNavigation(e, "/profile")} className="flex">
                   <span className="my-auto mr-2 h-max"><FaUserAlt size={15} /></span> 

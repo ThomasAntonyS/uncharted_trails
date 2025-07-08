@@ -12,7 +12,8 @@ const Confirmation = () => {
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
 
-  const { setLoggedIn, userEmail, setAlertBox } = useContext(UserContext);
+  const { setAlertBox } = useContext(UserContext);
+  const userEmail = sessionStorage.getItem("userEmail")
 
   document.title = "Uncharted Trails | Email-Confirmation";
 
@@ -36,7 +37,6 @@ const Confirmation = () => {
       .then(res => {
         if (res.data.message === "Verification successful.") {
           sessionStorage.setItem('authToken',res.data.token)
-          setLoggedIn(true);
           setAlertBox({
             isOpen: true,
             message: "Email verified successfully! Welcome.",

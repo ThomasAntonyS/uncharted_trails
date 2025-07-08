@@ -8,8 +8,9 @@ import { FaMinus, FaPlus } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa";
 
 const Pricing = () => {
-  const { setFormOpen, setSelectedBooking,loggedIn, setAlertBox } = useContext(UserContext);
+  const { setFormOpen, setSelectedBooking, setAlertBox } = useContext(UserContext);
   const [openAccordion, setOpenAccordion] = useState(null);
+  const authToken = sessionStorage.getItem("authToken")
 
   document.title = "Uncharted Trails | Pricing";
 
@@ -18,7 +19,7 @@ const Pricing = () => {
   };
 
   const handleBookNow = (destination) => {
-    if(loggedIn){
+    if(authToken){
       setSelectedBooking(destination);
       setFormOpen(true);
     }

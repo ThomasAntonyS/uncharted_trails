@@ -13,7 +13,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState('password');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { setLoggedIn, setUserEmail, setAlertBox } = useContext(UserContext);
+    const { setAlertBox } = useContext(UserContext);
 
     document.title = "Uncharted Trails | Login";
 
@@ -33,13 +33,13 @@ const Login = () => {
             .then((res) => {
                 if (res.status === 200) {
                     sessionStorage.setItem('authToken', res.data.token); 
-                    setLoggedIn(true);
-                    setUserEmail(res.data.userEmail); 
+                    sessionStorage.setItem("userEmail",res.data.userEmail)         
                     setAlertBox({
                         isOpen: true,
                         message: "Login successful!",
                         isError: false
                     });
+                    window.location.reload(true)
                     navigate('/');
                 }
             })
@@ -91,7 +91,7 @@ const Login = () => {
                             type="email"
                             placeholder="Email address *"
                             onChange={e => setLoginData({ ...loginData, email: e.target.value })}
-                            className="w-full font-poppins p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full font-poppins p-3 border border-gray-600 rounded-lg placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                         />
                     </div>
 
@@ -100,14 +100,18 @@ const Login = () => {
                             type={showPassword}
                             placeholder="Password *"
                             onChange={e => setLoginData({ ...loginData, password: e.target.value })}
-                            className="w-full p-3 font-poppins border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full p-3 font-poppins border border-gray-600 rounded-lg placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                         />
                         <div className=" flex align-middle w-full mt-1 gap-x-2 font-poppins">
-                            <input type="checkbox" onChange={handleShowPassword} /> <p>Show password</p>
+                            <input type="checkbox" className=" border-gray-950" onChange={handleShowPassword} /> <p className=" text-gray-800">Show password</p>
                         </div>
+
+                        <Link to='/reset-password' className="text-purple-600 font-poppins underline text-sm mt-2 block text-right">
+                            Forgot Password?
+                        </Link>
                     </div>
 
-                    <button className="w-full font-poppins tracking-wider bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
+                    <button className="w-full font-poppins tracking-wider font-semibold bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition" type="submit">
                         {loading ? "Logging in..." : "Log in"}
                     </button>
                 </form>

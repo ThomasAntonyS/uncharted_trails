@@ -11,10 +11,10 @@ import ConfirmDeletePopup from './ConfirmDeletePopup';
 
 export const PersonalInfo = ({ userData}) => {
     const [travelData, setTravelData] = useState({
-        miles: 0,
-        cities: 0,
-        world: 0,
-        countries: 0,
+        miles: 1600,
+        cities: 13,
+        world: 2,
+        countries: 3,
     });
 
     return (
@@ -42,11 +42,12 @@ export const PersonalInfo = ({ userData}) => {
 }
 
 export const UserBooking = () => {
-    const { booking, setBooking, setAlertBox, userEmail } = useContext(UserContext);
+    const { booking, setBooking, setAlertBox} = useContext(UserContext);
     const [popupOpen, setPopupOpen] = useState(false);
     const [deleteIndex, setDeleteIndex] = useState(null);
     const [deleteName, setDeleteName] = useState('');
     const [deleteId, setDeleteId] = useState(null);
+    const userEmail = sessionStorage.getItem("userEmail")
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -202,7 +203,8 @@ export const UserBooking = () => {
 };
 
 export const BookingHistory = () => {
-    const { booking, setBooking, setAlertBox, userEmail } = useContext(UserContext);
+    const { booking, setBooking, setAlertBox} = useContext(UserContext);
+    const userEmail = sessionStorage.getItem("userEmail")
 
     useEffect(() => {
         const fetchBookings = async () => {
@@ -280,13 +282,15 @@ export const BookingHistory = () => {
 };
 
 export const Wishlist = () => {
-    const { setFormOpen, wishList, setWishList, setSelectedBooking, loggedIn, setAlertBox, userEmail } = useContext(UserContext);
+    const { setFormOpen, wishList, setWishList, setSelectedBooking, setAlertBox } = useContext(UserContext);
     const [popupOpen, setPopupOpen] = useState(false);
     const [deleteIndex, setDeleteIndex] = useState(null);
     const [deleteName, setDeleteName] = useState('');
+    const authToken = sessionStorage.getItem("authToken")
+    const userEmail = sessionStorage.getItem("userEmail")
 
     const handleBookNow = (destination) => {
-        if (loggedIn && userEmail) {
+        if (authToken && userEmail) {
             setSelectedBooking(destination);
             setFormOpen(true);
         } else {
@@ -386,7 +390,8 @@ export const Wishlist = () => {
 
 export const InformationUpdate = ({ userData, setUserData }) => {
     const [stateChange, setStateChange] = useState(false)
-    const { setAlertBox, userEmail } = useContext(UserContext);
+    const { setAlertBox } = useContext(UserContext);
+    const userEmail = sessionStorage.getItem("userEmail")
 
     const handleChange = (e) => {
         setStateChange(true)

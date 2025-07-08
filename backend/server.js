@@ -108,7 +108,7 @@ app.post('/api/log-in', async (req, res) => {
         console.error("Database Error during login:", error);
         res.status(500).json({ message: "An unexpected server error occurred. Please try again later." });
     }
-}); 
+});
 
 const generateUniqueCode = async () => {
     let isUnique = false;
@@ -509,6 +509,107 @@ app.delete("/api/delete-booking/:bookingId&email_id=:email", authenticateToken, 
         return res.status(500).json({ message: "Internal Server Error deleting booking." });
     }
 });
+
+app.post('/api/reset-password-otp', async (req, res) => {
+    const email = req.body.email;
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+        await connection.beginTransaction();
+
+        const checkUserExistQuery = "SELECT `email_id` FROM login_signup WHERE `email_id` = ?";
+        const [userData] = await connection.query(checkUserExistQuery, [email]);
+
+        if (userData.length === 0) {
+            await connection.commit();
+            return res.status(404).send({ message: "No user exists with this email." });
+        }
+
+        const checkExistingCodeQuery = "SELECT `email_id` FROM reset_table WHERE email_id = ? ";
+        const [existingCodeData] = await connection.query(checkExistingCodeQuery, [email]);
+
+        if (existingCodeData.length > 0) {
+            await connection.rollback();
+            return res.status(409).send({
+                message: "A password reset code has already been sent to this email. Please check your inbox and try again."
+            });
+        }
+
+        const resetCode = await generateUniqueCode();
+        const emailSent = await sendEmail(email, "Password Reset Code", `Your reset code is: ${resetCode}`);
+
+        if (emailSent) {
+            const saveCodeQuery = "INSERT INTO reset_table(email_id, code) VALUES(?, ?)";
+            await connection.query(saveCodeQuery, [email, resetCode]);
+            await connection.commit();
+            return res.status(200).send({ message: "Code sent successfully. Check your email." });
+        } else {
+            await connection.rollback();
+            return res.status(500).send({ message: "There was an error while sending the code. Please try again." });
+        }
+
+    } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
+        console.error("Error in /api/reset-password-otp:", error);
+
+        if (error.errno === 1062) {
+            return res.status(409).send({ message: "A code was recently sent. Please check your email or wait before requesting a new one." });
+        }
+
+        return res.status(500).send({ message: "Server error. Try again later." });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+});
+
+app.post('/api/verify-reset-password-otp', async(req,res)=>{
+    const {email,otp} = req.body
+    const verifyResetOtp = " SELECT `email_id`, `code` from reset_table where `email_id`=? and `code`=?"
+    let connection;
+    try {
+        connection = await pool.getConnection()
+        connection.beginTransaction()
+        const [otpData] = await connection.query(verifyResetOtp,[email,otp])
+        if(otpData.length>0){
+            const deleteCode = "Delete from reset_table where `email_id`=?"
+            await connection.query(deleteCode,email)
+            connection.commit()
+            return res.status(200).send({message:"Sucessfull"})
+        }
+        else{
+            connection.rollback()
+            return res.status(404).send({message:"Veification code is incorrect. Try again."})
+        }
+    } catch (error) {
+        return res.status(500).send({message:"Sever error. Please try again later."})
+    }
+})
+
+app.post('/api/reset-password', async(req,res)=>{
+    const {email,newPassword} = req.body
+    const updatepassword = "UPDATE login_signup set `password` = ? where `email_id`=?"
+    let connection;
+    try {
+        connection = await pool.getConnection()
+        connection.beginTransaction()
+
+        const saltVal = parseInt(process.env.Bcrypt_salt, 10);
+        const hashedPassword = await bcrypt.hash(newPassword, saltVal);
+        await connection.query(updatepassword,[hashedPassword,email])
+        connection.commit()
+    
+        res.status(200).send({message:"Password Reset successful"})
+    } catch (error) {
+        console.log(error)
+        connection.rollback()
+        res.status(500).send({message:"Server error occured. Please try again."})
+    }
+})
 
 if (process.env.NODE_ENV !== "production") {
     const PORT = 5000;
