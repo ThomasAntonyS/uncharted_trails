@@ -8,8 +8,10 @@ import BookingForm from "./BookingForm";
 import { destinations } from '../data/data'
 import axios from 'axios'
 import ConfirmDeletePopup from './ConfirmDeletePopup';
+import { Ring2 } from 'ldrs/react'
+import 'ldrs/react/Ring2.css'
 
-export const PersonalInfo = ({ userData}) => {
+export const PersonalInfo = ({ userData }) => {
     const [travelData, setTravelData] = useState({
         miles: 1600,
         cities: 13,
@@ -42,11 +44,12 @@ export const PersonalInfo = ({ userData}) => {
 }
 
 export const UserBooking = () => {
-    const { booking, setBooking, setAlertBox} = useContext(UserContext);
+    const { booking, setBooking, setAlertBox } = useContext(UserContext);
     const [popupOpen, setPopupOpen] = useState(false);
     const [deleteIndex, setDeleteIndex] = useState(null);
     const [deleteName, setDeleteName] = useState('');
     const [deleteId, setDeleteId] = useState(null);
+    const [loading, setLoading] = useState(false);
     const userEmail = sessionStorage.getItem("userEmail")
 
     useEffect(() => {
@@ -55,7 +58,7 @@ export const UserBooking = () => {
                 console.warn("User email not available in context. Cannot fetch bookings.");
                 return;
             }
-
+            setLoading(true);
             const token = sessionStorage.getItem('authToken');
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/get-bookings/${userEmail}`, {
@@ -88,6 +91,8 @@ export const UserBooking = () => {
                     message: "Failed to fetch bookings. Please try again later.",
                     isError: true,
                 });
+            } finally {
+                setLoading(false);
             }
         };
         fetchBookings();
@@ -102,10 +107,12 @@ export const UserBooking = () => {
     };
 
     const handleConfirmCancel = async () => {
+        setLoading(true);
         try {
             if (!userEmail) {
                 setAlertBox({ isOpen: true, message: "User not logged in.", isError: true });
                 setPopupOpen(false);
+                setLoading(false);
                 return;
             }
 
@@ -131,66 +138,74 @@ export const UserBooking = () => {
                 message: error.response?.data?.message || "Failed to cancel booking. Please try again.",
                 isError: true,
             });
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="bg-white rounded-lg sm:shadow-md sm:p-6 w-full overflow-x-auto">
             <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Bookings</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-                {booking.filter((b) => b.bookingDetails?.status !== "Completed").length > 0 ? (
-                    booking
-                        .filter((destination) => destination.bookingDetails?.status !== "Completed")
-                        .map((destination, index) => (
-                            <div
-                                key={destination.bookingDetails?.booking_id || index}
-                                className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300"
-                            >
-                                <img
-                                    src={destination.imageUrl}
-                                    alt={destination.location}
-                                    className="w-full h-56 object-cover"
-                                />
-                                <div className="p-5">
-                                    <h3 className="text-lg font-semibold text-gray-800 font-agdasima">
-                                        {destination.location}
-                                    </h3>
-                                    <p className="text-sm text-gray-600 my-3 font-poppins line-clamp-3">
-                                        {destination.description}
-                                    </p>
-                                    <div className="flex justify-between items-center mt-4 font-agdasima">
-                                        <span className="text-lg font-bold text-indigo-600">
-                                            {destination.price || "N/A"}
-                                        </span>
-                                        <button
-                                            onClick={(e) =>
-                                                openCancelPopup(e, index, destination.bookingDetails?.booking_id, destination.location)
-                                            }
-                                            className="flex px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 tracking-wider"
-                                        >
-                                            <span className="h-max my-auto mr-2">
-                                                <IoMdClose />
+            {loading ? (
+                <div className="flex justify-center items-center h-40">
+                    <Ring2 size="40" stroke="5" strokeLength="0.25" bgOpacity="0.1" speed="0.8" color="black" />
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+                    {booking.filter((b) => b.bookingDetails?.status !== "Completed").length > 0 ? (
+                        booking
+                            .filter((destination) => destination.bookingDetails?.status !== "Completed")
+                            .map((destination, index) => (
+                                <div
+                                    key={destination.bookingDetails?.booking_id || index}
+                                    className="bg-white border rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300"
+                                >
+                                    <img
+                                        src={destination.imageUrl}
+                                        alt={destination.location}
+                                        className="w-full h-56 object-cover"
+                                    />
+                                    <div className="p-5">
+                                        <h3 className="text-lg font-semibold text-gray-800 font-agdasima">
+                                            {destination.location}
+                                        </h3>
+                                        <p className="text-sm text-gray-600 my-3 font-poppins line-clamp-3">
+                                            {destination.description}
+                                        </p>
+                                        <div className="flex justify-between items-center mt-4 font-agdasima">
+                                            <span className="text-lg font-bold text-indigo-600">
+                                                {destination.price || "N/A"}
                                             </span>
-                                            Cancel
-                                        </button>
+                                            <button
+                                                onClick={(e) =>
+                                                    openCancelPopup(e, index, destination.bookingDetails?.booking_id, destination.location)
+                                                }
+                                                className="flex px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 tracking-wider"
+                                            >
+                                                <span className="h-max my-auto mr-2">
+                                                    <IoMdClose />
+                                                </span>
+                                                Cancel
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+                            ))
+                    ) : (
+                        <Link
+                            to="/pricing"
+                            className="bg-white border-2 border-dashed transform transition duration-300 p-6 flex flex-col items-center justify-center"
+                        >
+                            <div className="w-fit mx-auto">
+                                <PlusFade />
                             </div>
-                        ))
-                ) : (
-                    <Link
-                        to="/pricing"
-                        className="bg-white border-2 border-dashed transform transition duration-300 p-6 flex flex-col items-center justify-center"
-                    >
-                        <div className="w-fit mx-auto">
-                            <PlusFade />
-                        </div>
-                        <p className="text-gray-600 text-center mt-4 font-poppins">
-                            Book your destination.
-                        </p>
-                    </Link>
-                )}
-            </div>
+                            <p className="text-gray-600 text-center mt-4 font-poppins">
+                                Book your destination.
+                            </p>
+                        </Link>
+                    )}
+                </div>
+            )}
 
             <ConfirmDeletePopup
                 isOpen={popupOpen}
@@ -203,7 +218,8 @@ export const UserBooking = () => {
 };
 
 export const BookingHistory = () => {
-    const { booking, setBooking, setAlertBox} = useContext(UserContext);
+    const { booking, setBooking, setAlertBox } = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
     const userEmail = sessionStorage.getItem("userEmail")
 
     useEffect(() => {
@@ -212,6 +228,7 @@ export const BookingHistory = () => {
                 console.warn("User email not available in context. Cannot fetch booking history.");
                 return;
             }
+            setLoading(true);
             const token = sessionStorage.getItem('authToken');
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/get-bookings/${userEmail}`, {
@@ -227,6 +244,8 @@ export const BookingHistory = () => {
                     message: "Failed to load booking history. Please try again.",
                     isError: true,
                 });
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -239,7 +258,11 @@ export const BookingHistory = () => {
         <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-x-auto">
             <h2 className="text-2xl font-bold mb-4 font-libreCaslon">Booking History</h2>
 
-            {booking.length === 0 ? (
+            {loading ? (
+                <div className="flex justify-center items-center h-40">
+                    <Ring2 size="40" stroke="5" strokeLength="0.25" bgOpacity="0.1" speed="0.8" color="black" />
+                </div>
+            ) : booking.length === 0 ? (
                 <p className="text-center text-gray-500 text-[1.3rem] font-agdasima">No bookings found.</p>
             ) : (
                 <table className="w-max sm:w-full border-collapse">
@@ -391,6 +414,7 @@ export const Wishlist = () => {
 export const InformationUpdate = ({ userData, setUserData }) => {
     const [stateChange, setStateChange] = useState(false)
     const { setAlertBox } = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
     const userEmail = sessionStorage.getItem("userEmail")
 
     const handleChange = (e) => {
@@ -410,7 +434,7 @@ export const InformationUpdate = ({ userData, setUserData }) => {
                 });
                 return;
             }
-
+            setLoading(true);
             const token = sessionStorage.getItem('authToken');
             try {
                 const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/update-user`, userData, {
@@ -432,6 +456,8 @@ export const InformationUpdate = ({ userData, setUserData }) => {
                     message: error.response?.data?.message || "Failed to update information.",
                     isError: true
                 });
+            } finally {
+                setLoading(false);
             }
         }
         else {
@@ -478,8 +504,14 @@ export const InformationUpdate = ({ userData, setUserData }) => {
                         )
                     ))}
                 </div>
-                <button type="submit" className="mt-6 w-full bg-black text-white py-2 rounded-md font-agdasima tracking-wide">
-                    SAVE CHANGES
+                <button type="submit" className="mt-6 w-full bg-black text-white py-2 rounded-md font-agdasima tracking-wide" disabled={loading}>
+                    {loading ? (
+                        <div className="flex justify-center items-center">
+                            <Ring2 size="20" stroke="3" strokeLength="0.25" bgOpacity="0.1" speed="0.8" color="white" />
+                        </div>
+                    ) : (
+                        "SAVE CHANGES"
+                    )}
                 </button>
             </form>
         </div>
