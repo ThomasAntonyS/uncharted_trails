@@ -8,6 +8,8 @@ const jwt = require("jsonwebtoken");
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 require('dotenv').config();
 
@@ -43,6 +45,12 @@ const pool = mysql.createPool({
     idleTimeout: 30000,
     enableKeepAlive: true,
     keepAliveInitialDelay: 0,
+});
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 async function initializeDatabase() {
@@ -85,37 +93,19 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir);
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const sanitizedEmail = req.user.email.replace(/[^a-zA-Z0-9]/g, '_');
-    const fileExtension = path.extname(file.originalname);
-    cb(null, `${sanitizedEmail}${fileExtension}`);
-  },
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'user-profiles',
+        format: async (req, file) => 'jpg',
+        public_id: (req, file) => {
+            const sanitizedEmail = req.user.email.replace(/[^a-zA-Z0-9]/g, '_');
+            return `${sanitizedEmail}_profile_picture`;
+        },
+    },
 });
 
-const upload = multer({ 
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|webp/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      cb('Error: Only JPEG, JPG, PNG, and WEBP images are allowed!');
-    }
-  }
-});
-
-app.use('/api/get-image', express.static(uploadsDir));
+const upload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
     res.send("Welcome to Uncharted Trails Backend!");
@@ -445,8 +435,8 @@ app.get('/api/get-bookings/:userEmail', authenticateToken, async (req, res) => {
         return res.status(400).json({ message: "Email is required" });
     }
     const sql = `SELECT booking_id, destination AS location, bookingDate AS orderDate, travelers, startDate, endDate, price AS cost
-                     FROM booking
-                     WHERE email_id = ?`;
+                      FROM booking
+                      WHERE email_id = ?`;
     try {
         const [results] = await pool.query(sql, [email]);
         const bookings = results.map(b => {
@@ -579,17 +569,14 @@ app.post('/api/reset-password', async(req,res)=>{
 
 app.post('/api/upload-image', authenticateToken, upload.single('image'), async (req, res) => {
     const userEmail = req.user.email;
-    const imageUrl = req.file.filename;
-
+    const imageUrl = req.file.path;
     if (!imageUrl) {
         return res.status(400).json({ error: 'Image file not provided.' });
     }
-
     const query = 'INSERT INTO user_Images (email_id, image) VALUES (?, ?) ON DUPLICATE KEY UPDATE image = VALUES(image)';
-    
     try {
         await pool.query(query, [userEmail, imageUrl]);
-        res.status(200).json({ message: 'Image uploaded and path saved successfully!' });
+        res.status(200).json({ message: 'Image uploaded and path saved successfully!', imageUrl });
     } catch (err) {
         console.error('Error saving image path to database:', err);
         res.status(500).json({ error: 'Failed to upload image.' });
@@ -599,14 +586,14 @@ app.post('/api/upload-image', authenticateToken, upload.single('image'), async (
 app.get("/api/get-image/:email", authenticateToken, async (req, res) => {
     const userEmail = req.params.email;
     if (req.user.email !== userEmail) {
-      return res.status(403).json({ message: "Unauthorized: You can only access your own data." });
+        return res.status(403).json({ message: "Unauthorized: You can only access your own data." });
     }
     try {
         const [result] = await pool.query("SELECT image FROM user_Images WHERE email_id = ?", [userEmail]);
         if (result.length === 0 || !result[0].image) {
             return res.status(404).json({ message: "Image not found for this user." });
         }
-        res.json({ imagePath: result[0].image });
+        res.json({ imageUrl: result[0].image });
     } catch (err) {
         console.error("Error fetching image path:", err);
         res.status(500).json({ error: "Internal server error" });

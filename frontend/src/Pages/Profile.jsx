@@ -24,12 +24,14 @@ const UserProfile = () => {
     const [userData, setUserData] = useState({});
     const [showImageOptionsModal, setShowImageOptionsModal] = useState(false);
     const [showImageUploadModal, setShowImageUploadModal] = useState(false);
-    const [profileImagePath, setProfileImagePath] = useState('');
+    const [profileImageUrl, setProfileImageUrl] = useState('');
     const navigate = useNavigate();
     const userEmail = sessionStorage.getItem("userEmail");
     const token = sessionStorage.getItem('authToken');
 
     document.title = "Uncharted Trails | Profile";
+
+    const defaultImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s";
 
     const fetchUserData = () => {
         if (token && userEmail) {
@@ -56,11 +58,12 @@ const UserProfile = () => {
                 }
             })
             .then((response) => {
-                setProfileImagePath(response.data.imagePath);
+                // The backend now returns a full URL
+                setProfileImageUrl(response.data.imageUrl); 
             })
             .catch((error) => {
-                console.error("Error fetching profile image path:", error);
-                setProfileImagePath('default.jpg');
+                console.error("Error fetching profile image URL:", error);
+                setProfileImageUrl(defaultImage);
             });
         }
     };
@@ -74,7 +77,6 @@ const UserProfile = () => {
         sessionStorage.removeItem('authToken');
         sessionStorage.removeItem('userEmail');
         setTimeout(() => {
-            window.location.reload(true);
             navigate("/");
         }, 500);
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -85,7 +87,9 @@ const UserProfile = () => {
     };
 
     const handleViewImage = () => {
-        window.open(`${import.meta.env.VITE_API_BASE_URL}/api/get-image/${profileImagePath}`, '_blank');
+        if (profileImageUrl) {
+            window.open(profileImageUrl, '_blank');
+        }
         setShowImageOptionsModal(false);
     };
 
@@ -99,13 +103,11 @@ const UserProfile = () => {
         setShowImageUploadModal(false);
     };
 
-    const handleUploadSuccess = () => {
-        handleCloseAllModals();
-        fetchUserData();
-        fetchProfileImage();
+    // This function is now passed to ImageUploadPopup
+    const handleUploadSuccess = (newImageUrl) => {
+        setProfileImageUrl(newImageUrl); // Update the state with the new URL
+        handleCloseAllModals(); // Close the modal
     };
-
-    const defaultImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s";
 
     return (
         <>
@@ -116,7 +118,7 @@ const UserProfile = () => {
                     <div className="flex flex-col items-center">
                         <div className="relative w-24 h-24">
                             <img
-                                src={profileImagePath ? `${import.meta.env.VITE_API_BASE_URL}/api/get-image/${profileImagePath}` : defaultImage}
+                                src={profileImageUrl || defaultImage}
                                 alt="User"
                                 onError={(e) => { e.target.onerror = null; e.target.src = defaultImage }}
                                 className="w-24 h-24 rounded-full cursor-pointer object-cover"
