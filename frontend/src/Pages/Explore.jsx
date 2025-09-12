@@ -1,12 +1,12 @@
 import { useContext, useState, useEffect } from "react";
-import Footer from "../Footer";
+import Footer from "../components/Footer";
 import { IoBookmark } from "react-icons/io5";
 import { FaChevronRight } from "react-icons/fa";
-import Navbar from "../Navbar";
+import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../Context/UserContextProvider";
-import FloatingPopup from "../FloatingPopup";
-import { destinations } from "../../data/data";
+import { UserContext } from "../Context/UserContextProvider";
+import FloatingPopup from "../components/FloatingPopup";
+import { destinations } from "../data/data";
 import { Ring2 } from 'ldrs/react';
 import 'ldrs/react/Ring2.css';
 

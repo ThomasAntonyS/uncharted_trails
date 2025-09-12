@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
-import NotFound from './Pages/NotFound'
+import NotFound from '../Pages/NotFound'
 import {blogData} from "../data/data";
 
 const SingleBlog = () => {

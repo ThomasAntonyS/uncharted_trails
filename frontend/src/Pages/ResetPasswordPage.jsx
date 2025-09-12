@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom'; 
-import Logo from '../../assets/Logo.webp'; 
+import Logo from '../assets/Logo.webp'; 
 import { FaHome } from "react-icons/fa";
 import { useEffect } from "react";
 

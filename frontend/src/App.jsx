@@ -1,18 +1,18 @@
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Home from './components/Pages/Home';
-import Explore from './components/Pages/Explore';
-import Blog from './components/Pages/Blog';
-import Pricing from './components/Pages/Pricing';
-import Signin from './components/Pages/Signin';
-import Login from './components/Pages/Login';
-import Confirmation from './components/Pages/Confirmation';
-import NotFound from './components/Pages/NotFound';
+import Home from './Pages/Home';
+import Explore from './Pages/Explore';
+import Blog from './Pages/Blog';
+import Pricing from './Pages/Pricing';
+import Signin from './Pages/Signin';
+import Login from './Pages/Login';
+import Confirmation from './Pages/Confirmation';
+import NotFound from './Pages/NotFound';
 import UserContextProvider from './Context/UserContextProvider';
-import Profile from './components/Pages/Profile';
+import Profile from './Pages/Profile';
 import SingleBlog from './components/SingleBlog';
 import AlertBox from './components/AlertBox';
-import ResetPasswordPage from './components/Pages/ResetPasswordPage';
+import ResetPasswordPage from './Pages/ResetPasswordPage';
 
 function App() {
     return (

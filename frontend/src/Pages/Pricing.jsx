@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
-import Footer from "../Footer";
-import Navbar from "../Navbar";
-import { UserContext } from "../../Context/UserContextProvider";
-import BookingForm from "../BookingForm";
-import { destinations } from '../../data/data';
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import { UserContext } from "../Context/UserContextProvider";
+import BookingForm from "../components/BookingForm";
+import { destinations } from '../data/data';
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa";
 

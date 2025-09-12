@@ -1,7 +1,7 @@
 import React from "react";
-import Footer from "../Footer";
+import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import Navbar from "../Navbar";
+import Navbar from "../components/Navbar";
 
 const Blog = () => {
   const blogs = [
