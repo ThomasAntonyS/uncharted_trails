@@ -8,6 +8,8 @@ import ImageUploadPopup from '../components/ImageUploadPopup';
 import { PersonalInfo, UserBooking, BookingHistory, Wishlist, InformationUpdate } from "../components/ProfileTabsComponent";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FaEdit } from 'react-icons/fa';
+import ProfiePlaceHolder from "../assets/Profile_Placeholder.jpg"
 
 const SidebarItem = ({ icon, text, active, onClick }) => (
     <div
@@ -30,8 +32,6 @@ const UserProfile = () => {
     const token = sessionStorage.getItem('authToken');
 
     document.title = "Uncharted Trails | Profile";
-
-    const defaultImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkAJEkJQ1WumU0hXNpXdgBt9NUKc0QDVIiaw&s";
 
     const fetchUserData = () => {
         if (token && userEmail) {
@@ -58,7 +58,6 @@ const UserProfile = () => {
                 }
             })
             .then((response) => {
-                // The backend now returns a full URL
                 setProfileImageUrl(response.data.imageUrl); 
             })
             .catch((error) => {
@@ -103,10 +102,9 @@ const UserProfile = () => {
         setShowImageUploadModal(false);
     };
 
-    // This function is now passed to ImageUploadPopup
     const handleUploadSuccess = (newImageUrl) => {
-        setProfileImageUrl(newImageUrl); // Update the state with the new URL
-        handleCloseAllModals(); // Close the modal
+        setProfileImageUrl(newImageUrl);
+        handleCloseAllModals();
     };
 
     return (
@@ -115,18 +113,26 @@ const UserProfile = () => {
 
             <div className="flex flex-col p-5 mt-[10vh] md:flex-row sm:py-5 sm:px-10 h-max">
                 <div className="w-full h-full md:w-1/4 bg-white shadow-md rounded-lg p-4 md:p-6">
-                    <div className="flex flex-col items-center">
-                        <div className="relative w-24 h-24">
-                            <img
-                                src={profileImageUrl || defaultImage}
-                                alt="User"
-                                onError={(e) => { e.target.onerror = null; e.target.src = defaultImage }}
-                                className="w-24 h-24 rounded-full cursor-pointer object-cover"
-                                onClick={handleImageClick}
-                            />
+                    <div className="w-full h-full bg-white rounded-lg p-4 md:p-6">
+                        <div className="flex flex-col items-center">
+                            <div className="relative w-24 h-24">
+                                <img
+                                    src={profileImageUrl || ProfiePlaceHolder}
+                                    alt="User"
+                                    onError={(e) => { e.target.onerror = null; e.target.src = defaultImage }}
+                                    className="w-24 h-24 rounded-full cursor-pointer object-cover"
+                                    onClick={handleImageClick}
+                                />
+                                <div className="absolute bottom-0 right-0">
+                                    <FaEdit 
+                                        className="text-gray-600 bg-white rounded-full p-1 shadow-md" 
+                                        size={24}
+                                    />
+                                </div>
+                            </div>
+                            <h2 className="text-lg font-semibold mt-2 font-libreCaslon">{userData.username || "N/A"}</h2>
+                            <p className="text-sm text-gray-500 font-poppins">MEMBER SINCE {userData.created_at ? new Date(userData.created_at).toLocaleDateString() : "N/A"}</p>
                         </div>
-                        <h2 className="text-lg font-semibold mt-2 font-libreCaslon">{userData.username || "N/A"}</h2>
-                        <p className="text-sm text-gray-500 font-poppins">MEMBER SINCE {userData.created_at ? new Date(userData.created_at).toLocaleDateString() : "N/A"}</p>
                     </div>
 
                     <div className="mt-6" >
