@@ -5,7 +5,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import { UserContext } from "../Context/UserContextProvider";
 import axios from "axios";
-import ProfiePlaceHolder from "../assets/Profile_Placeholder.jpg"; // Import the placeholder image
+import ProfiePlaceHolder from "../assets/Profile_Placeholder.jpg";
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,6 +17,8 @@ const Navbar = () => {
     const userEmail = sessionStorage.getItem("userEmail");
 
     useEffect(() => {
+        const storedImageUrl = sessionStorage.getItem("profileImageUrl");
+
         const fetchProfileImage = () => {
             if (authToken && userEmail) {
                 axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/get-image/${userEmail}`, {
@@ -25,18 +27,25 @@ const Navbar = () => {
                     }
                 })
                 .then((response) => {
-                    setProfileImageUrl(response.data.imageUrl);
+                    const newImageUrl = response.data.imageUrl;
+                    setProfileImageUrl(newImageUrl);
+                    sessionStorage.setItem("profileImageUrl", newImageUrl); 
                 })
                 .catch((error) => {
                     console.error("Error fetching profile image URL:", error);
-                    setProfileImageUrl(''); // Set to empty string on error to show icon
+                    setProfileImageUrl('');
                 });
             } else {
-                setProfileImageUrl(''); // No user, so no image
+                setProfileImageUrl('');
+                sessionStorage.removeItem("profileImageUrl");
             }
         };
 
-        fetchProfileImage();
+        if (authToken && storedImageUrl) {
+            setProfileImageUrl(storedImageUrl);
+        } else {
+            fetchProfileImage();
+        }
     }, [authToken, userEmail]);
 
     function handleNavigation(e, navLink) {
@@ -53,6 +62,8 @@ const Navbar = () => {
         e.preventDefault();
         sessionStorage.removeItem('authToken');
         sessionStorage.removeItem('userEmail');
+        sessionStorage.removeItem("userData");
+        sessionStorage.removeItem("profileImageUrl");
         setTimeout(() => {
             window.location.reload(true);
             navigate("/");

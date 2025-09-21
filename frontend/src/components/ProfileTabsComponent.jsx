@@ -130,6 +130,7 @@ export const UserBooking = () => {
                 message: "Booking cancelled successfully!",
                 isError: false,
             });
+            setTimeout(()=> window.location.reload(true) ,1000)
         } catch (error) {
             console.error("Error cancelling booking:", error);
             setPopupOpen(false);

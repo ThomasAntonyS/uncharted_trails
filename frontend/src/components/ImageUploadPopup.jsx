@@ -3,7 +3,7 @@ import axios from 'axios';
 import { HiOutlineCloudArrowUp } from 'react-icons/hi2';
 import { AiOutlineClose } from 'react-icons/ai';
 
-const ImageUploadPopup = ({ isOpen, onClose, onUploadSuccess, userEmail, token }) => {
+const ImageUploadPopup = ({ isOpen, onClose, userEmail, token }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [message, setMessage] = useState('');
@@ -44,11 +44,17 @@ const ImageUploadPopup = ({ isOpen, onClose, onUploadSuccess, userEmail, token }
 
             setMessage("");
             setUploading(false);
-            onUploadSuccess(response.data.imageUrl); 
+            const newImageUrl = response.data.imageUrl;
+
+            sessionStorage.setItem("profileImageUrl", newImageUrl); 
 
             setTimeout(() => {
-              onClose();
+                onClose();
             }, 1000);
+
+            setTimeout(()=>{
+                window.location.reload(true)
+            },2000)
 
         } catch (error) {
             setMessage(error.response?.data?.error || 'Failed to upload image.');

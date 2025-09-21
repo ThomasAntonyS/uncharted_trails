@@ -9,7 +9,7 @@ import { PersonalInfo, UserBooking, BookingHistory, Wishlist, InformationUpdate 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaEdit } from 'react-icons/fa';
-import ProfiePlaceHolder from "../assets/Profile_Placeholder.jpg"
+import ProfiePlaceHolder from "../assets/Profile_Placeholder.jpg";
 
 const SidebarItem = ({ icon, text, active, onClick }) => (
     <div
@@ -52,18 +52,34 @@ const UserProfile = () => {
 
     const fetchProfileImage = () => {
         if (token && userEmail) {
+            // Check if the image URL is already in sessionStorage
+            const cachedImageUrl = sessionStorage.getItem("profileImageUrl");
+            if (cachedImageUrl) {
+                // If found, use the cached URL and skip the API call
+                setProfileImageUrl(cachedImageUrl);
+                return;
+            }
+
+            // If not found, make the API call to get the image URL
             axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/get-image/${userEmail}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {
-                setProfileImageUrl(response.data.imageUrl); 
+                const imageUrl = response.data.imageUrl;
+                setProfileImageUrl(imageUrl);
+                // Store the fetched URL in sessionStorage for future use
+                sessionStorage.setItem("profileImageUrl", imageUrl);
             })
             .catch((error) => {
                 console.error("Error fetching profile image URL:", error);
-                setProfileImageUrl(defaultImage);
+                setProfileImageUrl(ProfiePlaceHolder);
             });
+        } else {
+            // If the user is not authenticated, clear the cached URL
+            sessionStorage.removeItem("profileImageUrl");
+            setProfileImageUrl(ProfiePlaceHolder);
         }
     };
 
@@ -75,6 +91,8 @@ const UserProfile = () => {
     const handleLogout = () => {
         sessionStorage.removeItem('authToken');
         sessionStorage.removeItem('userEmail');
+        sessionStorage.removeItem("userData");
+        sessionStorage.removeItem("profileImageUrl"); // Clear the cached image URL
         setTimeout(() => {
             navigate("/");
         }, 500);
@@ -102,11 +120,6 @@ const UserProfile = () => {
         setShowImageUploadModal(false);
     };
 
-    const handleUploadSuccess = (newImageUrl) => {
-        setProfileImageUrl(newImageUrl);
-        handleCloseAllModals();
-    };
-
     return (
         <>
             <Navbar />
@@ -119,7 +132,7 @@ const UserProfile = () => {
                                 <img
                                     src={profileImageUrl || ProfiePlaceHolder}
                                     alt="User"
-                                    onError={(e) => { e.target.onerror = null; e.target.src = defaultImage }}
+                                    onError={(e) => { e.target.onerror = null; e.target.src = ProfiePlaceHolder; }}
                                     className="w-24 h-24 rounded-full cursor-pointer object-cover"
                                     onClick={handleImageClick}
                                 />
@@ -166,7 +179,6 @@ const UserProfile = () => {
             <ImageUploadPopup
                 isOpen={showImageUploadModal}
                 onClose={handleCloseAllModals}
-                onUploadSuccess={handleUploadSuccess}
                 userEmail={userEmail}
                 token={token}
             />
