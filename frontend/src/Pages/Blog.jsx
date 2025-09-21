@@ -77,7 +77,7 @@ const Blog = () => {
 
       <Navbar/>
         <section className="mb-10">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-[15vh]">
               {/* Heading */}
               <div className="text-center mb-12 ">
                 <h2 className="text-[3rem] font-bold text-gray-800 font-libreCaslon tracking-wide">

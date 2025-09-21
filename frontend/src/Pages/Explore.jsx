@@ -61,7 +61,7 @@ const Explore = () => {
         <>
             <Navbar />
             <div
-                className="relative bg-cover bg-center h-[80vh] flex items-center justify-center tracking-wide"
+                className="relative bg-cover bg-center h-[80vh] min-[2560px]:h-[60vh] flex items-center justify-center tracking-wide"
                 style={{
                     backgroundImage:
                         "url('https://images.pexels.com/photos/5015300/pexels-photo-5015300.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')",
