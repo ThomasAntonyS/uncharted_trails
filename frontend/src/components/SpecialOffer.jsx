@@ -40,14 +40,14 @@ const SpecialOffer = () => {
       {/* Carousel */}
       <div className="relative flex justify-evenly w-full md:w-[90%] mx-auto">
         {/* Cards Wrapper */}
-        <div className="flex w-full md:grid md:grid-cols-3 gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory px-4 py-6">
+        <div className="flex w-full md:grid md:grid-cols-3 gap-4 sm:gap-6 overflow-x-auto min-[2560px]:w-[85%] min-[2560px]:gap-x-16 snap-x snap-mandatory px-4 py-6">
           {cardData.map((card, index) => (
             <div
               key={index}
               className="flex-shrink-0 md:flex-shrink w-72 sm:w-80 md:w-full border-2 bg-white rounded-lg overflow-hidden shadow-md snap-center"
             >
               {/* Image */}
-              <div className="h-60 bg-cover bg-center" style={{ backgroundImage: `url(${card.imageUrl})` }}></div>
+              <div className="h-60 min-[780px]:h-[20vh] min-[1024px]:h-[35vh] min-[2560px]:h-[30vh] bg-cover bg-center" style={{ backgroundImage: `url(${card.imageUrl})` }}></div>
           
               {/* Content */}
               <div className="p-4">

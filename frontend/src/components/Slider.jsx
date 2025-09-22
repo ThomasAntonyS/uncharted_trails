@@ -111,7 +111,7 @@ const Slider = () => {
   }, []);
 
   return (
-    <div className="relative w-[90%] mx-auto py-6">
+    <div className="relative w-[90%] mx-auto py-6 h-[65vh] min-[2560px]:h-[55vh] overflow-hidden">
       {!atStart && (
         <button
           onClick={() => scroll('left')}
@@ -134,10 +134,10 @@ const Slider = () => {
       {/* Scrollable Cards */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-scroll no-scrollbar scroll-smooth gap-4"
+        className="flex overflow-x-scroll no-scrollbar scroll-smooth gap-4 h-full"
       >
         {destinations.map((destination) => (
-          <div key={destination.id} className="flex-shrink-0 w-[75vw] sm:w-[50vw] md:w-[35vw] lg:w-[25vw] xl:w-[20vw]">
+          <div key={destination.id} className="flex-shrink-0 h-full w-[75vw] sm:w-[50vw] md:w-[35vw] lg:w-[25vw] xl:w-[20vw]">
             <Card {...destination} />
           </div>
         ))}

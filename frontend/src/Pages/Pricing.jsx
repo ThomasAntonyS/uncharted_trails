@@ -89,7 +89,7 @@ const Pricing = () => {
                         src={destination.imageUrl}
                         alt={destination.location}
                         loading="lazy"
-                        className="w-full h-[35vh] sm:h-[50vh] object-cover mb-4 sm:p-4"
+                        className="w-full h-[35vh] sm:h-[50vh] min-[2560px]:h-[30vh] object-cover mb-4 sm:p-4"
                       />
                       <p className="px-4">
                         <span className=" font-semibold">Price:</span> {destination.price}
