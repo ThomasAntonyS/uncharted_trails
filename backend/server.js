@@ -448,7 +448,7 @@ app.get('/api/get-bookings/:userEmail', authenticateToken, async (req, res) => {
                 orderDate: new Date(b.orderDate).toLocaleDateString(),
                 travelers: b.travelers.toString(),
                 stayDates: `${new Date(b.startDate).toLocaleDateString()} - ${endDate.toLocaleDateString()}`,
-                cost: `$${b.cost}`,
+                cost: `${b.cost}`,
                 status: today <= endDate ? "In Progress" : "Completed",
             };
         });
